@@ -19,6 +19,12 @@ public interface Piece {
     void updatePossibleMoves();
 
     /**
+     *
+     * @return a list of possible moves
+     */
+    String[] getPossibleMoves();
+
+    /**
      * Prints the move logic for the piece.
      */
     void help ();
