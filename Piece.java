@@ -7,6 +7,13 @@ public interface Piece {
     void move(Square newSquare);
 
     /**
+     * Capture a piece on the target square.
+     * @param target
+     *      the home square of the piece to be captured
+     */
+    void capture(Square target);
+
+    /**
      * @updates this.possibleMoves with the possible moves
      */
     void updatePossibleMoves();
