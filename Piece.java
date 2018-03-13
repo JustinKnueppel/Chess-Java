@@ -10,4 +10,9 @@ public interface Piece {
      * @updates this.possibleMoves with the possible moves
      */
     void updatePossibleMoves();
+
+    /**
+     * Prints the move logic for the piece.
+     */
+    void help ();
 }
