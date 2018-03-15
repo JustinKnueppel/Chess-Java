@@ -22,13 +22,13 @@ public class Square {
     }
 
     /**
-     *
-     * @param occupied
-     *      new status of this.occupied
+     * Set piece to null and occupied to false.
+     * @updates this.piece
      * @updates this.occupied
      */
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
+    public void setVacant() {
+        this.occupied = false;
+        this.piece = null;
     }
 
     /**
@@ -38,6 +38,7 @@ public class Square {
      */
     public void putPiece(Piece piece) {
         this.piece = piece;
+        this.occupied = true;
     }
 
     /**
