@@ -1,5 +1,11 @@
 public interface Piece {
     /**
+     * Get the team of this.
+     * @return
+     *      true for team 1, false for team 2
+     */
+    boolean getTeam();
+    /**
      * Moves the given piece to a new square.
      * @param newSquare
      *      The target square for this
