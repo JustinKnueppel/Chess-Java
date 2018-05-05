@@ -70,4 +70,7 @@ public class Board {
         }
         return piece;
     }
+    public boolean isOccupied(String id) {
+        return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))] != null;
+    }
 }
