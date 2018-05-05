@@ -1,18 +1,27 @@
 public class Board {
+    /*
+    Declare useful constants and private variables
+     */
     private final int GRID_SIZE = 8;
     private final String LETTERS = "ABCDEFGH";
     private final String NUMBERS = "12345678";
     private Square[][] grid;
     private String[] backRowOrder;
 
+    /**
+     * Create GRID_SIZE x GRID_SIZE sized board and place pieces on it.
+     */
     public Board() {
-        backRowOrder = rowOrder();
+        backRowOrder = new String[]{"Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
         initializeGrid();
         initializePieces();
     }
-    private void initializeGrid() {
 
-        this.grid = new Square[8][8];
+    /**
+     * Initializes this.grid with ID'd squares in the style of A1, B2 etc.
+     */
+    private void initializeGrid() {
+        this.grid = new Square[GRID_SIZE][GRID_SIZE];
         StringBuilder id = new StringBuilder();
         for (int row = 0; row < LETTERS.length(); row++) {
             for (int column = 0; column < NUMBERS.length(); column++) {
@@ -23,6 +32,10 @@ public class Board {
             }
         }
     }
+
+    /**
+     * Place the correct pieces on the chess board according to this.backRowOrder and a second rank of pawns.
+     */
     private void initializePieces() {
         final int blackOffset = 7;
         final int whiteBackRow = 0;
@@ -37,11 +50,16 @@ public class Board {
             this.grid[blackPawnRow][column].putPiece(getPieceByName("Pawn", false));
         }
 
+    }
 
-    }
-    private String[] rowOrder() {
-        return new String[]{"Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
-    }
+    /**
+     * Based on a String representation of the type of piece, return an initialized object of the correct implementation.
+     * @param name
+     *      The pragmatic name of the piece
+     * @param team
+     *      The team to which the piece belongs for initialization
+     * @return a specific implementation of Piece based on name
+     */
     private Piece getPieceByName(String name, boolean team) {
         Piece piece;
         switch (name) {
@@ -70,7 +88,14 @@ public class Board {
         }
         return piece;
     }
+
+    /**
+     * Determines if the given square is occupied by a chess piece.
+     * @param id
+     *      The String representation of a grid ID
+     * @return whether or not there is an initialized Piece on the given square
+     */
     public boolean isOccupied(String id) {
-        return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))] != null;
+        return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))].isOccupied();
     }
 }

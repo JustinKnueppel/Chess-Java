@@ -7,13 +7,13 @@ public class Square {
      * @param id
      *      Name of this
      */
-    public Square(String id) {
+    Square(String id) {
         this.id = id;
         this.occupied = false;
     }
 
     /**
-     *
+     * Determines whether or not the given square is occupied.
      * @return
      *      this.occupied
      */
@@ -23,8 +23,8 @@ public class Square {
 
     /**
      * Set piece to null and occupied to false.
-     * @updates this.piece
-     * @updates this.occupied
+     * @replaces this.piece
+     * @replaces this.occupied
      */
     public void setVacant() {
         this.occupied = false;
