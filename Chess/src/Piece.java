@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public interface Piece {
     /**
      * Get the team of this.
@@ -12,12 +14,7 @@ public interface Piece {
      */
     void move(Square newSquare);
 
-    /**
-     * Capture a piece on the target square.
-     * @param target
-     *      the home square of the piece to be captured
-     */
-    void capture(Square target);
+
 
     /**
      * @updates this.possibleMoves with the possible moves
@@ -28,10 +25,7 @@ public interface Piece {
      *
      * @return a list of possible moves
      */
-    String[] getPossibleMoves();
+    ArrayList<String> getPossibleMoves();
 
-    /**
-     * Prints the move logic for the piece.
-     */
-    void help ();
+
 }
