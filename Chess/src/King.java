@@ -6,12 +6,14 @@ public class King implements Piece {
     private boolean team;
     private ArrayList<String> moves;
     private Board board;
+    private String type;
 
     public King(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
+        this.type = "King";
 
     }
 
@@ -46,5 +48,9 @@ public class King implements Piece {
     public ArrayList<String> getPossibleMoves() {
         return this.moves;
 
+    }
+    @Override
+    public String getType(){
+        return this.type;
     }
 }

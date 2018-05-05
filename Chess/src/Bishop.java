@@ -6,12 +6,14 @@ public class Bishop implements Piece {
     private boolean team;
     private ArrayList<String> moves;
     private Board board;
+    private String type;
 
     public Bishop(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
+        this.type = "Bishop";
 
     }
 
@@ -46,5 +48,9 @@ public class Bishop implements Piece {
     public ArrayList<String> getPossibleMoves() {
         return this.moves;
 
+    }
+    @Override
+    public String getType(){
+        return this.type;
     }
 }

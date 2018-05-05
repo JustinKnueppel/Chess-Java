@@ -6,12 +6,14 @@ public class Pawn implements Piece {
     private boolean team;
     private ArrayList<String> moves;
     private Board board;
+    private String type;
 
     public Pawn(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
+        this.type = "Pawn";
 
     }
 
@@ -46,6 +48,10 @@ public class Pawn implements Piece {
     public ArrayList<String> getPossibleMoves() {
         return this.moves;
 
+    }
+    @Override
+    public String getType() {
+        return this.type;
     }
 
 

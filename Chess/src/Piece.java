@@ -23,13 +23,13 @@ public interface Piece {
 
 
     /**
-     * @updates this.possibleMoves with the possible moves
+     * Updates this.possibleMoves with the possible moves.
      */
     void updatePossibleMoves();
 
     /**
      *
-     * @return a list of possible moves
+     * @return a list of possible moves.
      */
     ArrayList<String> getPossibleMoves();
 
@@ -39,5 +39,10 @@ public interface Piece {
      */
     boolean hasMoved();
 
+    /**
+     * Get the type of piece.
+     * @return String representation of piece type
+     */
+    String getType();
 
 }
