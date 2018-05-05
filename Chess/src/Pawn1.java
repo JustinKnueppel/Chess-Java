@@ -4,11 +4,15 @@ public class Pawn1 implements Pawn{
     private boolean hasMoved;
     private Square id;
     private boolean team;
+    private ArrayList<String> moves;
+    private Board board;
 
-    public Pawn1(Square id, boolean team) {
+    public Pawn1(Board board, Square id, boolean team) {
         this.id = id;
         this.team = team;
         this.hasMoved = false;
+        this.moves = new ArrayList<>();
+        this.board = board;
 
     }
 
@@ -25,6 +29,7 @@ public class Pawn1 implements Pawn{
     @Override
     public void move(Square newSquare) {
         this.id = newSquare;
+        this.hasMoved = true;
     }
 
 
@@ -36,7 +41,7 @@ public class Pawn1 implements Pawn{
 
     @Override
     public ArrayList<String> getPossibleMoves() {
-        return new String[0];
+        return this.moves;
 
     }
 
