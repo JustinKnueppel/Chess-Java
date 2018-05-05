@@ -89,13 +89,14 @@ public class Board {
         return piece;
     }
 
+
     /**
-     * Determines if the given square is occupied by a chess piece.
+     * Given a String ID, return the corresponding Square.
      * @param id
-     *      The String representation of a grid ID
-     * @return whether or not there is an initialized Piece on the given square
+     *      The ID in grid
+     * @return the Square with the given ID
      */
-    public boolean isOccupied(String id) {
-        return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))].isOccupied();
+    Square getSquare(String id) {
+        return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))];
     }
 }
