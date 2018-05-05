@@ -48,4 +48,12 @@ public class Square {
     public Piece getPiece() {
         return this.piece;
     }
+
+    /**
+     * Retrieve the ID for the square
+     * @return this.id
+     */
+    public String getId(){
+        return this.id;
+    }
 }

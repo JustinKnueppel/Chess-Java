@@ -1,4 +1,4 @@
-public interface PawnInterface extends Piece {
+public interface Pawn extends Piece {
     /**
      * Promote pawn to a new piece.
      * @param newPiece
