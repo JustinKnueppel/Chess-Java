@@ -1,4 +1,5 @@
 public class Board {
+    private final int GRID_SIZE = 8;
     private final String LETTERS = "ABCDEFGH";
     private final String NUMBERS = "12345678";
     private Square[][] grid;
@@ -6,27 +7,36 @@ public class Board {
 
     public Board() {
         backRowOrder = rowOrder();
-        this.grid = InitializeBoard();
-        //InitializePieces(grid);
+        initializeGrid();
+        initializePieces();
     }
-    private Square[][] InitializeBoard() {
+    private void initializeGrid() {
 
-        Square[][] board = new Square[8][8];
-        for (int i = 0; i < LETTERS.length(); i++) {
-            for (int k = 0; k < NUMBERS.length(); k++) {
-                String temp = "";
-                temp += LETTERS.charAt(i) + NUMBERS.charAt(k);
-                board[i][k] = new Square(temp);
+        this.grid = new Square[8][8];
+        StringBuilder id = new StringBuilder();
+        for (int row = 0; row < LETTERS.length(); row++) {
+            for (int column = 0; column < NUMBERS.length(); column++) {
+                id.append(LETTERS.charAt(row));
+                id.append(NUMBERS.charAt(column));
+                grid[row][column] = new Square(id.toString());
+                id.delete(0,id.length());
             }
         }
-        return board;
     }
     private void initializePieces() {
-        int whiteRow = 0;
-        int blackRow = 7;
-        for(int column = 0; column < this.NUMBERS.length(); column++) {
+        final int blackOffset = 7;
+        final int whiteBackRow = 0;
+        final int whitePawnRow = 1;
+        final int blackBackRow = 7;
+        final int blackPawnRow = 6;
 
+        for(int column = 0; column < this.GRID_SIZE; column++) {
+            this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], true));
+            this.grid[whitePawnRow][column].putPiece(getPieceByName("Pawn", true));
+            this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], false));
+            this.grid[blackPawnRow][column].putPiece(getPieceByName("Pawn", false));
         }
+
 
     }
     private String[] rowOrder() {
@@ -54,8 +64,10 @@ public class Board {
                 piece = new Pawn(this, team);
                 break;
             default:
-                System.out.println("Piece can not be initialized by String");
+                System.out.println("Piece could not be initialized by String");
+                piece = null;
                 break;
         }
+        return piece;
     }
 }
