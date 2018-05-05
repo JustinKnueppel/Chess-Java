@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class King implements Piece {
+public class Bishop implements Piece {
     @Override
     public boolean getTeam() {
         return false;

@@ -14,6 +14,12 @@ public interface Piece {
      */
     void move(Square newSquare);
 
+    /**
+     * Initial placement of this.
+     * @param square
+     *      The initial square for this
+     */
+    void setSquare(Square square);
 
 
     /**

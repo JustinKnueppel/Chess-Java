@@ -22,7 +22,8 @@ public class Board {
         return board;
     }
     private void initializePieces() {
-        int[] teamRows = {0, 7};
+        int whiteRow = 0;
+        int blackRow = 7;
         for(int column = 0; column < this.NUMBERS.length(); column++) {
 
         }
@@ -30,5 +31,31 @@ public class Board {
     }
     private String[] rowOrder() {
         return new String[]{"Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
+    }
+    private Piece getPieceByName(String name, boolean team) {
+        Piece piece;
+        switch (name) {
+            case "Rook":
+                piece = new Rook(this, team);
+                break;
+            case "Knight":
+                piece = new Knight(this, team);
+                break;
+            case "Bishop":
+                piece = new Bishop(this, team);
+                break;
+            case "Queen":
+                piece = new  Queen(this, team);
+                break;
+            case "King":
+                piece = new King(this, team);
+                break;
+            case "Pawn":
+                piece = new Pawn(this, team);
+                break;
+            default:
+                System.out.println("Piece can not be initialized by String");
+                break;
+        }
     }
 }

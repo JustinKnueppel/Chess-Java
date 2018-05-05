@@ -7,8 +7,7 @@ public class Pawn implements Piece {
     private ArrayList<String> moves;
     private Board board;
 
-    public Pawn(Board board, Square id, boolean team) {
-        this.id = id;
+    public Pawn(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
@@ -30,6 +29,10 @@ public class Pawn implements Piece {
     public void move(Square newSquare) {
         this.id = newSquare;
         this.hasMoved = true;
+    }
+    @Override
+    public void setSquare(Square square) {
+        this.id = square;
     }
 
 
