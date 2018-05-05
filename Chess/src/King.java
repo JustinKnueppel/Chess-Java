@@ -8,7 +8,7 @@ public class King implements Piece {
     private Board board;
     private String type;
 
-    public King(Board board, boolean team) {
+    King(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();

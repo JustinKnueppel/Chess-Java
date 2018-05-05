@@ -8,7 +8,7 @@ public class Bishop implements Piece {
     private Board board;
     private String type;
 
-    public Bishop(Board board, boolean team) {
+    Bishop(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();

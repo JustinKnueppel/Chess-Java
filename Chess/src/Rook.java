@@ -8,7 +8,7 @@ public class Rook implements Piece {
     private Board board;
     private String type;
 
-    public Rook(Board board, boolean team) {
+    Rook(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();

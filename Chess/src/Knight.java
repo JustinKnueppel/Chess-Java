@@ -8,7 +8,7 @@ public class Knight implements Piece {
     private Board board;
     private String type;
 
-    public Knight(Board board, boolean team) {
+    Knight(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();

@@ -8,7 +8,7 @@ public class Queen implements Piece {
     private Board board;
     private String type;
 
-    public Queen(Board board, boolean team) {
+    Queen(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();

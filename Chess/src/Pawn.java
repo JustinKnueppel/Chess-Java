@@ -8,7 +8,7 @@ public class Pawn implements Piece {
     private Board board;
     private String type;
 
-    public Pawn(Board board, boolean team) {
+    Pawn(Board board, boolean team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
