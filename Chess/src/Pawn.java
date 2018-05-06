@@ -82,6 +82,15 @@ public class Pawn implements Piece {
             /*
             Check front right
              */
+            int rightFile = board.NUMBERS.indexOf((id.charAt(1)) + direction);
+            if (board.inBounds(rightFile)){
+                idBuilder.replace(0, 1, Character.toString(board.LETTERS.charAt(nextRank)));
+                idBuilder.replace(1, 2, Character.toString(board.NUMBERS.charAt(rightFile)));
+                idToCheck = idBuilder.toString();
+                if (!board.getSquare(idToCheck).isOccupied()) {
+                    moves.add(idToCheck);
+                }
+            }
 
         }
     }
