@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Knight implements Piece {
     private boolean hasMoved;
-    private Square id;
+    private Square square;
     private boolean team;
     private ArrayList<String> moves;
     private Board board;
@@ -29,12 +29,12 @@ public class Knight implements Piece {
 
     @Override
     public void move(Square newSquare) {
-        this.id = newSquare;
+        this.square = newSquare;
         this.hasMoved = true;
     }
     @Override
     public void setSquare(Square square) {
-        this.id = square;
+        this.square = square;
     }
 
 

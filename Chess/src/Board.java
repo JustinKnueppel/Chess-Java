@@ -2,9 +2,9 @@ public class Board {
     /*
     Declare useful constants and private variables
      */
-    private final int GRID_SIZE = 8;
-    private final String LETTERS = "ABCDEFGH";
-    private final String NUMBERS = "12345678";
+    public final int GRID_SIZE = 8;
+    public final String LETTERS = "ABCDEFGH";
+    public final String NUMBERS = "12345678";
     private Square[][] grid;
     private String[] backRowOrder;
 
@@ -44,8 +44,14 @@ public class Board {
         final int blackPawnRow = 6;
 
         for(int column = 0; column < this.GRID_SIZE; column++) {
+            /*
+            Place white pieces
+             */
             this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], true));
             this.grid[whitePawnRow][column].putPiece(getPieceByName("Pawn", true));
+            /*
+            Place black team
+             */
             this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], false));
             this.grid[blackPawnRow][column].putPiece(getPieceByName("Pawn", false));
         }
@@ -98,5 +104,15 @@ public class Board {
      */
     Square getSquare(String id) {
         return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))];
+    }
+
+    /**
+     * Determines whether or not the given position falls in bounds of the grid.
+     * @param pos
+     *      position to check
+     * @return true iff 0 <= pos < this.GRID_SIZE
+     */
+    public boolean inBounds(int pos) {
+        return pos >= 0 && pos < this.GRID_SIZE;
     }
 }
