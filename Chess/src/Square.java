@@ -53,7 +53,7 @@ public class Square {
      * Retrieve the ID for the square
      * @return this.id
      */
-    public String getId(){
+    public String getID(){
         return this.id;
     }
 }

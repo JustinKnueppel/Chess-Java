@@ -39,7 +39,7 @@ public class Pawn implements Piece {
     private void updatePossibleMoves() {
         final int direction = (this.team) ? 1 : -1;
         this.moves.clear();
-        String id = this.square.getId();
+        String id = this.square.getID();
         int nextRank = board.LETTERS.indexOf(id.charAt(0)) + direction;
         if (board.inBounds(nextRank)){
             /*

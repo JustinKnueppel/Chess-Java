@@ -34,7 +34,28 @@ public class King implements Piece {
 
 
     private void updatePossibleMoves() {
+        //use array
+        String id = this.square.getID();
+        final int curRank = this.board.LETTERS.indexOf(id.charAt(0));
+        final int prevRank = curRank - 1;
+        final int nextRank = curRank + 1;
+        final int curFile = this.board.NUMBERS.indexOf(id.charAt(1));
+        final int leftFile = curFile - 1;
+        final int rightFile = curFile + 1;
+        if (board.inBounds(nextRank)) {
+            addMoveIfLegal(nextRank, curFile);
 
+        }
+
+
+    }
+    private void addMoveIfLegal(int rank, int file) {
+        String idToCheck = board.indexToID(rank, file);
+        Square squareToCheck = board.getSquare(idToCheck);
+        if (!board.inCheck(squareToCheck, this.team) &&
+                (!squareToCheck.isOccupied() || squareToCheck.getPiece().getTeam() != this.team)) {
+            this.moves.add(idToCheck);
+        }
     }
 
     @Override

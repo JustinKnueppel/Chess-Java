@@ -130,4 +130,17 @@ public class Board {
         idBuilder.append(NUMBERS.charAt(y));
         return idBuilder.toString();
     }
+
+    /**
+     * Determines whether the given square is threatened by the opposing team.
+     * @param square
+     *      Target square to check
+     * @param team
+     *      Team attempting to move to the given square
+     * @return true iff !team is threatening square
+     */
+    public boolean inCheck(Square square, boolean team) {
+        //TODO: figure out efficient way to check each person's possible moves.
+        return false;
+    }
 }
