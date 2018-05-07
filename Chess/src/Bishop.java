@@ -16,12 +16,6 @@ public class Bishop implements Piece {
         this.type = "Bishop";
 
     }
-
-    @Override
-    public boolean hasMoved() {
-        return this.hasMoved;
-    }
-
     @Override
     public boolean getTeam() {
         return this.team;

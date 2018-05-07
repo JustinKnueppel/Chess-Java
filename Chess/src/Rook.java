@@ -18,11 +18,6 @@ public class Rook implements Piece {
     }
 
     @Override
-    public boolean hasMoved() {
-        return this.hasMoved;
-    }
-
-    @Override
     public boolean getTeam() {
         return this.team;
     }

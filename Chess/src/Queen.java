@@ -16,12 +16,6 @@ public class Queen implements Piece {
         this.type = "Queen";
 
     }
-
-    @Override
-    public boolean hasMoved() {
-        return this.hasMoved;
-    }
-
     @Override
     public boolean getTeam() {
         return this.team;

@@ -16,12 +16,6 @@ public class Knight implements Piece {
         this.type = "Knight";
 
     }
-
-    @Override
-    public boolean hasMoved() {
-        return this.hasMoved;
-    }
-
     @Override
     public boolean getTeam() {
         return this.team;

@@ -28,12 +28,6 @@ public interface Piece {
     ArrayList<String> getPossibleMoves();
 
     /**
-     * Checks if the pawn has moved.
-     * @return true iff the pawn has moved
-     */
-    boolean hasMoved();
-
-    /**
      * Get the type of piece.
      * @return String representation of piece type
      */
