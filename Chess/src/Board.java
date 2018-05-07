@@ -115,4 +115,19 @@ public class Board {
     public boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
+
+    /**
+     * Takes two indices to LETTERS and NUMBERS and returns the String ID.
+     * @param x
+     *      Index for LETTERS
+     * @param y
+     *      Index for NUMBERS
+     * @return String ID based on the two indices
+     */
+    public String indexToID(int x, int y) {
+        StringBuilder idBuilder = new StringBuilder();
+        idBuilder.append(LETTERS.charAt(x));
+        idBuilder.append(NUMBERS.charAt(y));
+        return idBuilder.toString();
+    }
 }

@@ -38,65 +38,66 @@ public class Pawn implements Piece {
         this.square = square;
     }
 
-
-
-    @Override
-    public void updatePossibleMoves() {
+    /**
+     * Updates the possible moves based on the current state of board, and the piece logic.
+     */
+    private void updatePossibleMoves() {
         final int direction = (this.team) ? 1 : -1;
         this.moves.clear();
         String id = this.square.getId();
         int nextRank = board.LETTERS.indexOf(id.charAt(0)) + direction;
         if (board.inBounds(nextRank)){
-            StringBuilder idBuilder = new StringBuilder();
             /*
             Check directly in front of the piece
              */
-            idBuilder.append(board.LETTERS.charAt(nextRank));
-            idBuilder.append(id.charAt(1));
-            String idToCheck = idBuilder.toString();
+            int curFile = board.NUMBERS.indexOf(id.charAt(1));
+            String idToCheck = board.indexToID(nextRank, curFile);
             if(!board.getSquare(idToCheck).isOccupied()) {
                 this.moves.add(idToCheck);
                 /*
                 Check if moving twice is possible
                  */
                 if(!this.hasMoved && board.inBounds(nextRank + direction)) {
-                    idBuilder.replace(0, 1, Character.toString(board.LETTERS.charAt(nextRank + direction)));
-                    idToCheck = idBuilder.toString();
-                    if (!board.getSquare(idToCheck).isOccupied()) {
-                        this.moves.add(idToCheck);
-                    }
+                    addMoveIfLegal(nextRank + direction, curFile, false);
                 }
             }
             /*
             Check front left
              */
-            int leftFile = board.NUMBERS.indexOf(id.charAt(1)) - direction;
+            int leftFile = curFile - direction;
             if (board.inBounds(leftFile)) {
-                idBuilder.replace(0, 1, Character.toString(board.LETTERS.charAt(nextRank)));
-                idBuilder.replace(1, 2, Character.toString(board.NUMBERS.charAt(leftFile)));
-                idToCheck = idBuilder.toString();
-                if (!board.getSquare(idToCheck).isOccupied()) {
-                    moves.add(idToCheck);
-                }
+                addMoveIfLegal(nextRank, leftFile, true);
             }
             /*
             Check front right
              */
-            int rightFile = board.NUMBERS.indexOf((id.charAt(1)) + direction);
+            int rightFile = curFile + direction;
             if (board.inBounds(rightFile)){
-                idBuilder.replace(0, 1, Character.toString(board.LETTERS.charAt(nextRank)));
-                idBuilder.replace(1, 2, Character.toString(board.NUMBERS.charAt(rightFile)));
-                idToCheck = idBuilder.toString();
-                if (!board.getSquare(idToCheck).isOccupied()) {
-                    moves.add(idToCheck);
-                }
+                addMoveIfLegal(nextRank, rightFile, true);
             }
+        }
+    }
 
+    /**
+     * Given a rank and file, check if the move is legal.
+     * @param rank
+     *      Index of the alpha component of a tile
+     * @param file
+     *      Index of the numeric component of a tile
+     * @param capture
+     *      Determines if a capture is legal
+     */
+    private void addMoveIfLegal(int rank, int file, boolean capture) {
+        String idToCheck = board.indexToID(rank, file);
+        if (!board.getSquare(idToCheck).isOccupied()
+                || (capture && board.getSquare(idToCheck).getPiece().getTeam() != team)) {
+            moves.add(idToCheck);
         }
     }
 
     @Override
     public ArrayList<String> getPossibleMoves() {
+        updatePossibleMoves();
         return this.moves;
 
     }

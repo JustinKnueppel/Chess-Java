@@ -21,14 +21,8 @@ public interface Piece {
      */
     void setSquare(Square square);
 
-
     /**
-     * Updates this.possibleMoves with the possible moves.
-     */
-    void updatePossibleMoves();
-
-    /**
-     *
+     * Updates this.moves with possible moves, then returns them.
      * @return a list of possible moves.
      */
     ArrayList<String> getPossibleMoves();

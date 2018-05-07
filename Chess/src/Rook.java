@@ -37,15 +37,13 @@ public class Rook implements Piece {
         this.square = square;
     }
 
-
-
-    @Override
-    public void updatePossibleMoves() {
+    private void updatePossibleMoves() {
 
     }
 
     @Override
     public ArrayList<String> getPossibleMoves() {
+        updatePossibleMoves();
         return this.moves;
 
     }
