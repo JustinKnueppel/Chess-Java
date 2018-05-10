@@ -33,9 +33,9 @@ public class Bishop implements Piece {
 
     private void updatePossibleMoves() {
         String curID = this.square.getID();
-        int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
-        int curFile = this.board.NUMBERS.indexOf(curID.charAt(1));
-        int[] movements = {-1, 1};
+        final int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
+        final int curFile = this.board.NUMBERS.indexOf(curID.charAt(1));
+        final int[] movements = {-1, 1};
         for (int rankAdjustment:movements) {
             for (int fileAdjustment:movements) {
                 boolean checkSquare = true;
