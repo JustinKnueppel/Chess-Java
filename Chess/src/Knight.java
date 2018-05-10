@@ -32,7 +32,25 @@ public class Knight implements Piece {
     }
 
     private void updatePossibleMoves() {
-
+        moves.clear();
+        String curID = this.square.getID();
+        int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
+        int curFile = this.board.NUMBERS.indexOf(curID.charAt(1));
+        int[] rankAdjustments = {2, 1, -1, -2};
+        int[] fileAdjustments = {1, 2, 2, 1};
+        for (int i = 0; i < rankAdjustments.length; i++) {
+            addMoveIfLegal(curRank + rankAdjustments[i], curFile + fileAdjustments[i]);
+            addMoveIfLegal(curRank + rankAdjustments[i], curFile - fileAdjustments[i]);
+        }
+    }
+    private void addMoveIfLegal(int rank, int file) {
+        if (this.board.inBounds(rank) && this.board.inBounds(file)) {
+            String idToCheck = board.indexToID(rank, file);
+            Square square = board.getSquare(idToCheck);
+            if (!square.isOccupied() || (square.getPiece().getTeam() != this.team)) {
+                moves.add(idToCheck);
+            }
+        }
     }
 
     @Override

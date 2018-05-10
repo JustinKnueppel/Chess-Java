@@ -45,11 +45,13 @@ public class King implements Piece {
         }
     }
     private void addMoveIfLegal(int rank, int file) {
-        String idToCheck = board.indexToID(rank, file);
-        Square squareToCheck = board.getSquare(idToCheck);
-        if (!board.inCheck(squareToCheck, this.team) &&
-                (!squareToCheck.isOccupied() || squareToCheck.getPiece().getTeam() != this.team)) {
-            this.moves.add(idToCheck);
+        if (this.board.inBounds(rank) && this.board.inBounds(file)) {
+            String idToCheck = board.indexToID(rank, file);
+            Square squareToCheck = board.getSquare(idToCheck);
+            if (!board.inCheck(squareToCheck, this.team) &&
+                    (!squareToCheck.isOccupied() || squareToCheck.getPiece().getTeam() != this.team)) {
+                this.moves.add(idToCheck);
+            }
         }
     }
 
