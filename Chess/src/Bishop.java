@@ -32,6 +32,7 @@ public class Bishop implements Piece {
     }
 
     private void updatePossibleMoves() {
+        this.moves.clear();
         String curID = this.square.getID();
         final int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
         final int curFile = this.board.NUMBERS.indexOf(curID.charAt(1));
