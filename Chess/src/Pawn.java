@@ -6,14 +6,14 @@ public class Pawn implements Piece {
     private Board.TeamColor team;
     private ArrayList<String> moves;
     private Board board;
-    private String type;
+    private Board.PieceType type;
 
     Pawn(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = "Pawn";
+        this.type = Board.PieceType.PAWN;
 
     }
 
@@ -97,7 +97,7 @@ public class Pawn implements Piece {
 
     }
     @Override
-    public String getType() {
+    public Board.PieceType getType() {
         return this.type;
     }
 

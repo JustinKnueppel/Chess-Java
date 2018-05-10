@@ -29,8 +29,8 @@ public interface Piece {
 
     /**
      * Get the type of piece.
-     * @return String representation of piece type
+     * @return piece type
      */
-    String getType();
+    Board.PieceType getType();
 
 }

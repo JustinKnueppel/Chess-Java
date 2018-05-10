@@ -6,14 +6,14 @@ public class Knight implements Piece {
     private Board.TeamColor team;
     private ArrayList<String> moves;
     private Board board;
-    private String type;
+    private Board.PieceType type;
 
     Knight(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = "Knight";
+        this.type = Board.PieceType.KNIGHT;
 
     }
     @Override
@@ -62,7 +62,7 @@ public class Knight implements Piece {
 
     }
     @Override
-    public String getType(){
+    public Board.PieceType getType(){
         return this.type;
     }
 }

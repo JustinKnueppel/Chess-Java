@@ -6,14 +6,14 @@ public class Queen implements Piece {
     private Board.TeamColor team;
     private ArrayList<String> moves;
     private Board board;
-    private String type;
+    private Board.PieceType type;
 
     Queen(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = "Queen";
+        this.type = Board.PieceType.QUEEN;
 
     }
     @Override
@@ -65,7 +65,7 @@ public class Queen implements Piece {
 
     }
     @Override
-    public String getType() {
+    public Board.PieceType getType() {
         return this.type;
     }
 }

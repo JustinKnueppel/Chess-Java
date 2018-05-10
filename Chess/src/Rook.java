@@ -6,14 +6,14 @@ public class Rook implements Piece {
     private Board.TeamColor team;
     private ArrayList<String> moves;
     private Board board;
-    private String type;
+    private Board.PieceType type;
 
     Rook(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = "Rook";
+        this.type = Board.PieceType.ROOK;
 
     }
 
@@ -72,7 +72,7 @@ public class Rook implements Piece {
 
     }
     @Override
-    public String getType(){
+    public Board.PieceType getType(){
         return this.type;
     }
 }

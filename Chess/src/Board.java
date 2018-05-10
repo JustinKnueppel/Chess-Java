@@ -6,15 +6,16 @@ public class Board {
     public final String LETTERS = "ABCDEFGH";
     public final String NUMBERS = "12345678";
     private Square[][] grid;
-    private String[] backRowOrder;
     public enum TeamColor {WHITE, BLACK};
     public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN};
+    private PieceType[] backRowOrder;
 
     /**
      * Create GRID_SIZE x GRID_SIZE sized board and place pieces on it.
      */
     public Board() {
-        backRowOrder = new String[]{"Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"};
+        backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
+                PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();
         initializePieces();
     }
@@ -50,47 +51,47 @@ public class Board {
             Place white pieces
              */
             this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], TeamColor.WHITE));
-            this.grid[whitePawnRow][column].putPiece(getPieceByName("Pawn", TeamColor.WHITE));
+            this.grid[whitePawnRow][column].putPiece(getPieceByName(PieceType.PAWN, TeamColor.WHITE));
             /*
             Place black team
              */
             this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], TeamColor.BLACK));
-            this.grid[blackPawnRow][column].putPiece(getPieceByName("Pawn", TeamColor.BLACK));
+            this.grid[blackPawnRow][column].putPiece(getPieceByName(PieceType.PAWN, TeamColor.BLACK));
         }
 
     }
 
     /**
-     * Based on a String representation of the type of piece, return an initialized object of the correct implementation.
-     * @param name
-     *      The pragmatic name of the piece
+     * Based on a PieceType, return an initialized object of the correct implementation.
+     * @param type
+     *      The type of the piece
      * @param team
      *      The team to which the piece belongs for initialization
      * @return a specific implementation of Piece based on name
      */
-    private Piece getPieceByName(String name, TeamColor team) {
+    private Piece getPieceByName(PieceType type, TeamColor team) {
         Piece piece;
-        switch (name) {
-            case "Rook":
+        switch (type) {
+            case ROOK:
                 piece = new Rook(this, team);
                 break;
-            case "Knight":
+            case KNIGHT:
                 piece = new Knight(this, team);
                 break;
-            case "Bishop":
+            case BISHOP:
                 piece = new Bishop(this, team);
                 break;
-            case "Queen":
+            case QUEEN:
                 piece = new  Queen(this, team);
                 break;
-            case "King":
+            case KING:
                 piece = new King(this, team);
                 break;
-            case "Pawn":
+            case PAWN:
                 piece = new Pawn(this, team);
                 break;
             default:
-                System.out.println("Piece could not be initialized by String");
+                System.out.println("Piece could not be initialized");
                 piece = null;
                 break;
         }
@@ -120,16 +121,16 @@ public class Board {
 
     /**
      * Takes two indices to LETTERS and NUMBERS and returns the String ID.
-     * @param x
+     * @param rank
      *      Index for LETTERS
-     * @param y
+     * @param file
      *      Index for NUMBERS
      * @return String ID based on the two indices
      */
-    public String indexToID(int x, int y) {
+    public String indexToID(int rank, int file) {
         StringBuilder idBuilder = new StringBuilder();
-        idBuilder.append(LETTERS.charAt(x));
-        idBuilder.append(NUMBERS.charAt(y));
+        idBuilder.append(LETTERS.charAt(rank));
+        idBuilder.append(NUMBERS.charAt(file));
         return idBuilder.toString();
     }
 
