@@ -7,6 +7,8 @@ public class Board {
     public final String NUMBERS = "12345678";
     private Square[][] grid;
     private String[] backRowOrder;
+    public enum TeamColor {WHITE, BLACK};
+    public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN};
 
     /**
      * Create GRID_SIZE x GRID_SIZE sized board and place pieces on it.
@@ -47,13 +49,13 @@ public class Board {
             /*
             Place white pieces
              */
-            this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], true));
-            this.grid[whitePawnRow][column].putPiece(getPieceByName("Pawn", true));
+            this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], TeamColor.WHITE));
+            this.grid[whitePawnRow][column].putPiece(getPieceByName("Pawn", TeamColor.WHITE));
             /*
             Place black team
              */
-            this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], false));
-            this.grid[blackPawnRow][column].putPiece(getPieceByName("Pawn", false));
+            this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], TeamColor.BLACK));
+            this.grid[blackPawnRow][column].putPiece(getPieceByName("Pawn", TeamColor.BLACK));
         }
 
     }
@@ -66,7 +68,7 @@ public class Board {
      *      The team to which the piece belongs for initialization
      * @return a specific implementation of Piece based on name
      */
-    private Piece getPieceByName(String name, boolean team) {
+    private Piece getPieceByName(String name, TeamColor team) {
         Piece piece;
         switch (name) {
             case "Rook":
@@ -139,7 +141,7 @@ public class Board {
      *      Team attempting to move to the given square
      * @return true iff !team is threatening square
      */
-    public boolean inCheck(Square square, boolean team) {
+    public boolean inCheck(Square square, TeamColor team) {
         //TODO: figure out efficient way to check each person's possible moves.
         return false;
     }

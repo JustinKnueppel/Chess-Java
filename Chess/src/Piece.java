@@ -4,9 +4,9 @@ public interface Piece {
     /**
      * Get the team of this.
      * @return
-     *      true for team 1, false for team 2
+     *      TeamColor of this
      */
-    boolean getTeam();
+    Board.TeamColor getTeam();
     /**
      * Moves the given piece to a new square.
      * @param newSquare

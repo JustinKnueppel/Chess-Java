@@ -3,12 +3,12 @@ import java.util.ArrayList;
 public class Pawn implements Piece {
     private boolean hasMoved;
     private Square square;
-    private boolean team;
+    private Board.TeamColor team;
     private ArrayList<String> moves;
     private Board board;
     private String type;
 
-    Pawn(Board board, boolean team) {
+    Pawn(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
@@ -18,7 +18,7 @@ public class Pawn implements Piece {
     }
 
     @Override
-    public boolean getTeam() {
+    public Board.TeamColor getTeam() {
         return this.team;
     }
 
@@ -37,7 +37,7 @@ public class Pawn implements Piece {
      * Updates the possible moves based on the current state of board, and the piece logic.
      */
     private void updatePossibleMoves() {
-        final int direction = (this.team) ? 1 : -1;
+        final int direction = (this.team == Board.TeamColor.WHITE) ? 1 : -1;
         this.moves.clear();
         String id = this.square.getID();
         int nextRank = board.LETTERS.indexOf(id.charAt(0)) + direction;

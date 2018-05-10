@@ -3,12 +3,12 @@ import java.util.ArrayList;
 public class Bishop implements Piece {
     private boolean hasMoved;
     private Square square;
-    private boolean team;
+    private Board.TeamColor team;
     private ArrayList<String> moves;
     private Board board;
     private String type;
 
-    Bishop(Board board, boolean team) {
+    Bishop(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
@@ -17,7 +17,7 @@ public class Bishop implements Piece {
 
     }
     @Override
-    public boolean getTeam() {
+    public Board.TeamColor getTeam() {
         return this.team;
     }
 
