@@ -37,7 +37,7 @@ public abstract class Piece {
     /**
      * Updates the possible moves based on the current state of board, and the piece logic.
      */
-    abstract void updatePossibleMoves();
+    protected abstract void updatePossibleMoves();
 
     /**
      * Updates this.moves with possible moves, then returns them.

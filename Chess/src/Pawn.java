@@ -1,12 +1,6 @@
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
-    private boolean hasMoved;
-    private Square square;
-    private Board.TeamColor team;
-    private ArrayList<String> moves;
-    private Board board;
-    private Board.PieceType type;
 
     Pawn(Board board, Board.TeamColor team) {
         this.team = team;
@@ -16,25 +10,8 @@ public class Pawn extends Piece {
         this.type = Board.PieceType.PAWN;
 
     }
-
     @Override
-    public Board.TeamColor getTeam() {
-        return this.team;
-    }
-
-    @Override
-    public void move(Square newSquare) {
-        this.square.setVacant();
-        this.square = newSquare;
-        this.hasMoved = true;
-    }
-    @Override
-    public void setSquare(Square square) {
-        this.square = square;
-    }
-
-
-    private void updatePossibleMoves() {
+    protected void updatePossibleMoves() {
         final int direction = (this.team == Board.TeamColor.WHITE) ? 1 : -1;
         this.moves.clear();
         String id = this.square.getID();
@@ -87,17 +64,5 @@ public class Pawn extends Piece {
             moves.add(idToCheck);
         }
     }
-
-    @Override
-    public ArrayList<String> getPossibleMoves() {
-        updatePossibleMoves();
-        return this.moves;
-
-    }
-    @Override
-    public Board.PieceType getType() {
-        return this.type;
-    }
-
 
 }

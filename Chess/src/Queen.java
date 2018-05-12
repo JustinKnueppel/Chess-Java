@@ -1,12 +1,6 @@
 import java.util.ArrayList;
 
 public class Queen extends Piece {
-    private boolean hasMoved;
-    private Square square;
-    private Board.TeamColor team;
-    private ArrayList<String> moves;
-    private Board board;
-    private Board.PieceType type;
 
     Queen(Board board, Board.TeamColor team) {
         this.team = team;
@@ -17,21 +11,7 @@ public class Queen extends Piece {
 
     }
     @Override
-    public Board.TeamColor getTeam() {
-        return this.team;
-    }
-
-    @Override
-    public void move(Square newSquare) {
-        this.square = newSquare;
-        this.hasMoved = true;
-    }
-    @Override
-    public void setSquare(Square square) {
-        this.square = square;
-    }
-
-    private void updatePossibleMoves() {
+    protected void updatePossibleMoves() {
         this.moves.clear();
         String curID = this.square.getID();
         final int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
@@ -46,7 +26,7 @@ public class Queen extends Piece {
             }
         }
     }
-    private boolean addMoveIfLegal(int rank, int file) {
+    public boolean addMoveIfLegal(int rank, int file) {
         boolean allowNext = false;
         if (this.board.inBounds(rank) && this.board.inBounds(file)){
             String idToCheck = this.board.indexToID(rank, file);
@@ -58,14 +38,5 @@ public class Queen extends Piece {
         }
         return allowNext;
     }
-    @Override
-    public ArrayList<String> getPossibleMoves() {
-        updatePossibleMoves();
-        return this.moves;
 
-    }
-    @Override
-    public Board.PieceType getType() {
-        return this.type;
-    }
 }
