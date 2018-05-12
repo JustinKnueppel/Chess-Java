@@ -9,9 +9,25 @@ public class Board {
     public enum TeamColor {WHITE, BLACK};
     public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN};
     private PieceType[] backRowOrder;
-
+    public class Coordinates {
+        private int rank;
+        private int file;
+        public Coordinates(int rank, int file) {
+            this.rank = rank;
+            this.file = file;
+        }
+        public int getRank() {
+            return this.rank;
+        }
+        public int getFile() {
+            return this.file;
+        }
+        public String getID() {
+            return indexToID(rank, file);
+        }
+    }
     /**
-     * Create GRID_SIZE x GRID_SIZE sized board and place pieces on it.
+     * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
      */
     public Board() {
         backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
