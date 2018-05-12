@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Pawn implements Piece {
+public class Pawn extends Piece {
     private boolean hasMoved;
     private Square square;
     private Board.TeamColor team;
@@ -33,9 +33,7 @@ public class Pawn implements Piece {
         this.square = square;
     }
 
-    /**
-     * Updates the possible moves based on the current state of board, and the piece logic.
-     */
+
     private void updatePossibleMoves() {
         final int direction = (this.team == Board.TeamColor.WHITE) ? 1 : -1;
         this.moves.clear();

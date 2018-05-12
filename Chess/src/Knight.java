@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Knight implements Piece {
+public class Knight extends Piece {
     private boolean hasMoved;
     private Square square;
     private Board.TeamColor team;

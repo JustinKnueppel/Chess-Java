@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Bishop implements Piece {
+public class Bishop extends Piece {
     private boolean hasMoved;
     private Square square;
     private Board.TeamColor team;
