@@ -14,14 +14,14 @@ public class Pawn extends Piece {
     protected void updatePossibleMoves() {
         final int direction = (this.team == Board.TeamColor.WHITE) ? 1 : -1;
         this.moves.clear();
-        String id = this.square.getID();
-        int nextRank = board.LETTERS.indexOf(id.charAt(0)) + direction;
+        Coordinates id = this.square.getID();
+        int nextRank = id.getRank() + direction;
         if (board.inBounds(nextRank)){
             /*
             Check directly in front of the piece
              */
-            int curFile = board.NUMBERS.indexOf(id.charAt(1));
-            String idToCheck = board.indexToID(nextRank, curFile);
+            int curFile = id.getFile();
+            Coordinates idToCheck = new Coordinates(nextRank, curFile);
             if(!board.getSquare(idToCheck).isOccupied()) {
                 this.moves.add(idToCheck);
                 /*
@@ -58,7 +58,7 @@ public class Pawn extends Piece {
      *      Determines if a capture is legal
      */
     private void addMoveIfLegal(int rank, int file, boolean capture) {
-        String idToCheck = board.indexToID(rank, file);
+        Coordinates idToCheck = new Coordinates(rank, file);
         if (!board.getSquare(idToCheck).isOccupied()
                 || (capture && board.getSquare(idToCheck).getPiece().getTeam() != team)) {
             moves.add(idToCheck);

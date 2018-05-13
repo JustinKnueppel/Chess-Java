@@ -4,7 +4,7 @@ public abstract class Piece {
     protected Board.TeamColor team;
     protected boolean hasMoved;
     protected Square square;
-    protected ArrayList<String> moves;
+    protected ArrayList<Coordinates> moves;
     protected Board.PieceType type;
     protected Board board;
     /**
@@ -43,7 +43,7 @@ public abstract class Piece {
      * Updates this.moves with possible moves, then returns them.
      * @return a list of possible moves.
      */
-    ArrayList<String> getPossibleMoves() {
+    ArrayList<Coordinates> getPossibleMoves() {
         updatePossibleMoves();
         return this.moves;
     }

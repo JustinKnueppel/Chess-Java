@@ -14,9 +14,9 @@ public class Rook extends Piece {
     @Override
     protected void updatePossibleMoves() {
         this.moves.clear();
-        String curID = this.square.getID();
-        final int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
-        final int curFile = this.board.NUMBERS.indexOf(curID.charAt(1));
+        Coordinates curID = this.square.getID();
+        final int curRank = curID.getRank();
+        final int curFile = curID.getFile();
         final int[] directions = {-1, 1};
         for (int direction : directions) {
             boolean checkSquare = true;
@@ -36,7 +36,7 @@ public class Rook extends Piece {
     protected boolean addMoveIfLegal(int rank, int file) {
         boolean allowNext = false;
         if (this.board.inBounds(rank) && this.board.inBounds(file)){
-            String idToCheck = this.board.indexToID(rank, file);
+            Coordinates idToCheck = new Coordinates(rank, file);
             Square square = this.board.getSquare(idToCheck);
             allowNext = square.isOccupied();
             if (!square.isOccupied() || square.getPiece().getTeam() != this.team) {

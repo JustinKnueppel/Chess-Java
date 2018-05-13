@@ -14,9 +14,9 @@ public class Knight extends Piece {
     @Override
     protected void updatePossibleMoves() {
         moves.clear();
-        String curID = this.square.getID();
-        final int curRank = this.board.LETTERS.indexOf(curID.charAt(0));
-        final int curFile = this.board.NUMBERS.indexOf(curID.charAt(1));
+        Coordinates curID = this.square.getID();
+        final int curRank = curID.getRank();
+        final int curFile = curID.getFile();
         final int[] rankAdjustments = {2, 1, -1, -2};
         final int[] fileAdjustments = {1, 2, 2, 1};
         final int[] directions = {-1, 1};
@@ -28,7 +28,7 @@ public class Knight extends Piece {
     }
     protected void addMoveIfLegal(int rank, int file) {
         if (this.board.inBounds(rank) && this.board.inBounds(file)) {
-            String idToCheck = board.indexToID(rank, file);
+            Coordinates idToCheck = new Coordinates(rank, file);
             Square square = board.getSquare(idToCheck);
             if (!square.isOccupied() || (square.getPiece().getTeam() != this.team)) {
                 moves.add(idToCheck);
