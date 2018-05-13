@@ -53,20 +53,7 @@ public class Coordinates {
      * @return [A-H][1-8] representation of given tile on a chess board
      */
     public String getID() {
-        return indexToID(rank, file);
-    }
-    /**
-     * Takes two indices to LETTERS and NUMBERS and returns the String ID.
-     * @param rank
-     *      Index for LETTERS
-     * @param file
-     *      Index for NUMBERS
-     * @return String ID based on the two indices
-     */
-    private String indexToID(int rank, int file) {
-        StringBuilder idBuilder = new StringBuilder();
-        idBuilder.append(LETTERS.charAt(rank));
-        idBuilder.append(NUMBERS.charAt(file));
-        return idBuilder.toString();
+        return new String(new char[]{LETTERS.charAt(rank), NUMBERS.charAt(file)});
+
     }
 }
