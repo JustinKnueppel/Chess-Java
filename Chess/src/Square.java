@@ -1,5 +1,5 @@
 public class Square {
-    private String id;
+    private Board.Coordinates id;
     private boolean occupied;
     private Piece piece;
     /**
@@ -7,7 +7,7 @@ public class Square {
      * @param id
      *      Name of this
      */
-    Square(String id) {
+    Square(Board.Coordinates id) {
         this.id = id;
         this.occupied = false;
     }
@@ -53,7 +53,7 @@ public class Square {
      * Retrieve the ID for the square
      * @return this.id
      */
-    public String getID(){
+    public Board.Coordinates getID(){
         return this.id;
     }
 }

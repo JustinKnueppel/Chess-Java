@@ -3,13 +3,14 @@ public class Board {
     Declare useful constants and private variables
      */
     public final int GRID_SIZE = 8;
-    public final String LETTERS = "ABCDEFGH";
-    public final String NUMBERS = "12345678";
+
     private Square[][] grid;
     public enum TeamColor {WHITE, BLACK};
     public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN};
     private PieceType[] backRowOrder;
     public class Coordinates {
+        private final String LETTERS = "ABCDEFGH";
+        private final String NUMBERS = "12345678";
         private int rank;
         private int file;
         public Coordinates(int rank, int file) {
@@ -24,6 +25,20 @@ public class Board {
         }
         public String getID() {
             return indexToID(rank, file);
+        }
+        /**
+         * Takes two indices to LETTERS and NUMBERS and returns the String ID.
+         * @param rank
+         *      Index for LETTERS
+         * @param file
+         *      Index for NUMBERS
+         * @return String ID based on the two indices
+         */
+        private String indexToID(int rank, int file) {
+            StringBuilder idBuilder = new StringBuilder();
+            idBuilder.append(LETTERS.charAt(rank));
+            idBuilder.append(NUMBERS.charAt(file));
+            return idBuilder.toString();
         }
     }
     /**
@@ -41,13 +56,9 @@ public class Board {
      */
     private void initializeGrid() {
         this.grid = new Square[GRID_SIZE][GRID_SIZE];
-        StringBuilder id = new StringBuilder();
-        for (int row = 0; row < LETTERS.length(); row++) {
-            for (int column = 0; column < NUMBERS.length(); column++) {
-                id.append(LETTERS.charAt(row));
-                id.append(NUMBERS.charAt(column));
-                grid[row][column] = new Square(id.toString());
-                id.delete(0,id.length());
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int column = 0; column < GRID_SIZE; column++) {
+                grid[row][column] = new Square(new Coordinates(row, column));
             }
         }
     }
@@ -121,8 +132,8 @@ public class Board {
      *      The ID in grid
      * @return the Square with the given ID
      */
-    Square getSquare(String id) {
-        return grid[LETTERS.indexOf(id.charAt(0))][NUMBERS.indexOf(id.charAt(1))];
+    Square getSquare(Coordinates id) {
+        return grid[id.getRank()][id.getFile()];
     }
 
     /**
@@ -135,20 +146,7 @@ public class Board {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
 
-    /**
-     * Takes two indices to LETTERS and NUMBERS and returns the String ID.
-     * @param rank
-     *      Index for LETTERS
-     * @param file
-     *      Index for NUMBERS
-     * @return String ID based on the two indices
-     */
-    public String indexToID(int rank, int file) {
-        StringBuilder idBuilder = new StringBuilder();
-        idBuilder.append(LETTERS.charAt(rank));
-        idBuilder.append(NUMBERS.charAt(file));
-        return idBuilder.toString();
-    }
+
 
     /**
      * Determines whether the given square is threatened by the opposing team.
