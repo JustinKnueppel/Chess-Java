@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Board {
     /*
     Declare useful constants and private variables
@@ -48,7 +50,7 @@ public class Board {
             this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], TeamColor.WHITE));
             this.grid[whitePawnRow][column].putPiece(getPieceByName(PieceType.PAWN, TeamColor.WHITE));
             /*
-            Place black team
+            Place black pieces
              */
             this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], TeamColor.BLACK));
             this.grid[blackPawnRow][column].putPiece(getPieceByName(PieceType.PAWN, TeamColor.BLACK));
@@ -127,5 +129,28 @@ public class Board {
     public boolean inCheck(Square square, TeamColor team) {
         //TODO: figure out efficient way to check each person's possible moves.
         return false;
+    }
+
+    /**
+     * Determines which squares team is threatening.
+     * @param team
+     *      Team whose pieces are being checked
+     * @return an ArrayList of squares that the given team is threatening
+     */
+    public ArrayList<Square> getAttackingSquares(TeamColor team) {
+        ArrayList<Square> squaresAttacked = new ArrayList<>();
+        //TODO: find moves that are legal, and are able to capture
+        return squaresAttacked;
+    }
+    /**
+     * Determines which squares team is defending.
+     * @param team
+     *      Team whose pieces are being checked
+     * @return an ArrayList of squares that the given team is defending
+     */
+    public ArrayList<Square> getDefendingSquares(TeamColor team) {
+        ArrayList<Square> squaresDefending = new ArrayList<>();
+        //TODO: find moves that are legal, or run into a piece on the same team
+        return squaresDefending;
     }
 }

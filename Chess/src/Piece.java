@@ -56,4 +56,11 @@ public abstract class Piece {
         return this.type;
     }
 
+    /**
+     * Determine if the piece has moves.
+     * @return this.hasMoved
+     */
+    public boolean hasMoved() {
+        return hasMoved;
+    }
 }
