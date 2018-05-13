@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
 public abstract class Piece {
-    protected Board.TeamColor team;
-    protected boolean hasMoved;
-    protected Square square;
-    protected ArrayList<Coordinates> moves;
-    protected Board.PieceType type;
-    protected Board board;
+    Board.TeamColor team;
+    boolean hasMoved;
+    Square square;
+    ArrayList<Coordinates> moves;
+    Board.PieceType type;
+    Board board;
     /**
      * Get the team of this.
      * @return

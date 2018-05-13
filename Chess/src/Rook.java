@@ -33,7 +33,7 @@ public class Rook extends Piece {
             }
         }
     }
-    protected boolean addMoveIfLegal(int rank, int file) {
+    private boolean addMoveIfLegal(int rank, int file) {
         boolean allowNext = false;
         if (this.board.inBounds(rank) && this.board.inBounds(file)){
             Coordinates idToCheck = new Coordinates(rank, file);

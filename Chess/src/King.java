@@ -22,7 +22,7 @@ public class King extends Piece {
             }
         }
     }
-    protected void addMoveIfLegal(int rank, int file) {
+    private void addMoveIfLegal(int rank, int file) {
         if (this.board.inBounds(rank) && this.board.inBounds(file)) {
             Coordinates idToCheck = new Coordinates(rank, file);
             Square squareToCheck = board.getSquare(idToCheck);

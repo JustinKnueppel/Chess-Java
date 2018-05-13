@@ -26,7 +26,7 @@ public class Queen extends Piece {
             }
         }
     }
-    public boolean addMoveIfLegal(int rank, int file) {
+    private boolean addMoveIfLegal(int rank, int file) {
         boolean allowNext = false;
         if (this.board.inBounds(rank) && this.board.inBounds(file)){
             Coordinates idToCheck = new Coordinates(rank, file);
