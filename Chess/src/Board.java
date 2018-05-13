@@ -2,17 +2,17 @@ public class Board {
     /*
     Declare useful constants and private variables
      */
-    public final int GRID_SIZE = 8;
+    private final int GRID_SIZE = 8;
 
     private Square[][] grid;
-    public enum TeamColor {WHITE, BLACK};
-    public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN};
+    public enum TeamColor {WHITE, BLACK}
+    public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN}
     private PieceType[] backRowOrder;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
      */
-    public Board() {
+    Board() {
         backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
                 PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();

@@ -23,8 +23,6 @@ public class Square {
 
     /**
      * Set piece to null and occupied to false.
-     * @replaces this.piece
-     * @replaces this.occupied
      */
     public void setVacant() {
         this.occupied = false;
