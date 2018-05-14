@@ -214,4 +214,24 @@ public class Board {
         return false;
 
     }
+    private boolean threatenedByKnight (Coordinates curID, TeamColor team) {
+        int curRank = curID.getRank();
+        int curFile = curID.getFile();
+        int[][] directions = {{2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
+        int[] sides = {-1, 1};
+        for (int[] direction : directions) {
+            for (int side : sides) {
+                Square toCheck = getSquare(new Coordinates(curRank + direction[0], curFile + direction[1] * side));
+                if (toCheck.isOccupied()) {
+                    Piece piece = toCheck.getPiece();
+                    if (piece.getTeam() != team) {
+                        if (piece.getType() == PieceType.KNIGHT) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
