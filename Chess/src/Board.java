@@ -127,32 +127,18 @@ public class Board {
      * @return true iff !team is threatening square
      */
     public boolean inCheck(Square square, TeamColor team) {
-        //TODO: figure out efficient way to check each person's possible moves.
-        return false;
+        Coordinates id = square.getID();
+        return (threatenedByDiagonal(id, team) || threatenedByStraightaway(id, team) || threatenedByKnight(id, team));
     }
 
     /**
-     * Determines which squares team is threatening.
+     * Determined if !team can attack curID using diagonals.
+     * @param curID
+     *      The ID to check
      * @param team
-     *      Team whose pieces are being checked
-     * @return an ArrayList of squares that the given team is threatening
+     *      The team who would be threatened
+     * @return true iff !team can attack curID
      */
-    public ArrayList<Square> getAttackingSquares(TeamColor team) {
-        ArrayList<Square> squaresAttacked = new ArrayList<>();
-        //TODO: find moves that are legal, and are able to capture
-        return squaresAttacked;
-    }
-    /**
-     * Determines which squares team is defending.
-     * @param team
-     *      Team whose pieces are being checked
-     * @return an ArrayList of squares that the given team is defending
-     */
-    public ArrayList<Square> getDefendingSquares(TeamColor team) {
-        ArrayList<Square> squaresDefending = new ArrayList<>();
-        //TODO: find moves that are legal, or run into a piece on the same team
-        return squaresDefending;
-    }
     private boolean threatenedByDiagonal(Coordinates curID, TeamColor team) {
         int curRank = curID.getRank();
         int curFile = curID.getFile();
@@ -185,6 +171,15 @@ public class Board {
         }
         return false;
     }
+
+    /**
+     * Determined if !team can attack curID using ranks or files.
+     * @param curID
+     *      The ID to check
+     * @param team
+     *      The team who would be threatened
+     * @return true iff !team can attack curID
+     */
     private boolean threatenedByStraightaway (Coordinates curID, TeamColor team) {
         int curRank = curID.getRank();
         int curFile = curID.getFile();
@@ -214,6 +209,15 @@ public class Board {
         return false;
 
     }
+
+    /**
+     * Determined if !team can attack curID using knights.
+     * @param curID
+     *      The ID to check
+     * @param team
+     *      The team who would be threatened
+     * @return true iff !team can attack curID
+     */
     private boolean threatenedByKnight (Coordinates curID, TeamColor team) {
         int curRank = curID.getRank();
         int curFile = curID.getFile();
