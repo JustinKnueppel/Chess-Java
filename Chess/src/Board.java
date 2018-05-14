@@ -153,4 +153,65 @@ public class Board {
         //TODO: find moves that are legal, or run into a piece on the same team
         return squaresDefending;
     }
+    private boolean threatenedByDiagonal(Coordinates curID, TeamColor team) {
+        int curRank = curID.getRank();
+        int curFile = curID.getFile();
+        int pawnAdjust = team == TeamColor.WHITE ? 1 : -1;
+        int pawnThreatRank = curRank + pawnAdjust;
+        int[] directions = {-1, 1};
+        for (int rankAdjust : directions) {
+            for (int fileAdjust : directions) {
+                int multiplier = 1;
+                int nextRank = curRank + rankAdjust;
+                int nextFile = curFile + fileAdjust;
+                while (inBounds(nextRank) && inBounds(nextFile)) {
+                    Square toCheck = getSquare(new Coordinates(nextRank, nextFile));
+                    if (toCheck.isOccupied()) {
+                        Piece piece = toCheck.getPiece();
+                        if (piece.getTeam() != team) {
+                            PieceType type = piece.getType();
+                            if (type == PieceType.QUEEN || type == PieceType.BISHOP || type == PieceType.KING ||
+                                    (nextRank == pawnThreatRank && type == PieceType.PAWN)) {
+                                return true;
+                            }
+                        }
+                        break;
+                    }
+                    multiplier++;
+                    nextRank = curRank + rankAdjust * multiplier;
+                    nextFile = curFile + fileAdjust * multiplier;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean threatenedByStraightaway (Coordinates curID, TeamColor team) {
+        int curRank = curID.getRank();
+        int curFile = curID.getFile();
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for (int[] adjustments : directions) {
+            int multiplier = 1;
+            int newRank = curRank + adjustments[0];
+            int newFile = curFile + adjustments[1];
+            while (inBounds(newRank) && inBounds(newFile)) {
+                Square toCheck = getSquare(new Coordinates(newRank, newFile));
+                if (toCheck.isOccupied()) {
+                    Piece piece = toCheck.getPiece();
+                    if (piece.getTeam() != team) {
+                        PieceType type = piece.getType();
+                        if (type == PieceType.QUEEN || type == PieceType.ROOK || type == PieceType.KING) {
+                            return true;
+                        }
+                    }
+                    break;
+                }
+                multiplier++;
+                newRank = curRank + adjustments[0] * multiplier;
+                newFile = curFile + adjustments[1] * multiplier;
+            }
+
+        }
+        return false;
+
+    }
 }
