@@ -1,6 +1,10 @@
 package Game;
 
-public class Square {
+import GUI.View;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+public class Square extends Rectangle{
     private Coordinates id;
     private boolean occupied;
     private Piece piece;
@@ -8,10 +12,17 @@ public class Square {
      * Public constructor to initialize a square.
      * @param id
      *      Name of this
+     * @param light
+     *      True if this is a light square
      */
-    Square(Coordinates id) {
+    Square(boolean light, Coordinates id) {
         this.id = id;
         this.occupied = false;
+        setWidth(View.TILE_SIZE);
+        setHeight(View.TILE_SIZE);
+        setFill(light ? Color.valueOf("#feb") : Color.valueOf("#582"));
+
+        relocate(id.getFile() * View.TILE_SIZE, id.getRank() * View.TILE_SIZE);
     }
 
     /**
