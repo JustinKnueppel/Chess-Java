@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Board {
     /*
     Declare useful constants and private variables
