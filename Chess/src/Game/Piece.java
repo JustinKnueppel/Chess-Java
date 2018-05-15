@@ -1,3 +1,5 @@
+package Game;
+
 import java.util.ArrayList;
 
 public abstract class Piece {
@@ -12,7 +14,7 @@ public abstract class Piece {
      * @return
      *      TeamColor of this
      */
-    Board.TeamColor getTeam() {
+    public Board.TeamColor getTeam() {
         return this.team;
     }
     /**
@@ -20,7 +22,7 @@ public abstract class Piece {
      * @param newSquare
      *      The target square for this
      */
-    void move(Square newSquare) {
+    public void move(Square newSquare) {
         this.square.setVacant();
         this.square = newSquare;
         this.hasMoved = true;
@@ -31,7 +33,7 @@ public abstract class Piece {
      * @param square
      *      The initial square for this
      */
-    void setSquare(Square square) {
+    public void setSquare(Square square) {
         this.square = square;
     }
     /**
@@ -52,7 +54,7 @@ public abstract class Piece {
      * Get the type of piece.
      * @return piece type
      */
-    Board.PieceType getType() {
+    public Board.PieceType getType() {
         return this.type;
     }
 

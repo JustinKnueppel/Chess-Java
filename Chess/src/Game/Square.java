@@ -1,3 +1,5 @@
+package Game;
+
 public class Square {
     private Coordinates id;
     private boolean occupied;
@@ -32,7 +34,7 @@ public class Square {
     /**
      * Place a piece on the this.
      * @param piece
-     *      Piece to be placed on this
+     *      Game.Piece to be placed on this
      */
     public void putPiece(Piece piece) {
         this.piece = piece;

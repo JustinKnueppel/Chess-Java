@@ -1,13 +1,15 @@
+package Game;
+
 import java.util.ArrayList;
 
-public class Queen extends Piece {
+public class Bishop extends Piece {
 
-    Queen(Board board, Board.TeamColor team) {
+    Bishop(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = Board.PieceType.QUEEN;
+        this.type = Board.PieceType.BISHOP;
 
     }
     @Override
@@ -16,13 +18,15 @@ public class Queen extends Piece {
         Coordinates curID = this.square.getID();
         final int curRank = curID.getRank();
         final int curFile = curID.getFile();
-        int[][] directions = {{1, -1}, {1, 0}, {1, 1}, {0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {-1, 1}};
-        for(int[] adjustments : directions) {
-            boolean checkSquare = true;
-            int multiplier = 1;
-            while (checkSquare) {
-                checkSquare = addMoveIfLegal(curRank + adjustments[0] * multiplier, curFile + adjustments[1] * multiplier);
-                multiplier++;
+        final int[] movements = {-1, 1};
+        for (int rankAdjustment:movements) {
+            for (int fileAdjustment:movements) {
+                boolean checkSquare = true;
+                int multiplier = 1;
+                while (checkSquare) {
+                    checkSquare = addMoveIfLegal(curRank + rankAdjustment * multiplier, curFile + fileAdjustment * multiplier);
+                    multiplier++;
+                }
             }
         }
     }

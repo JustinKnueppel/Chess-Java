@@ -1,34 +1,29 @@
+package Game;
+
 import java.util.ArrayList;
 
-public class Rook extends Piece {
+public class Queen extends Piece {
 
-    Rook(Board board, Board.TeamColor team) {
+    Queen(Board board, Board.TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = Board.PieceType.ROOK;
+        this.type = Board.PieceType.QUEEN;
 
     }
-
     @Override
     protected void updatePossibleMoves() {
         this.moves.clear();
         Coordinates curID = this.square.getID();
         final int curRank = curID.getRank();
         final int curFile = curID.getFile();
-        final int[] directions = {-1, 1};
-        for (int direction : directions) {
+        int[][] directions = {{1, -1}, {1, 0}, {1, 1}, {0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {-1, 1}};
+        for(int[] adjustments : directions) {
             boolean checkSquare = true;
             int multiplier = 1;
             while (checkSquare) {
-                checkSquare = addMoveIfLegal(curRank + direction * multiplier, curFile);
-                multiplier++;
-            }
-            checkSquare = true;
-            multiplier = 1;
-            while (checkSquare) {
-                checkSquare = addMoveIfLegal(curRank, curFile + direction * multiplier);
+                checkSquare = addMoveIfLegal(curRank + adjustments[0] * multiplier, curFile + adjustments[1] * multiplier);
                 multiplier++;
             }
         }

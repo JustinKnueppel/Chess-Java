@@ -1,3 +1,5 @@
+package Game;
+
 public class Board {
     /*
     Declare useful constants and private variables
@@ -12,7 +14,7 @@ public class Board {
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
      */
-    Board() {
+    public Board() {
         backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
                 PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();
@@ -62,7 +64,7 @@ public class Board {
      *      The type of the piece
      * @param team
      *      The team to which the piece belongs for initialization
-     * @return a specific implementation of Piece based on name
+     * @return a specific implementation of Game.Piece based on name
      */
     private Piece getPieceByName(PieceType type, TeamColor team) {
         Piece piece;
@@ -86,7 +88,7 @@ public class Board {
                 piece = new Pawn(this, team);
                 break;
             default:
-                System.out.println("Piece could not be initialized");
+                System.out.println("Game.Piece could not be initialized");
                 piece = null;
                 break;
         }
@@ -95,12 +97,12 @@ public class Board {
 
 
     /**
-     * Given a String ID, return the corresponding Square.
+     * Given a String ID, return the corresponding Game.Square.
      * @param id
      *      The ID in grid
-     * @return the Square with the given ID
+     * @return the Game.Square with the given ID
      */
-    Square getSquare(Coordinates id) {
+    public Square getSquare(Coordinates id) {
         return grid[id.getRank()][id.getFile()];
     }
 

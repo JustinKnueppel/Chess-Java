@@ -1,3 +1,5 @@
+package Game;
+
 public class Coordinates {
     /*
     Name for indices for rows and columns on board
