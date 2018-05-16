@@ -13,8 +13,8 @@ public class Rook extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.ROOK;
-        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteRook"));
-        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackRook"));
+        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteRook.png"));
+        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackRook.png"));
 
     }
 
