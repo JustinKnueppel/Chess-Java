@@ -10,7 +10,7 @@ public class Rook extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.ROOK;
-        this.URL = team == Board.TeamColor.WHITE ? "WhiteRook.png" : "BlackRook.png";
+        this.URL = PRE_IMAGE + (team == Board.TeamColor.WHITE ? "WhiteRook.png" : "BlackRook.png");
         initImage();
 
     }

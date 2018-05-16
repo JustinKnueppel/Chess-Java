@@ -13,7 +13,7 @@ public class Bishop extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.BISHOP;
-        this.URL = team == Board.TeamColor.WHITE ? "WhiteBishop.png" : "BlackBishop.png";
+        this.URL = PRE_IMAGE + (team == Board.TeamColor.WHITE ? "WhiteBishop.png" : "BlackBishop.png");
         initImage();
 
     }
