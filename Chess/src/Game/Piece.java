@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Piece {
@@ -13,7 +14,7 @@ public abstract class Piece {
     ArrayList<Coordinates> moves;
     Board.PieceType type;
     Board board;
-    Map<Board.TeamColor, ImageView> images;
+    Map<Board.TeamColor, ImageView> images = new HashMap<>();
     public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
     /**
      * Get the team of this.

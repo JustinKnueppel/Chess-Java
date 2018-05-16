@@ -1,5 +1,8 @@
 package Game;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Board {
     /*
     Declare useful constants and private variables
@@ -10,13 +13,13 @@ public class Board {
     public enum TeamColor {WHITE, BLACK}
     public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN}
     private PieceType[] backRowOrder;
-    private Piece whiteKing;
-    private Piece blackKing;
+    Map<TeamColor, Piece> kings;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
      */
     public Board() {
+        kings = new HashMap<>();
         backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
                 PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();
@@ -38,7 +41,7 @@ public class Board {
      * @return the team's king
      */
     public Piece getKing(TeamColor team) {
-        return team == TeamColor.WHITE ? whiteKing : blackKing;
+        return kings.get(team);
     }
 
     /**
@@ -47,14 +50,7 @@ public class Board {
      *      The king being set
      */
     private void setKing(Piece king) {
-        switch (king.getTeam()) {
-            case WHITE:
-                whiteKing = king;
-                break;
-            case BLACK:
-                blackKing = king;
-                break;
-        }
+        kings.put(king.getTeam(), king);
     }
 
     /**
