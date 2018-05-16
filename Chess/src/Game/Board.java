@@ -22,6 +22,14 @@ public class Board {
     }
 
     /**
+     * Getter for a [][] or squares representing the board.
+     * @return this.grid
+     */
+    public Square[][] getGrid() {
+        return grid;
+    }
+
+    /**
      * Initializes this.grid with ID'd squares in the style of A1, B2 etc.
      */
     private void initializeGrid() {
