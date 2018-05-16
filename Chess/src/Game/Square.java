@@ -15,7 +15,7 @@ public class Square extends Rectangle{
      * @param light
      *      True if this is a light square
      */
-    Square(boolean light, Coordinates id) {
+    public Square(boolean light, Coordinates id) {
         this.id = id;
         this.occupied = false;
         setWidth(View.TILE_SIZE);

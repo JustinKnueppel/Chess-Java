@@ -28,7 +28,7 @@ public class Board {
         this.grid = new Square[GRID_SIZE][GRID_SIZE];
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int column = 0; column < GRID_SIZE; column++) {
-                grid[row][column] = new Square(new Coordinates(row, column));
+                grid[row][column] = new Square((row + column) % 2 == 0, new Coordinates(row, column));
             }
         }
     }
