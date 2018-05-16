@@ -7,4 +7,12 @@ public class Controller {
         this.view = view;
         this.model = model;
     }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public View getView() {
+        return view;
+    }
 }

@@ -40,8 +40,12 @@ public class View extends Application{
         root.getChildren().addAll(tileGroup, pieceGroup);
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                Square square = new Square((x + y) % 2 == 0, new Coordinates(x, y));
+                Square square = controller.getModel().getGrid()[y][x];
                 tileGroup.getChildren().add(square);
+                if (square.isOccupied()) {
+                    pieceGroup.getChildren().add(square.getPiece());
+                }
+
             }
         }
 
