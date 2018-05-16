@@ -1,5 +1,8 @@
 package Game;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 
 public class King extends Piece {
@@ -10,6 +13,8 @@ public class King extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.KING;
+        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteKing"));
+        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackKing"));
 
     }
     @Override

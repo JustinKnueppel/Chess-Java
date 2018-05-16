@@ -1,6 +1,10 @@
 package Game;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public abstract class Piece {
     Board.TeamColor team;
@@ -9,7 +13,8 @@ public abstract class Piece {
     ArrayList<Coordinates> moves;
     Board.PieceType type;
     Board board;
-
+    Map<Board.TeamColor, ImageView> images;
+    public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
     /**
      * Get the team of this.
      * @return
@@ -18,6 +23,17 @@ public abstract class Piece {
     public Board.TeamColor getTeam() {
         return this.team;
     }
+
+    /**
+     * Returns the image for the piece of the given team.
+     * @param team
+     *      Color of the piece
+     * @return an Image representing the piece
+     */
+    public ImageView getImage(Board.TeamColor team) {
+        return images.get(team);
+    }
+
     /**
      * Moves the given piece to a new square.
      * @param newSquare
