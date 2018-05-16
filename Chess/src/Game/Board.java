@@ -10,6 +10,8 @@ public class Board {
     public enum TeamColor {WHITE, BLACK}
     public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN}
     private PieceType[] backRowOrder;
+    private Piece whiteKing;
+    private Piece blackKing;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
@@ -27,6 +29,32 @@ public class Board {
      */
     public Square[][] getGrid() {
         return grid;
+    }
+
+    /**
+     * Determines the given team's king piece.
+     * @param team
+     *      The team of the king to return
+     * @return the team's king
+     */
+    public Piece getKing(TeamColor team) {
+        return team == TeamColor.WHITE ? whiteKing : blackKing;
+    }
+
+    /**
+     * Set a king to a given team.
+     * @param king
+     *      The king being set
+     */
+    private void setKing(Piece king) {
+        switch (king.getTeam()) {
+            case WHITE:
+                whiteKing = king;
+                break;
+            case BLACK:
+                blackKing = king;
+                break;
+        }
     }
 
     /**
@@ -91,6 +119,7 @@ public class Board {
                 break;
             case KING:
                 piece = new King(this, team);
+                setKing(piece);
                 break;
             case PAWN:
                 piece = new Pawn(this, team);

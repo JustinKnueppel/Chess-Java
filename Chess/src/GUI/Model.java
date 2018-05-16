@@ -10,4 +10,12 @@ public class Model {
         this.board = new Board();
         this.grid = board.getGrid();
     }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public Square[][] getGrid() {
+        return grid;
+    }
 }

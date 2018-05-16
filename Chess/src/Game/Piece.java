@@ -9,6 +9,7 @@ public abstract class Piece {
     ArrayList<Coordinates> moves;
     Board.PieceType type;
     Board board;
+
     /**
      * Get the team of this.
      * @return
