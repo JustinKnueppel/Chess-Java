@@ -13,9 +13,8 @@ public class King extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.KING;
-        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteKing.png"));
-        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackKing.png"));
-
+        this.URL = team == Board.TeamColor.WHITE ? "WhiteKing.png" : "BlackKing.png";
+        initImage();
     }
     @Override
     protected void updatePossibleMoves() {

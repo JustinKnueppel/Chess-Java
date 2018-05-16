@@ -13,8 +13,9 @@ public class Bishop extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.BISHOP;
-        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteBishop.png"));
-        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackBishop.png"));
+        this.URL = team == Board.TeamColor.WHITE ? "WhiteBishop.png" : "BlackBishop.png";
+        initImage();
+
     }
     @Override
     protected void updatePossibleMoves() {

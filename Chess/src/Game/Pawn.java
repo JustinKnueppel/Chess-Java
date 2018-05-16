@@ -13,9 +13,8 @@ public class Pawn extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.PAWN;
-        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whitePawn.png"));
-        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackPawn.png"));
-
+        this.URL = team == Board.TeamColor.WHITE ? "WhitePawn.png" : "BlackPawn.png";
+        initImage();
     }
     @Override
     protected void updatePossibleMoves() {

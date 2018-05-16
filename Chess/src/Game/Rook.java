@@ -1,8 +1,5 @@
 package Game;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import java.util.ArrayList;
 
 public class Rook extends Piece {
@@ -13,8 +10,8 @@ public class Rook extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.ROOK;
-        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteRook.png"));
-        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackRook.png"));
+        this.URL = team == Board.TeamColor.WHITE ? "WhiteRook.png" : "BlackRook.png";
+        initImage();
 
     }
 

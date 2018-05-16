@@ -13,9 +13,8 @@ public class Knight extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = Board.PieceType.KNIGHT;
-        this.images.put(Board.TeamColor.WHITE, new ImageView(PRE_IMAGE + "whiteKnight.png"));
-        this.images.put(Board.TeamColor.BLACK, new ImageView(PRE_IMAGE + "blackKnight.png"));
-
+        this.URL = team == Board.TeamColor.WHITE ? "WhiteKnight.png" : "BlackKnight.png";
+        initImage();
     }
 
     @Override
