@@ -7,18 +7,18 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
 
-    Pawn(Board board, Board.TeamColor team) {
+    Pawn(Board board, TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = Board.PieceType.PAWN;
-        this.URL = PRE_IMAGE + (team == Board.TeamColor.WHITE ? "WhitePawn.png" : "BlackPawn.png");
+        this.type = PieceType.PAWN;
+        this.URL = PRE_IMAGE + (team == TeamColor.WHITE ? "WhitePawn.png" : "BlackPawn.png");
         initImage();
     }
     @Override
     protected void updatePossibleMoves() {
-        final int direction = (this.team == Board.TeamColor.WHITE) ? 1 : -1;
+        final int direction = (this.team == TeamColor.WHITE) ? 1 : -1;
         this.moves.clear();
         Coordinates id = this.square.getID();
         int nextRank = id.getRank() + direction;

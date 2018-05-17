@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Rook extends Piece {
 
-    Rook(Board board, Board.TeamColor team) {
+    Rook(Board board, TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = Board.PieceType.ROOK;
-        this.URL = PRE_IMAGE + (team == Board.TeamColor.WHITE ? "WhiteRook.png" : "BlackRook.png");
+        this.type = PieceType.ROOK;
+        this.URL = PRE_IMAGE + (team == TeamColor.WHITE ? "WhiteRook.png" : "BlackRook.png");
         initImage();
 
     }

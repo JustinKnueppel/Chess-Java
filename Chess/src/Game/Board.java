@@ -8,10 +8,7 @@ public class Board {
     Declare useful constants and private variables
      */
     private final int GRID_SIZE = 8;
-
     private Square[][] grid;
-    public enum TeamColor {WHITE, BLACK}
-    public enum PieceType {PAWN, KING, KNIGHT, BISHOP, ROOK, QUEEN}
     private PieceType[] backRowOrder;
     Map<TeamColor, Piece> kings;
 

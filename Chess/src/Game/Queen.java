@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class Queen extends Piece {
 
-    Queen(Board board, Board.TeamColor team) {
+    Queen(Board board, TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = Board.PieceType.QUEEN;
-        this.URL = PRE_IMAGE + (team == Board.TeamColor.WHITE ? "WhiteQueen.png" : "BlackQueen.png");
+        this.type = PieceType.QUEEN;
+        this.URL = PRE_IMAGE + (team == TeamColor.WHITE ? "WhiteQueen.png" : "BlackQueen.png");
         initImage();
     }
     @Override

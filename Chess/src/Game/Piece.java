@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Piece extends StackPane {
-    Board.TeamColor team;
+    TeamColor team;
     boolean hasMoved;
     Square square;
     ArrayList<Coordinates> moves;
-    Board.PieceType type;
+    PieceType type;
     Board board;
     String URL;
     public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
@@ -22,7 +22,7 @@ public abstract class Piece extends StackPane {
      * @return
      *      TeamColor of this
      */
-    public Board.TeamColor getTeam() {
+    public TeamColor getTeam() {
         return this.team;
     }
     void initImage() {
@@ -66,7 +66,7 @@ public abstract class Piece extends StackPane {
      * Get the type of piece.
      * @return piece type
      */
-    public Board.PieceType getType() {
+    public PieceType getType() {
         return this.type;
     }
 

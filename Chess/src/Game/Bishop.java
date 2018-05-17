@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class Bishop extends Piece {
 
-    Bishop(Board board, Board.TeamColor team) {
+    Bishop(Board board, TeamColor team) {
         this.team = team;
         this.hasMoved = false;
         this.moves = new ArrayList<>();
         this.board = board;
-        this.type = Board.PieceType.BISHOP;
-        this.URL = PRE_IMAGE + (team == Board.TeamColor.WHITE ? "WhiteBishop.png" : "BlackBishop.png");
+        this.type = PieceType.BISHOP;
+        this.URL = PRE_IMAGE + (team == TeamColor.WHITE ? "WhiteBishop.png" : "BlackBishop.png");
         initImage();
 
     }
