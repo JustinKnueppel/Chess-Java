@@ -1,5 +1,6 @@
 package Game;
 
+import GUI.View;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -26,7 +27,12 @@ public abstract class Piece extends StackPane {
         return this.team;
     }
     void initImage() {
-        this.getChildren().add(new ImageView(URL));
+        //Issue initializing square inside of piece consistently
+        int file = getSquare().getID().getFile();
+        int rank = getSquare().getID().getRank();
+        relocate(file * View.TILE_SIZE, rank * View.TILE_SIZE);
+        Image img = new Image(URL);
+        this.getChildren().add(new ImageView(img));
     }
 
     /**
@@ -36,8 +42,12 @@ public abstract class Piece extends StackPane {
      */
     public void move(Square newSquare) {
         this.square.setVacant();
-        this.square = newSquare;
+        newSquare.putPiece(this);
         this.hasMoved = true;
+    }
+
+    public Square getSquare() {
+        return square;
     }
 
     /**

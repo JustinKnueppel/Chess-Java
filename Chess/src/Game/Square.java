@@ -50,6 +50,7 @@ public class Square extends Rectangle{
     public void putPiece(Piece piece) {
         this.piece = piece;
         this.occupied = true;
+        this.piece.setSquare(this);
     }
 
     /**
