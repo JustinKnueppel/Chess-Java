@@ -1,22 +1,28 @@
 package Game;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
+import Game.Pieces.MoveType;
 
 public class King extends Piece {
 
-    King(Board board, TeamColor team) {
-        this.team = team;
-        this.hasMoved = false;
-        this.moves = new ArrayList<>();
-        this.board = board;
-        this.type = PieceType.KING;
-        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
-        initImage();
+    King(Coordinates coordinates, TeamColor team) {
+        super (coordinates, team);
     }
+
     @Override
+    void initMoveDirections() {
+        this.moveDirections = new MoveType[][]{
+                {MoveType.KILL, MoveType.KILL, MoveType.KILL},
+                {MoveType.KILL, MoveType.NONE, MoveType.KILL},
+                {MoveType.KILL, MoveType.KILL, MoveType.KILL}};
+    }
+
+    @Override
+    void initPieceType() {
+        this.type = PieceType.KING;
+
+    }
+    /*@Override
     protected void updatePossibleMoves() {
         Coordinates id = this.square.getID();
         final int curRank = id.getRank();
@@ -37,6 +43,6 @@ public class King extends Piece {
                 this.moves.add(idToCheck);
             }
         }
-    }
+    }*/
 
 }
