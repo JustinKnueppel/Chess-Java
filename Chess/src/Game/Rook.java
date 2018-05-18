@@ -1,17 +1,29 @@
 package Game;
 
+import Game.Pieces.MoveType;
+
 import java.util.ArrayList;
 
 public class Rook extends Piece {
 
-    Rook(Coordinates coordinates, TeamColor team) {
-        this.type = PieceType.ROOK;
-        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
-        initImage();
-
+    public Rook(Coordinates coordinates, TeamColor team) {
+        super(coordinates, team);
     }
 
     @Override
+    void initMoveDirections() {
+        this.moveDirections = new MoveType[][]{
+                {MoveType.NONE, MoveType.KILL, MoveType.KILL},
+                {MoveType.KILL, MoveType.NONE, MoveType.KILL},
+                {MoveType.NONE, MoveType.KILL, MoveType.NONE}};
+    }
+
+    @Override
+    void initPieceType() {
+        this.type = PieceType.ROOK;
+    }
+
+    /*@Override
     protected void updatePossibleMoves() {
         this.moves.clear();
         Coordinates curID = this.square.getID();
@@ -44,6 +56,6 @@ public class Rook extends Piece {
             }
         }
         return allowNext;
-    }
+    }*/
 
 }
