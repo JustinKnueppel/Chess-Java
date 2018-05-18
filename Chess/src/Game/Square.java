@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Square extends Rectangle{
+    private final String LIGHT_COLOR = "#feb";
+    private final String DARK_COLOR = "#582";
     private Coordinates id;
     private boolean occupied;
     private Piece piece;
@@ -20,7 +22,7 @@ public class Square extends Rectangle{
         this.occupied = false;
         setWidth(View.TILE_SIZE);
         setHeight(View.TILE_SIZE);
-        setFill(light ? Color.valueOf("#feb") : Color.valueOf("#582"));
+        setFill(light ? Color.valueOf(LIGHT_COLOR) : Color.valueOf(DARK_COLOR));
 
         relocate(id.getFile() * View.TILE_SIZE, id.getRank() * View.TILE_SIZE);
     }
@@ -49,8 +51,8 @@ public class Square extends Rectangle{
      */
     public void putPiece(Piece piece) {
         this.piece = piece;
+        this.piece.move(this.id);
         this.occupied = true;
-        this.piece.setSquare(this);
     }
 
     /**
