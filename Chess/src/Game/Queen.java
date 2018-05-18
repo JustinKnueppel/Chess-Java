@@ -13,7 +13,7 @@ public class Queen extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = PieceType.QUEEN;
-        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
+
         initImage();
     }
     @Override

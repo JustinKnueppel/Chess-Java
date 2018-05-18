@@ -12,12 +12,23 @@ import java.util.Map;
 public abstract class Piece extends StackPane {
     TeamColor team;
     boolean hasMoved;
-    Square square;
-    ArrayList<Coordinates> moves;
     PieceType type;
-    Board board;
+    Coordinates coordinates;
     String URL;
     public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
+
+    /**
+     * Constructor that is universal for each piece.
+     * @param coordinates
+     *      Rank and file of piece
+     * @param team
+     *      TeamColor of piece
+     */
+    public Piece(Coordinates coordinates, TeamColor team) {
+        this.coordinates = coordinates;
+        this.team = team;
+        this.hasMoved = false;
+    }
     /**
      * Get the team of this.
      * @return
@@ -28,8 +39,9 @@ public abstract class Piece extends StackPane {
     }
     void initImage() {
         //Issue initializing square inside of piece consistently
-        int file = getSquare().getID().getFile();
-        int rank = getSquare().getID().getRank();
+        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
+        int file = this.coordinates.getFile();
+        int rank = this.coordinates.getRank();
         relocate(file * View.TILE_SIZE, rank * View.TILE_SIZE);
         Image img = new Image(URL);
         ImageView iView = new ImageView();
@@ -38,32 +50,15 @@ public abstract class Piece extends StackPane {
     }
 
     /**
-     * Moves the given piece to a new square.
-     * @param newSquare
+     * Moves the given piece to new Coordinates.
+     * @param newCoordinates
      *      The target square for this
      */
-    public void move(Square newSquare) {
-        this.square.setVacant();
-        newSquare.putPiece(this);
+    public void move(Coordinates newCoordinates) {
+        this.coordinates = newCoordinates;
         this.hasMoved = true;
     }
 
-    public Square getSquare() {
-        return square;
-    }
-
-    /**
-     * Initial placement of this.
-     * @param square
-     *      The initial square for this
-     */
-    public void setSquare(Square square) {
-        this.square = square;
-    }
-    /**
-     * Updates the possible moves based on the current state of board, and the piece logic.
-     */
-    protected abstract void updatePossibleMoves();
 
     /**
      * Updates this.moves with possible moves, then returns them.
