@@ -13,7 +13,7 @@ public class Pawn extends Piece {
         this.moves = new ArrayList<>();
         this.board = board;
         this.type = PieceType.PAWN;
-        this.URL = PRE_IMAGE + (team == TeamColor.WHITE ? "WhitePawn.png" : "BlackPawn.png");
+        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
         initImage();
     }
     @Override
