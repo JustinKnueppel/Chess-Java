@@ -32,7 +32,9 @@ public abstract class Piece extends StackPane {
         int rank = getSquare().getID().getRank();
         relocate(file * View.TILE_SIZE, rank * View.TILE_SIZE);
         Image img = new Image(URL);
-        this.getChildren().add(new ImageView(img));
+        ImageView iView = new ImageView();
+        iView.setImage(img);
+        this.getChildren().add(iView);
     }
 
     /**
