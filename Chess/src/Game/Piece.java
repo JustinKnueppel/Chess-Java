@@ -1,21 +1,18 @@
 package Game;
 
 import GUI.View;
+import Game.Pieces.MoveType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Piece extends StackPane {
     TeamColor team;
     boolean hasMoved;
     PieceType type;
     Coordinates coordinates;
+    MoveType[][] moveDirections;
     int[][] directions;
-    String URL;
     public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
     /**
@@ -29,6 +26,8 @@ public abstract class Piece extends StackPane {
         this.coordinates = coordinates;
         this.team = team;
         this.hasMoved = false;
+        initMoveDirections();
+        initPieceType();
         //this should go in board with move logic
         this.directions = new int[][]{{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
     }
@@ -40,9 +39,19 @@ public abstract class Piece extends StackPane {
     public TeamColor getTeam() {
         return this.team;
     }
+
+    /**
+     * Determines the type of move that is possible for each direction.
+     */
+    abstract void initMoveDirections();
+
+    /**
+     * Sets the initial PieceType.
+     */
+    abstract void initPieceType();
     void initImage() {
         //Issue initializing square inside of piece consistently
-        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
+        String URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
         int file = this.coordinates.getFile();
         int rank = this.coordinates.getRank();
         relocate(file * View.TILE_SIZE, rank * View.TILE_SIZE);

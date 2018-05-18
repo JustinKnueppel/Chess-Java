@@ -4,11 +4,7 @@ import java.util.ArrayList;
 
 public class Rook extends Piece {
 
-    Rook(Board board, TeamColor team) {
-        this.team = team;
-        this.hasMoved = false;
-        this.moves = new ArrayList<>();
-        this.board = board;
+    Rook(Coordinates coordinates, TeamColor team) {
         this.type = PieceType.ROOK;
         this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
         initImage();
