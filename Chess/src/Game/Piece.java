@@ -14,6 +14,7 @@ public abstract class Piece extends StackPane {
     boolean hasMoved;
     PieceType type;
     Coordinates coordinates;
+    int[][] directions;
     String URL;
     public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
@@ -28,6 +29,8 @@ public abstract class Piece extends StackPane {
         this.coordinates = coordinates;
         this.team = team;
         this.hasMoved = false;
+        //this should go in board with move logic
+        this.directions = new int[][]{{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
     }
     /**
      * Get the team of this.
@@ -59,15 +62,6 @@ public abstract class Piece extends StackPane {
         this.hasMoved = true;
     }
 
-
-    /**
-     * Updates this.moves with possible moves, then returns them.
-     * @return a list of possible moves.
-     */
-    ArrayList<Coordinates> getPossibleMoves() {
-        updatePossibleMoves();
-        return this.moves;
-    }
 
     /**
      * Get the type of piece.
