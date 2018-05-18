@@ -1,23 +1,28 @@
 package Game;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
+import Game.Pieces.MoveType;
 
 public class Knight extends Piece {
 
-    Knight(Board board, TeamColor team) {
-        this.team = team;
-        this.hasMoved = false;
-        this.moves = new ArrayList<>();
-        this.board = board;
-        this.type = PieceType.KNIGHT;
-        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
-        initImage();
+    Knight(Coordinates coordinates, TeamColor team) {
+        super(coordinates, team);
     }
 
     @Override
+    void initMoveDirections() {
+        this.moveDirections = new MoveType[][]{
+                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
+                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
+                {MoveType.NONE, MoveType.NONE, MoveType.NONE}};
+    }
+
+    @Override
+    void initPieceType() {
+        this.type = PieceType.KNIGHT;
+
+    }
+/*@Override
     protected void updatePossibleMoves() {
         moves.clear();
         Coordinates curID = this.square.getID();
@@ -40,6 +45,6 @@ public class Knight extends Piece {
                 moves.add(idToCheck);
             }
         }
-    }
+    }*/
 
 }
