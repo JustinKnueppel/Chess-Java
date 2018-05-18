@@ -1,23 +1,28 @@
 package Game;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
+import Game.Pieces.MoveType;
 
 public class Bishop extends Piece {
 
-    Bishop(Board board, TeamColor team) {
-        this.team = team;
-        this.hasMoved = false;
-        this.moves = new ArrayList<>();
-        this.board = board;
-        this.type = PieceType.BISHOP;
-        this.URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
-        initImage();
+    Bishop(Coordinates coordinates, TeamColor team) {
+       super (coordinates, team);
 
     }
+
     @Override
+    void initMoveDirections() {
+        this.moveDirections = new MoveType[][]{
+                {MoveType.KILL, MoveType.NONE, MoveType.KILL},
+                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
+                {MoveType.KILL, MoveType.NONE, MoveType.KILL}};
+    }
+
+    @Override
+    void initPieceType() {
+        this.type = PieceType.BISHOP;
+    }
+    /*@Override
     protected void updatePossibleMoves() {
         this.moves.clear();
         Coordinates curID = this.square.getID();
@@ -46,6 +51,6 @@ public class Bishop extends Piece {
             }
         }
         return allowNext;
-    }
+    }*/
 
 }

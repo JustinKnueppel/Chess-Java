@@ -2,8 +2,6 @@ package Game;
 
 import Game.Pieces.MoveType;
 
-import java.util.ArrayList;
-
 public class Rook extends Piece {
 
     public Rook(Coordinates coordinates, TeamColor team) {
@@ -13,7 +11,7 @@ public class Rook extends Piece {
     @Override
     void initMoveDirections() {
         this.moveDirections = new MoveType[][]{
-                {MoveType.NONE, MoveType.KILL, MoveType.KILL},
+                {MoveType.NONE, MoveType.KILL, MoveType.NONE},
                 {MoveType.KILL, MoveType.NONE, MoveType.KILL},
                 {MoveType.NONE, MoveType.KILL, MoveType.NONE}};
     }
