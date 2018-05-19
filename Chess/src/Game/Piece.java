@@ -12,7 +12,7 @@ public abstract class Piece extends ImageView {
     Coordinates coordinates;
     MoveType[][] moveDirections;
     int[][] directions;
-    public static String PRE_IMAGE = "file:\\\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
+    public static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
     /**
      * Constructor that is universal for each piece.
