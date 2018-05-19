@@ -6,12 +6,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Piece extends ImageView {
+    //Class variables
     TeamColor team;
     boolean hasMoved;
     PieceType type;
     Coordinates coordinates;
     MoveType[][] moveDirections;
     int[][] directions;
+
+    //Used for the image URLs
     public static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
     /**
@@ -49,18 +52,35 @@ public abstract class Piece extends ImageView {
      * Sets the initial PieceType.
      */
     abstract void initPieceType();
+
+    /**
+     * Initializes the image representation of the piece.
+     */
     void initImage() {
-        final int RANK_DISPLAY_OFFSET = 7;
-        String URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
-        int file = this.coordinates.getFile();
-        int rank = this.coordinates.getRank();
-        relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
-        Image img = new Image(URL);
+        //Set the image of the correct piece
+        String imageURL = getImageURL();
+        Image img = new Image(imageURL);
         setImage(img);
         setFitWidth(View.TILE_SIZE);
         setFitHeight(View.TILE_SIZE);
         setPreserveRatio(true);
 
+        //Place the image in the correct Position
+
+        //Necessary due to indexing in Javafx starting in top left, and a chess board using bottom left
+        final int RANK_DISPLAY_OFFSET = 7;
+
+        int file = this.coordinates.getFile();
+        int rank = this.coordinates.getRank();
+        relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
+    }
+
+    /**
+     * Retrieve the correct image URL based on the piece.
+     * @return a PNG url
+     */
+    private String getImageURL() {
+        return PRE_IMAGE + this.team.name() + this.type.name() + ".png";
     }
 
     /**
