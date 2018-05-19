@@ -158,15 +158,16 @@ public class Board {
         Piece piece = oldSquare.getPiece();
 
         PieceType pieceType = piece.getType();
+        int[] moveDifference = {newCoords.getFile() - oldCoords.getFile(), newCoords.getRank() - oldCoords.getRank()};
         /*
         Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
          */
         if (pieceType == PieceType.PAWN) {
 
         } else if (pieceType == PieceType.KING || pieceType == PieceType.KNIGHT){
-
+            isLegal = legalByPieceLogic(moveDifference, piece, false) && legalByBoardLogic(newCoords, piece);
         } else {
-            int[] moveDifference = {newCoords.getFile() - oldCoords.getFile(), newCoords.getRank() - oldCoords.getRank()};
+            //TODO: find a way to make sure there are no pieces in the way
             isLegal = legalByPieceLogic(moveDifference, piece, true) && legalByBoardLogic(newCoords, piece);
 
         }
