@@ -19,7 +19,7 @@ public class Square extends Rectangle{
      */
     public Square(boolean light, Coordinates id) {
         this.id = id;
-        this.occupied = false;
+        setVacant();
         setWidth(View.TILE_SIZE);
         setHeight(View.TILE_SIZE);
         setFill(light ? Color.valueOf(LIGHT_COLOR) : Color.valueOf(DARK_COLOR));

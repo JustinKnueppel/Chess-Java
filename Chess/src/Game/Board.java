@@ -174,8 +174,35 @@ public class Board {
     }
     private boolean legalByBoardLogic(Coordinates newCoords, Piece piece) {
         boolean isLegal = false;
-
+        Coordinates oldCoords = piece.getCoordinates();
+        Square newSquare = getSquare(newCoords);
+        //Square must either be open or able to be killed
+        if (!!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
+            Piece pieceToRestore = newSquare.getPiece();
+            //After moving, the team's king must not be in check
+            move(piece, newCoords);
+            if (!inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
+                isLegal = true;
+            }
+            move (piece, oldCoords);
+            newSquare.putPiece(pieceToRestore);
+        }
         return  isLegal;
+    }
+
+    /**
+     * Moves the given  piece to new Coordinates and updates this
+     * @param piece
+     *      Piece to be moved
+     * @param newCoords
+     *      New coordinates for piece
+     */
+    public void move(Piece piece, Coordinates newCoords) {
+        Square oldSquare = getSquare(piece.getCoordinates());
+        Square newSquare = getSquare(newCoords);
+        oldSquare.setVacant();
+        newSquare.putPiece(piece);
+        piece.move(newCoords);
     }
 
     /**

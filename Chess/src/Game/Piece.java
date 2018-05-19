@@ -50,6 +50,14 @@ public abstract class Piece extends ImageView {
     }
 
     /**
+     * Get the current coordinates of this piece.
+     * @return Coordinates to housing square of this
+     */
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    /**
      * Determines the type of move that is possible for each direction.
      */
     abstract void initMoveDirections();
