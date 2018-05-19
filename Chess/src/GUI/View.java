@@ -5,7 +5,10 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class View extends Application{
@@ -27,16 +30,15 @@ public class View extends Application{
     private Group pieceGroup = new Group();
 
     private Parent createContent() {
-        StackPane root = new StackPane();
+        GridPane root = new GridPane();
         root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                Square square = controller.getModel().getGrid()[y][x];
-                tileGroup.getChildren().add(square);
+        for (int rank = 0; rank < HEIGHT; rank++) {
+            for (int file = 0; file < WIDTH; file++) {
+                Square square = controller.getModel().getGrid()[rank][file];
+                root.add(square, rank, file);
                 if (square.isOccupied()) {
-                    pieceGroup.getChildren().add(square.getPiece());
+                    root.add(square.getPiece(), rank, file);
                 }
-
             }
         }
         root.getChildren().addAll(tileGroup, pieceGroup);
