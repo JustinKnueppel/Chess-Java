@@ -123,4 +123,5 @@ public abstract class Piece extends ImageView {
     public boolean hasMoved() {
         return hasMoved;
     }
+    public void setHasMoved(boolean hasMoved) {this.hasMoved = hasMoved;}
 }

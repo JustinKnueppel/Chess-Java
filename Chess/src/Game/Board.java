@@ -191,6 +191,15 @@ public class Board {
         }
         return isLegal;
     }
+
+    /**
+     * Checks if the new square is unoccupied or occupied by the other team, and that the king will not be in check after moving.
+     * @param newCoords
+     *      New coordinates to test for the piece
+     * @param piece
+     *      The piece to move
+     * @return true iff new square is legal for piece to move to
+     */
     private boolean legalByBoardLogic(Coordinates newCoords, Piece piece) {
         boolean isLegal = false;
         Coordinates oldCoords = piece.getCoordinates();
@@ -199,12 +208,14 @@ public class Board {
         if (!!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
             Piece pieceToRestore = newSquare.getPiece();
             //After moving, the team's king must not be in check
+            boolean previousHasMoved = piece.hasMoved;
             move(piece, newCoords);
             if (!inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
                 isLegal = true;
             }
             move (piece, oldCoords);
             newSquare.putPiece(pieceToRestore);
+            piece.setHasMoved(previousHasMoved);
         }
         return  isLegal;
     }
