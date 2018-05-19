@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -35,9 +36,9 @@ public class View extends Application{
         for (int rank = 0; rank < HEIGHT; rank++) {
             for (int file = 0; file < WIDTH; file++) {
                 Square square = controller.getModel().getGrid()[rank][file];
-                root.add(square, rank, file);
+                tileGroup.getChildren().add(square);
                 if (square.isOccupied()) {
-                    root.add(square.getPiece(), rank, file);
+                    pieceGroup.getChildren().add(square.getPiece());
                 }
             }
         }
