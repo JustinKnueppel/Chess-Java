@@ -27,6 +27,7 @@ public abstract class Piece extends ImageView {
         this.hasMoved = false;
         initMoveDirections();
         initPieceType();
+        initImage();
         //this should go in board with move logic
         this.directions = new int[][]{{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
     }
@@ -53,9 +54,13 @@ public abstract class Piece extends ImageView {
         String URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
         int file = this.coordinates.getFile();
         int rank = this.coordinates.getRank();
-        relocate(file * View.TILE_SIZE, rank * View.TILE_SIZE);
+        relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), rank * View.TILE_SIZE - (View.TILE_SIZE / 2));
         Image img = new Image(URL);
         setImage(img);
+        setFitWidth(View.TILE_SIZE);
+        setFitHeight(View.TILE_SIZE);
+        setPreserveRatio(true);
+
     }
 
     /**
