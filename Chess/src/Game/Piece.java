@@ -50,11 +50,11 @@ public abstract class Piece extends ImageView {
      */
     abstract void initPieceType();
     void initImage() {
-        //Issue initializing square inside of piece consistently
+        final int RANK_DISPLAY_OFFSET = 7;
         String URL = PRE_IMAGE + this.team.name() + this.type.name() + ".png";
         int file = this.coordinates.getFile();
         int rank = this.coordinates.getRank();
-        relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), rank * View.TILE_SIZE - (View.TILE_SIZE / 2));
+        relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
         Image img = new Image(URL);
         setImage(img);
         setFitWidth(View.TILE_SIZE);
