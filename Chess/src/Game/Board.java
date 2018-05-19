@@ -287,6 +287,21 @@ public class Board {
         }
         return isLegal;
     }
+    private boolean legalBySpecialMove(Coordinates newCoords, Piece piece) {
+        //probably good to separate these
+        //TODO: Check for en passant
+        //need a way to check last move
+        //TODO: Check for castling
+    }
+
+    /**
+     * Check if x is evenly divisible by mod.
+     * @param x
+     *      The dividend
+     * @param mod
+     *      The divisor
+     * @return true iff x % mod == 0
+     */
     private boolean evenDivis(int x, int mod) {
         return x % mod == 0;
     }
