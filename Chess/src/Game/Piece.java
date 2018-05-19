@@ -4,9 +4,8 @@ import GUI.View;
 import Game.Pieces.MoveType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 
-public abstract class Piece extends StackPane {
+public abstract class Piece extends ImageView {
     TeamColor team;
     boolean hasMoved;
     PieceType type;
@@ -56,9 +55,7 @@ public abstract class Piece extends StackPane {
         int rank = this.coordinates.getRank();
         relocate(file * View.TILE_SIZE, rank * View.TILE_SIZE);
         Image img = new Image(URL);
-        ImageView iView = new ImageView();
-        iView.setImage(img);
-        this.getChildren().add(iView);
+        setImage(img);
     }
 
     /**
