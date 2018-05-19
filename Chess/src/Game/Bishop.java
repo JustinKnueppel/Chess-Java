@@ -12,10 +12,7 @@ public class Bishop extends Piece {
 
     @Override
     void initMoveDirections() {
-        this.moveDirections = new MoveType[][]{
-                {MoveType.KILL, MoveType.NONE, MoveType.KILL},
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
-                {MoveType.KILL, MoveType.NONE, MoveType.KILL}};
+        this.possibleMoves = new int[][]{{-1, 1}, {1, 1}, {-1, -1}, {-1, 1}};
     }
 
     @Override

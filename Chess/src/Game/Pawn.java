@@ -10,14 +10,8 @@ public class Pawn extends Piece {
 
     @Override
     void initMoveDirections() {
-        int direction = team == TeamColor.WHITE ? 0 : 2;
-        this.moveDirections = new MoveType[][]{
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE}};
-        this.moveDirections[direction][0] = MoveType.KILL;
-        this.moveDirections[direction][1] = MoveType.MOVE;
-        this.moveDirections[direction][2] = MoveType.KILL;
+        int direction = team == TeamColor.WHITE ? 1 : -1;
+        this.possibleMoves = new int[][]{{-1, direction}, {0, direction}, {1, direction}};
     }
 
     @Override

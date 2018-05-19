@@ -149,7 +149,75 @@ public class Board {
     public boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
+    public boolean isLegalMove(Coordinates oldCoords, Coordinates newCoords) {
+        boolean isLegal = false;
+        //Retrieve squares
+        Square oldSquare = getSquare(oldCoords);
+        Square newSquare = getSquare(newCoords);
 
+        Piece piece = oldSquare.getPiece();
+
+        PieceType pieceType = piece.getType();
+        /*
+        Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
+         */
+        if (pieceType == PieceType.PAWN) {
+
+        } else if (pieceType == PieceType.KING || pieceType == PieceType.KNIGHT){
+
+        } else {
+            int[] moveDifference = {newCoords.getFile() - oldCoords.getFile(), newCoords.getRank() - oldCoords.getRank()};
+            isLegal = legalByPieceLogic(moveDifference, piece, true) && legalByBoardLogic(newCoords, piece);
+
+        }
+        return isLegal;
+    }
+    private boolean legalByBoardLogic(Coordinates newCoords, Piece piece) {
+        boolean isLegal = false;
+
+        return  isLegal;
+    }
+
+    /**
+     * Checks if the move follows piece logic.
+     * @param prospectiveMove
+     *      The difference in coordinates from new square to old square
+     * @param piece
+     *      The piece attempting to move
+     * @return true iff the move is legal based on the type of piece
+     */
+    private boolean legalByPieceLogic(int[] prospectiveMove, Piece piece, boolean moveMultiple) {
+        boolean isLegal = false;
+        int newX = prospectiveMove[0];
+        int newY = prospectiveMove[1];
+        for (int[] move : piece.getPossibleMoves()) {
+            if (moveMultiple) {
+                int multiplier = 1;
+                if (move[0] != 0) {
+                    if (prospectiveMove[0] % move[0] == 0) {
+                        multiplier = prospectiveMove[0] / move[0];
+                        newX = prospectiveMove[0] / multiplier;
+                    } else {
+                        break;
+                    }
+                }
+                if (move[1] != 0) {
+                    if (prospectiveMove[1] % move[1] == 0) {
+                        if (prospectiveMove[1] / move[1] == multiplier) {
+                            newY = prospectiveMove[1] / multiplier;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (new int[]{newX, newY} == move) {
+                isLegal = true;
+                break;
+            }
+        }
+        return isLegal;
+    }
 
 
     /**

@@ -58,4 +58,5 @@ public class Coordinates {
         return new String(new char[]{LETTERS.charAt(rank), NUMBERS.charAt(file)});
 
     }
+
 }

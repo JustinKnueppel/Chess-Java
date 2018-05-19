@@ -11,10 +11,7 @@ public class Knight extends Piece {
 
     @Override
     void initMoveDirections() {
-        this.moveDirections = new MoveType[][]{
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE},
-                {MoveType.NONE, MoveType.NONE, MoveType.NONE}};
+        this.possibleMoves = new int[][]{{-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1}};
     }
 
     @Override

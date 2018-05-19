@@ -11,8 +11,8 @@ public abstract class Piece extends ImageView {
     boolean hasMoved;
     PieceType type;
     Coordinates coordinates;
-    MoveType[][] moveDirections;
-    int[][] directions;
+    int[][] possibleMoves;
+
 
     //Used for the image URLs
     public static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
@@ -31,8 +31,6 @@ public abstract class Piece extends ImageView {
         initMoveDirections();
         initPieceType();
         initImage();
-        //this should go in board with move logic
-        this.directions = new int[][]{{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
     }
     /**
      * Get the team of this.
@@ -41,6 +39,14 @@ public abstract class Piece extends ImageView {
      */
     public TeamColor getTeam() {
         return this.team;
+    }
+
+    /**
+     * Get the possible moves based on piece logic.
+     * @return an int[][] with coordinate changes possible by type
+     */
+    public int[][] getPossibleMoves() {
+        return possibleMoves;
     }
 
     /**

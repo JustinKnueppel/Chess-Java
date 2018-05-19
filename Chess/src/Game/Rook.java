@@ -10,10 +10,7 @@ public class Rook extends Piece {
 
     @Override
     void initMoveDirections() {
-        this.moveDirections = new MoveType[][]{
-                {MoveType.NONE, MoveType.KILL, MoveType.NONE},
-                {MoveType.KILL, MoveType.NONE, MoveType.KILL},
-                {MoveType.NONE, MoveType.KILL, MoveType.NONE}};
+        this.possibleMoves = new int[][]{{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     }
 
     @Override

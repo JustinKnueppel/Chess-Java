@@ -11,10 +11,7 @@ public class Queen extends Piece {
 
     @Override
     void initMoveDirections() {
-        this.moveDirections = new MoveType[][]{
-                {MoveType.KILL, MoveType.KILL, MoveType.KILL},
-                {MoveType.KILL, MoveType.NONE, MoveType.KILL},
-                {MoveType.KILL, MoveType.KILL, MoveType.KILL}};
+        this.possibleMoves = new int[][]{{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {-1, 1}};
     }
 
     @Override
