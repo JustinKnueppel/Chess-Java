@@ -191,24 +191,36 @@ public class Board {
         int newX = prospectiveMove[0];
         int newY = prospectiveMove[1];
         for (int[] move : piece.getPossibleMoves()) {
+            //If multiple moves are legal, reduce the prospective move as much as possible
             if (moveMultiple) {
+                //Multiplier must be the same for x and y
                 int multiplier = 1;
+                //Don't adjust if a good move is 0
                 if (move[0] != 0) {
-                    if (prospectiveMove[0] % move[0] == 0) {
-                        multiplier = prospectiveMove[0] / move[0];
-                        newX = prospectiveMove[0] / multiplier;
+                    //If newX is evenly divisible by move[0], get the multiplier, otherwise move will not work
+                    if (evenDivis(newX, move[0])) {
+                        multiplier = newX / move[0];
+                        newX /= multiplier;
                     } else {
-                        break;
+                        continue;
                     }
+                    //If a good move is 0, the prospective move must be 0 in the direction
+                } else if (newX != 0) {
+                    continue;
                 }
+                //Don't adjust if a good move is 0
                 if (move[1] != 0) {
-                    if (prospectiveMove[1] % move[1] == 0) {
-                        if (prospectiveMove[1] / move[1] == multiplier) {
-                            newY = prospectiveMove[1] / multiplier;
+                    //If newY is evenly divisible by move[1], check the multiplier with the previous one
+                    if (evenDivis(newY, move[1])) {
+                        if (newY / move[1] == multiplier) {
+                            newY /= multiplier;
                         } else {
-                            break;
+                            continue;
                         }
                     }
+                    //If a good move is 0, the prospective move must be 0 in that direction
+                } else if (newY != 0) {
+                    continue;
                 }
             }
             if (new int[]{newX, newY} == move) {
@@ -217,6 +229,9 @@ public class Board {
             }
         }
         return isLegal;
+    }
+    private boolean evenDivis(int x, int mod) {
+        return x % mod == 0;
     }
 
 
