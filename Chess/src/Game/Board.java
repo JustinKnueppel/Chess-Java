@@ -10,7 +10,7 @@ public class Board {
     private final int GRID_SIZE = 8;
     private Square[][] grid;
     private PieceType[] backRowOrder;
-    Map<TeamColor, Piece> kings;
+    private Map<TeamColor, Piece> kings;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
@@ -37,7 +37,7 @@ public class Board {
      *      The team of the king to return
      * @return the team's king
      */
-    public Piece getKing(TeamColor team) {
+    private Piece getKing(TeamColor team) {
         return kings.get(team);
     }
 
@@ -136,7 +136,7 @@ public class Board {
      *      The ID in grid
      * @return the Game.Square with the given ID
      */
-    public Square getSquare(Coordinates id) {
+    private Square getSquare(Coordinates id) {
         return grid[id.getRank()][id.getFile()];
     }
 
@@ -146,7 +146,7 @@ public class Board {
      *      position to check
      * @return true iff 0 <= pos < this.GRID_SIZE
      */
-    public boolean inBounds(int pos) {
+    private boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
     public boolean isLegalMove(Coordinates oldCoords, Coordinates newCoords) {
@@ -171,12 +171,12 @@ public class Board {
                 if (moveDifference == moveSet[1]) {
                     oneStep = getSquare(newCoords);
                     if (!oneStep.isOccupied()) {
-                        isLegal = legalByBoardLogic(newCoords, piece);;
+                        isLegal = legalByBoardLogic(newCoords, piece);
                     }
                 } else {
                     oneStep = getSquare(new Coordinates(oldCoords.getFile(), (newCoords.getRank() + oldCoords.getRank()) / 2));
                     if (!oneStep.isOccupied() && !newSquare.isOccupied()) {
-                        isLegal = legalByBoardLogic(newCoords, piece);;
+                        isLegal = legalByBoardLogic(newCoords, piece);
                     }
                 }
 
@@ -205,7 +205,7 @@ public class Board {
         Coordinates oldCoords = piece.getCoordinates();
         Square newSquare = getSquare(newCoords);
         //Square must either be open or able to be killed
-        if (!!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
+        if (!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
             Piece pieceToRestore = newSquare.getPiece();
             //After moving, the team's king must not be in check
             boolean previousHasMoved = piece.hasMoved;
@@ -227,7 +227,7 @@ public class Board {
      * @param newCoords
      *      New coordinates for piece
      */
-    public void move(Piece piece, Coordinates newCoords) {
+    private void move(Piece piece, Coordinates newCoords) {
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
         oldSquare.setVacant();
@@ -288,22 +288,24 @@ public class Board {
         return isLegal;
     }
     private boolean legalBySpecialMove(Coordinates newCoords, Piece piece) {
+        boolean isLegal = false;
         //probably good to separate these
         //TODO: Check for en passant
         //need a way to check last move
         //TODO: Check for castling
+        return isLegal;
     }
 
     /**
      * Check if x is evenly divisible by mod.
-     * @param x
+     * @param num
      *      The dividend
      * @param mod
      *      The divisor
      * @return true iff x % mod == 0
      */
-    private boolean evenDivis(int x, int mod) {
-        return x % mod == 0;
+    private boolean evenDivis(int num, int mod) {
+        return num % mod == 0;
     }
 
 
@@ -315,7 +317,7 @@ public class Board {
      *      Team attempting to move to the given square
      * @return true iff !team is threatening square
      */
-    public boolean inCheck(Square square, TeamColor team) {
+    private boolean inCheck(Square square, TeamColor team) {
         Coordinates id = square.getID();
         return (threatenedByDiagonal(id, team) || threatenedByStraightaway(id, team) || threatenedByKnight(id, team));
     }
