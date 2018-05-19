@@ -76,13 +76,17 @@ public class Board {
             /*
             Place white pieces
              */
-            this.grid[whiteBackRow][column].putPiece(getPieceByName(this.backRowOrder[column], TeamColor.WHITE));
-            this.grid[whitePawnRow][column].putPiece(getPieceByName(PieceType.PAWN, TeamColor.WHITE));
+            this.grid[whiteBackRow][column]
+                    .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(whiteBackRow, column), TeamColor.WHITE));
+            this.grid[whitePawnRow][column]
+                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(whitePawnRow, column), TeamColor.WHITE));
             /*
             Place black pieces
              */
-            this.grid[blackBackRow][column].putPiece(getPieceByName(this.backRowOrder[blackOffset - column], TeamColor.BLACK));
-            this.grid[blackPawnRow][column].putPiece(getPieceByName(PieceType.PAWN, TeamColor.BLACK));
+            this.grid[blackBackRow][column]
+                    .putPiece(getPieceByName(this.backRowOrder[blackOffset - column], new Coordinates(blackBackRow, column), TeamColor.BLACK));
+            this.grid[blackPawnRow][column]
+                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(blackPawnRow, column), TeamColor.BLACK));
         }
 
     }
@@ -95,27 +99,27 @@ public class Board {
      *      The team to which the piece belongs for initialization
      * @return a specific implementation of Game.Piece based on name
      */
-    private Piece getPieceByName(PieceType type, TeamColor team) {
+    private Piece getPieceByName(PieceType type, Coordinates coordinates, TeamColor team) {
         Piece piece;
         switch (type) {
             case ROOK:
-                piece = new Rook(this, team);
+                piece = new Rook(coordinates, team);
                 break;
             case KNIGHT:
-                piece = new Knight(this, team);
+                piece = new Knight(coordinates, team);
                 break;
             case BISHOP:
-                piece = new Bishop(this, team);
+                piece = new Bishop(coordinates, team);
                 break;
             case QUEEN:
-                piece = new  Queen(this, team);
+                piece = new  Queen(coordinates, team);
                 break;
             case KING:
-                piece = new King(this, team);
+                piece = new King(coordinates, team);
                 setKing(piece);
                 break;
             case PAWN:
-                piece = new Pawn(this, team);
+                piece = new Pawn(coordinates, team);
                 break;
             default:
                 System.out.println("Game.Piece could not be initialized");
