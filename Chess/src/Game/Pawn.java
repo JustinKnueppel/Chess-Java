@@ -11,7 +11,7 @@ public class Pawn extends Piece {
     @Override
     void initMoveDirections() {
         int direction = team == TeamColor.WHITE ? 1 : -1;
-        this.possibleMoves = new int[][]{{-1, direction}, {0, direction}, {1, direction}};
+        this.possibleMoves = new int[][]{{-1, direction}, {0, direction}, {0, direction * 2}, {1, direction}};
     }
 
     @Override

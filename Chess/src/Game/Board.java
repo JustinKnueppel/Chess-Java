@@ -163,6 +163,24 @@ public class Board {
         Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
          */
         if (pieceType == PieceType.PAWN) {
+            int[][] moveSet = piece.getPossibleMoves();
+            if ((moveDifference == moveSet[0] || moveDifference == moveSet[3]) && newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) {
+                isLegal = true;
+            } else if (moveDifference == moveSet[1] || moveDifference == moveSet[2]) {
+                Square oneStep;
+                if (moveDifference == moveSet[1]) {
+                    oneStep = getSquare(newCoords);
+                    if (!oneStep.isOccupied()) {
+                        isLegal = true;
+                    }
+                } else {
+                    oneStep = getSquare(new Coordinates(oldCoords.getFile(), (newCoords.getRank() + oldCoords.getRank()) / 2));
+                    if (!oneStep.isOccupied() && !newSquare.isOccupied()) {
+                        isLegal = true;
+                    }
+                }
+
+            }
 
         } else if (pieceType == PieceType.KING || pieceType == PieceType.KNIGHT){
             isLegal = legalByPieceLogic(moveDifference, piece, false) && legalByBoardLogic(newCoords, piece);
