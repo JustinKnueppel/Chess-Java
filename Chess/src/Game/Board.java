@@ -165,18 +165,18 @@ public class Board {
         if (pieceType == PieceType.PAWN) {
             int[][] moveSet = piece.getPossibleMoves();
             if ((moveDifference == moveSet[0] || moveDifference == moveSet[3]) && newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) {
-                isLegal = true;
+                isLegal = legalByBoardLogic(newCoords, piece);
             } else if (moveDifference == moveSet[1] || moveDifference == moveSet[2]) {
                 Square oneStep;
                 if (moveDifference == moveSet[1]) {
                     oneStep = getSquare(newCoords);
                     if (!oneStep.isOccupied()) {
-                        isLegal = true;
+                        isLegal = legalByBoardLogic(newCoords, piece);;
                     }
                 } else {
                     oneStep = getSquare(new Coordinates(oldCoords.getFile(), (newCoords.getRank() + oldCoords.getRank()) / 2));
                     if (!oneStep.isOccupied() && !newSquare.isOccupied()) {
-                        isLegal = true;
+                        isLegal = legalByBoardLogic(newCoords, piece);;
                     }
                 }
 
