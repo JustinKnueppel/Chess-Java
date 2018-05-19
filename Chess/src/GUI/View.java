@@ -1,19 +1,11 @@
 package GUI;
 
-import Game.Coordinates;
-import Game.Piece;
 import Game.Square;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class View extends Application{
@@ -35,9 +27,8 @@ public class View extends Application{
     private Group pieceGroup = new Group();
 
     private Parent createContent() {
-        Pane root = new Pane();
+        StackPane root = new StackPane();
         root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
-        root.getChildren().addAll(tileGroup, pieceGroup);
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 Square square = controller.getModel().getGrid()[y][x];
@@ -48,6 +39,7 @@ public class View extends Application{
 
             }
         }
+        root.getChildren().addAll(tileGroup, pieceGroup);
 
         return root;
     }
