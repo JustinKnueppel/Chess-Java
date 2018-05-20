@@ -7,11 +7,14 @@ import javafx.scene.image.ImageView;
 
 public abstract class Piece extends ImageView {
     //Class variables
-    TeamColor team;
-    boolean hasMoved;
-    PieceType type;
-    Coordinates coordinates;
-    int[][] possibleMoves;
+    private TeamColor team;
+    private boolean hasMoved;
+    private PieceType type;
+    private Coordinates coordinates;
+    private int[][] possibleMoves;
+
+    private double mouseX, mouseY;
+    private double oldX, oldY;
 
 
     //Used for the image URLs
@@ -124,4 +127,6 @@ public abstract class Piece extends ImageView {
         return hasMoved;
     }
     public void setHasMoved(boolean hasMoved) {this.hasMoved = hasMoved;}
+    
+
 }
