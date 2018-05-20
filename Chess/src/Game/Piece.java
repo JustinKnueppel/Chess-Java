@@ -4,14 +4,15 @@ import GUI.View;
 import Game.Pieces.MoveType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
-public abstract class Piece extends ImageView {
+public abstract class Piece extends Pane {
     //Class variables
-    private TeamColor team;
-    private boolean hasMoved;
-    private PieceType type;
-    private Coordinates coordinates;
-    private int[][] possibleMoves;
+    TeamColor team;
+    boolean hasMoved;
+    PieceType type;
+    Coordinates coordinates;
+    int[][] possibleMoves;
 
     private double mouseX, mouseY;
     private double oldX, oldY;
@@ -77,10 +78,11 @@ public abstract class Piece extends ImageView {
         //Set the image of the correct piece
         String imageURL = getImageURL();
         Image img = new Image(imageURL);
-        setImage(img);
-        setFitWidth(View.TILE_SIZE);
-        setFitHeight(View.TILE_SIZE);
-        setPreserveRatio(true);
+        ImageView iv = new ImageView();
+        iv.setImage(img);
+        iv.setFitWidth(View.TILE_SIZE);
+        iv.setFitHeight(View.TILE_SIZE);
+        iv.setPreserveRatio(true);
 
         //Place the image in the correct Position
 
@@ -89,7 +91,8 @@ public abstract class Piece extends ImageView {
 
         int file = this.coordinates.getFile();
         int rank = this.coordinates.getRank();
-        relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
+        iv.relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
+        getChildren().add(iv);
     }
 
     /**
@@ -127,6 +130,6 @@ public abstract class Piece extends ImageView {
         return hasMoved;
     }
     public void setHasMoved(boolean hasMoved) {this.hasMoved = hasMoved;}
-    
+
 
 }
