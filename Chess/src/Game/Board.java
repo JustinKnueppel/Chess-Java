@@ -1,6 +1,7 @@
 package Game;
 
 import GUI.View;
+import Game.Pieces.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,7 +100,7 @@ public class Board {
      *      The type of the piece
      * @param team
      *      The team to which the piece belongs for initialization
-     * @return a specific implementation of Game.Piece based on name
+     * @return a specific implementation of Game.Pieces.Piece based on name
      */
     private Piece getPieceByName(PieceType type, Coordinates coordinates, TeamColor team) {
         Piece piece;
@@ -124,7 +125,7 @@ public class Board {
                 piece = new Pawn(coordinates, team);
                 break;
             default:
-                System.out.println("Game.Piece could not be initialized");
+                System.out.println("Game.Pieces.Piece could not be initialized");
                 piece = null;
                 break;
         }
@@ -132,6 +133,9 @@ public class Board {
             int x = toBoard(piece.getLayoutX());
             int y = toBoard(piece.getLayoutY());
             //determine if legal move, have way to abort move, have way to do move
+            if (isLegalMove(piece, new Coordinates(x, y))) {
+
+            }
         });
         return piece;
     }
@@ -156,16 +160,16 @@ public class Board {
     private boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
-    public boolean isLegalMove(Coordinates oldCoords, Coordinates newCoords) {
+    public boolean isLegalMove(Piece piece, Coordinates newCoords) {
         boolean isLegal = false;
-        //Retrieve squares
-        Square oldSquare = getSquare(oldCoords);
+        //Get starting coordinates
+        int oldX = piece.getCoordinates().getX();
+        int oldY = piece.getCoordinates().getY();
+
         Square newSquare = getSquare(newCoords);
 
-        Piece piece = oldSquare.getPiece();
-
         PieceType pieceType = piece.getType();
-        int[] moveDifference = {newCoords.getY() - oldCoords.getY(), newCoords.getX() - oldCoords.getX()};
+        int[] moveDifference = {newCoords.getX() - oldX, newCoords.getY() - oldY};
         /*
         Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
          */
@@ -181,7 +185,7 @@ public class Board {
                         isLegal = legalByBoardLogic(newCoords, piece);
                     }
                 } else {
-                    oneStep = getSquare(new Coordinates(oldCoords.getY(), (newCoords.getX() + oldCoords.getX()) / 2));
+                    oneStep = getSquare(new Coordinates(oldX, (newCoords.getY() + oldY) / 2));
                     if (!oneStep.isOccupied() && !newSquare.isOccupied()) {
                         isLegal = legalByBoardLogic(newCoords, piece);
                     }
@@ -294,12 +298,9 @@ public class Board {
         }
         return isLegal;
     }
-    private boolean legalBySpecialMove(Coordinates newCoords, Piece piece) {
+    private boolean enPassantLegal(Piece pawn) {
         boolean isLegal = false;
-        //probably good to separate these
-        //TODO: Check for en passant
-        //need a way to check last move
-        //TODO: Check for castling
+
         return isLegal;
     }
 

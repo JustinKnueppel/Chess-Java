@@ -1,6 +1,7 @@
-package Game;
+package Game.Pieces;
 
-import Game.Pieces.MoveType;
+import Game.Coordinates;
+import Game.TeamColor;
 
 public class Pawn extends Piece {
 

@@ -1,6 +1,7 @@
 package Game;
 
 import GUI.View;
+import Game.Pieces.Piece;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -47,7 +48,7 @@ public class Square extends Rectangle{
     /**
      * Place a piece on the this.
      * @param piece
-     *      Game.Piece to be placed on this
+     *      Game.Pieces.Piece to be placed on this
      */
     public void putPiece(Piece piece) {
         this.piece = piece;

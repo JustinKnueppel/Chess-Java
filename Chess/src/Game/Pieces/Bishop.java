@@ -1,36 +1,40 @@
-package Game;
+package Game.Pieces;
 
 
-import Game.Pieces.MoveType;
+import Game.Coordinates;
+import Game.TeamColor;
 
-public class Queen extends Piece {
+public class Bishop extends Piece {
 
-    Queen(Coordinates coordinates, TeamColor team) {
-        super(coordinates, team);
+    Bishop(Coordinates coordinates, TeamColor team) {
+       super (coordinates, team);
+
     }
 
     @Override
     void initMoveDirections() {
-        this.possibleMoves = new int[][]{{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {-1, 1}};
+        this.possibleMoves = new int[][]{{-1, 1}, {1, 1}, {-1, -1}, {-1, 1}};
     }
 
     @Override
     void initPieceType() {
-        this.type = PieceType.QUEEN;
+        this.type = PieceType.BISHOP;
     }
-/*@Override
+    /*@Override
     protected void updatePossibleMoves() {
         this.moves.clear();
         Coordinates curID = this.square.getID();
         final int curRank = curID.getX();
         final int curFile = curID.getY();
-        int[][] directions = {{1, -1}, {1, 0}, {1, 1}, {0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {-1, 1}};
-        for(int[] adjustments : directions) {
-            boolean checkSquare = true;
-            int multiplier = 1;
-            while (checkSquare) {
-                checkSquare = addMoveIfLegal(curRank + adjustments[0] * multiplier, curFile + adjustments[1] * multiplier);
-                multiplier++;
+        final int[] movements = {-1, 1};
+        for (int rankAdjustment:movements) {
+            for (int fileAdjustment:movements) {
+                boolean checkSquare = true;
+                int multiplier = 1;
+                while (checkSquare) {
+                    checkSquare = addMoveIfLegal(curRank + rankAdjustment * multiplier, curFile + fileAdjustment * multiplier);
+                    multiplier++;
+                }
             }
         }
     }

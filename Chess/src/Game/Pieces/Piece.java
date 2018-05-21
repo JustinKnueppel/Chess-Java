@@ -1,6 +1,8 @@
-package Game;
+package Game.Pieces;
 
 import GUI.View;
+import Game.Coordinates;
+import Game.TeamColor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
