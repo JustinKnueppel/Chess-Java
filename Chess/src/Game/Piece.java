@@ -14,10 +14,10 @@ public abstract class Piece extends Pane {
     int[][] possibleMoves;
 
     private double mouseX, mouseY;
-
+    //Necessary due to indexing in Javafx starting in top left, and a chess board using bottom left
     final static int RANK_DISPLAY_OFFSET = 7;
     //Used for the image URLs
-    public static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
+    static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
     /**
      * Constructor that is universal for each piece.
@@ -39,7 +39,8 @@ public abstract class Piece extends Pane {
             mouseY = e.getSceneY();
         });
         setOnMouseDragged(e -> {
-            relocate(e.getSceneX() - mouseX + coordinates.getX() * View.TILE_SIZE, e.getSceneY() - mouseY + coordinates.getY() * View.TILE_SIZE);
+            relocate(e.getSceneX() - mouseX + (coordinates.getX() * View.TILE_SIZE - (View.TILE_SIZE / 2)),
+                    e.getSceneY() - mouseY + (coordinates.getY() * View.TILE_SIZE - (View.TILE_SIZE / 2)));
         });
     }
     /**
@@ -91,9 +92,6 @@ public abstract class Piece extends Pane {
         iv.setPreserveRatio(true);
 
         //Place the image in the correct Position
-
-        //Necessary due to indexing in Javafx starting in top left, and a chess board using bottom left
-
 
         move(this.coordinates);
         getChildren().add(iv);
