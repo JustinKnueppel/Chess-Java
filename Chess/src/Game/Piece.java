@@ -39,8 +39,8 @@ public abstract class Piece extends Pane {
             mouseY = e.getSceneY();
         });
         setOnMouseDragged(e -> {
-            relocate(e.getSceneX() - mouseX + (coordinates.getX() * View.TILE_SIZE - (View.TILE_SIZE / 2)),
-                    e.getSceneY() - mouseY + (coordinates.getY() * View.TILE_SIZE - (View.TILE_SIZE / 2)));
+            relocate(e.getSceneX() - mouseX + (coordinates.getX() * View.TILE_SIZE ),
+                    e.getSceneY() - mouseY + ((RANK_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE));
         });
     }
     /**
@@ -112,7 +112,7 @@ public abstract class Piece extends Pane {
      */
     public void move(Coordinates newCoordinates) {
         this.coordinates = newCoordinates;
-        relocate(coordinates.getX() * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE - (View.TILE_SIZE / 2));
+        relocate(coordinates.getX() * View.TILE_SIZE , (RANK_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE );
     }
 
 
