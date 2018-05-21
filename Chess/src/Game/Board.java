@@ -147,7 +147,7 @@ public class Board {
      *      The ID in grid
      * @return the Game.Square with the given ID
      */
-    private Square getSquare(Coordinates id) {
+    public Square getSquare(Coordinates id) {
         return grid[id.getX()][id.getY()];
     }
 
