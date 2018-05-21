@@ -321,7 +321,15 @@ public class Board {
     }
     private boolean enPassantLegal(Piece pawn) {
         boolean isLegal = false;
-
+        MoveType lastMove = previousMoves.peek();
+        Coordinates enemyPawnLocation = lastMove.getNewCoordinates();
+        Coordinates currentLocation = pawn.getCoordinates();
+        if (lastMove.getNewPiece().getType() == PieceType.PAWN
+                && Math.abs(enemyPawnLocation.getY() - lastMove.getOldCoordinates().getY()) == 2) {
+            if (currentLocation.getY() == enemyPawnLocation.getY() && Math.abs(currentLocation.getX() - enemyPawnLocation.getX()) == 1) {
+                isLegal = true;
+            }
+        }
         return isLegal;
     }
 
