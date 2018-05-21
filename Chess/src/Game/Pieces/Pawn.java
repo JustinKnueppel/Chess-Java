@@ -5,7 +5,7 @@ import Game.TeamColor;
 
 public class Pawn extends Piece {
 
-    Pawn(Coordinates coordinates, TeamColor team) {
+    public Pawn(Coordinates coordinates, TeamColor team) {
         super(coordinates, team);
     }
 

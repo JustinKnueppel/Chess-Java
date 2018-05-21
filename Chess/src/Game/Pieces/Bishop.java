@@ -6,7 +6,7 @@ import Game.TeamColor;
 
 public class Bishop extends Piece {
 
-    Bishop(Coordinates coordinates, TeamColor team) {
+    public Bishop(Coordinates coordinates, TeamColor team) {
        super (coordinates, team);
 
     }

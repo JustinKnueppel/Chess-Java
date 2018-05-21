@@ -6,7 +6,7 @@ import Game.TeamColor;
 
 public class King extends Piece {
 
-    King(Coordinates coordinates, TeamColor team) {
+    public King(Coordinates coordinates, TeamColor team) {
         super (coordinates, team);
     }
 

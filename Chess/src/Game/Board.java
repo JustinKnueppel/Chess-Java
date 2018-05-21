@@ -219,7 +219,7 @@ public class Board {
         if (!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
             Piece pieceToRestore = newSquare.getPiece();
             //After moving, the team's king must not be in check
-            boolean previousHasMoved = piece.hasMoved;
+            boolean previousHasMoved = piece.hasMoved();
             move(piece, newCoords);
             if (!inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
                 isLegal = true;
