@@ -23,8 +23,8 @@ public class Bishop extends Piece {
     protected void updatePossibleMoves() {
         this.moves.clear();
         Coordinates curID = this.square.getID();
-        final int curRank = curID.getRank();
-        final int curFile = curID.getFile();
+        final int curRank = curID.getX();
+        final int curFile = curID.getY();
         final int[] movements = {-1, 1};
         for (int rankAdjustment:movements) {
             for (int fileAdjustment:movements) {

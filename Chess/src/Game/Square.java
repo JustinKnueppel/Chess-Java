@@ -24,7 +24,7 @@ public class Square extends Rectangle{
         setHeight(View.TILE_SIZE);
         setFill(light ? Color.valueOf(LIGHT_COLOR) : Color.valueOf(DARK_COLOR));
 
-        relocate(id.getFile() * View.TILE_SIZE, id.getRank() * View.TILE_SIZE);
+        relocate(id.getY() * View.TILE_SIZE, id.getX() * View.TILE_SIZE);
     }
 
     /**

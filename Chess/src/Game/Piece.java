@@ -1,7 +1,6 @@
 package Game;
 
 import GUI.View;
-import Game.Pieces.MoveType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,7 +14,6 @@ public abstract class Piece extends Pane {
     int[][] possibleMoves;
 
     private double mouseX, mouseY;
-    private double oldX, oldY;
 
 
     //Used for the image URLs
@@ -35,6 +33,14 @@ public abstract class Piece extends Pane {
         initMoveDirections();
         initPieceType();
         initImage();
+
+        setOnMousePressed(e -> {
+            mouseX = e.getSceneX();
+            mouseY = e.getSceneY();
+        });
+        setOnMouseDragged(e -> {
+            relocate(e.getSceneX() - mouseX + coordinates.getX() * View.TILE_SIZE, e.getSceneY() - mouseY + coordinates.getY() * View.TILE_SIZE);
+        });
     }
     /**
      * Get the team of this.
@@ -89,8 +95,8 @@ public abstract class Piece extends Pane {
         //Necessary due to indexing in Javafx starting in top left, and a chess board using bottom left
         final int RANK_DISPLAY_OFFSET = 7;
 
-        int file = this.coordinates.getFile();
-        int rank = this.coordinates.getRank();
+        int file = this.coordinates.getY();
+        int rank = this.coordinates.getX();
         iv.relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
         getChildren().add(iv);
     }
@@ -110,7 +116,7 @@ public abstract class Piece extends Pane {
      */
     public void move(Coordinates newCoordinates) {
         this.coordinates = newCoordinates;
-        this.hasMoved = true;
+        relocate(coordinates.getY() * View.TILE_SIZE, coordinates.getX() * View.TILE_SIZE);
     }
 
 

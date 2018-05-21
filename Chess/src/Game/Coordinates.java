@@ -9,19 +9,19 @@ public class Coordinates {
     /*
     Data stored in object
      */
-    private int rank;
-    private int file;
+    private int x;
+    private int y;
 
     /**
      * Constructor based on integer values for the coordinates.
-     * @param rank
+     * @param x
      *      Row on the board
-     * @param file
+     * @param y
      *      Column on the board
      */
-    public Coordinates(int rank, int file) {
-        this.rank = rank;
-        this.file = file;
+    public Coordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -30,24 +30,24 @@ public class Coordinates {
      *      [A-H][1-8] representation of coordinates on the board
      */
     public Coordinates(String id) {
-        this.rank = LETTERS.indexOf(id.charAt(0));
-        this.file = NUMBERS.indexOf(id.charAt(1));
+        this.x = LETTERS.indexOf(id.charAt(0));
+        this.y = NUMBERS.indexOf(id.charAt(1));
     }
 
     /**
      * Gives index of alpha component to board ID.
-     * @return this.rank
+     * @return this.x
      */
-    public int getRank() {
-        return this.rank;
+    public int getX() {
+        return this.x;
     }
 
     /**
      * Gives index of numerical component to board ID.
-     * @return this.file
+     * @return this.y
      */
-    public int getFile() {
-        return this.file;
+    public int getY() {
+        return this.y;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Coordinates {
      * @return [A-H][1-8] representation of given tile on a chess board
      */
     public String getID() {
-        return new String(new char[]{LETTERS.charAt(rank), NUMBERS.charAt(file)});
+        return new String(new char[]{LETTERS.charAt(x), NUMBERS.charAt(y)});
 
     }
 

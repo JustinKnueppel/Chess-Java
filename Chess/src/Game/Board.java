@@ -137,7 +137,7 @@ public class Board {
      * @return the Game.Square with the given ID
      */
     private Square getSquare(Coordinates id) {
-        return grid[id.getRank()][id.getFile()];
+        return grid[id.getX()][id.getY()];
     }
 
     /**
@@ -158,7 +158,7 @@ public class Board {
         Piece piece = oldSquare.getPiece();
 
         PieceType pieceType = piece.getType();
-        int[] moveDifference = {newCoords.getFile() - oldCoords.getFile(), newCoords.getRank() - oldCoords.getRank()};
+        int[] moveDifference = {newCoords.getY() - oldCoords.getY(), newCoords.getX() - oldCoords.getX()};
         /*
         Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
          */
@@ -174,7 +174,7 @@ public class Board {
                         isLegal = legalByBoardLogic(newCoords, piece);
                     }
                 } else {
-                    oneStep = getSquare(new Coordinates(oldCoords.getFile(), (newCoords.getRank() + oldCoords.getRank()) / 2));
+                    oneStep = getSquare(new Coordinates(oldCoords.getY(), (newCoords.getX() + oldCoords.getX()) / 2));
                     if (!oneStep.isOccupied() && !newSquare.isOccupied()) {
                         isLegal = legalByBoardLogic(newCoords, piece);
                     }
@@ -331,8 +331,8 @@ public class Board {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByDiagonal(Coordinates curID, TeamColor team) {
-        int curRank = curID.getRank();
-        int curFile = curID.getFile();
+        int curRank = curID.getX();
+        int curFile = curID.getY();
         int pawnAdjust = team == TeamColor.WHITE ? 1 : -1;
         int pawnThreatRank = curRank + pawnAdjust;
         int[] directions = {-1, 1};
@@ -372,8 +372,8 @@ public class Board {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByStraightaway (Coordinates curID, TeamColor team) {
-        int curRank = curID.getRank();
-        int curFile = curID.getFile();
+        int curRank = curID.getX();
+        int curFile = curID.getY();
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         for (int[] adjustments : directions) {
             int multiplier = 1;
@@ -410,8 +410,8 @@ public class Board {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByKnight (Coordinates curID, TeamColor team) {
-        int curRank = curID.getRank();
-        int curFile = curID.getFile();
+        int curRank = curID.getX();
+        int curFile = curID.getY();
         int[][] directions = {{2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
         int[] sides = {-1, 1};
         for (int[] direction : directions) {

@@ -23,8 +23,8 @@ public class Knight extends Piece {
     protected void updatePossibleMoves() {
         moves.clear();
         Coordinates curID = this.square.getID();
-        final int curRank = curID.getRank();
-        final int curFile = curID.getFile();
+        final int curRank = curID.getX();
+        final int curFile = curID.getY();
         final int[] rankAdjustments = {2, 1, -1, -2};
         final int[] fileAdjustments = {1, 2, 2, 1};
         final int[] directions = {-1, 1};

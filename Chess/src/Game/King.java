@@ -22,8 +22,8 @@ public class King extends Piece {
     /*@Override
     protected void updatePossibleMoves() {
         Coordinates id = this.square.getID();
-        final int curRank = id.getRank();
-        final int curFile = id.getFile();
+        final int curRank = id.getX();
+        final int curFile = id.getY();
         final int[] adjust = {-1, 0, 1};
         for (int rankAdjust : adjust) {
             for (int fileAdjust : adjust) {

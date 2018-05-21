@@ -23,12 +23,12 @@ public class Pawn extends Piece {
         final int direction = (this.team == TeamColor.WHITE) ? 1 : -1;
         this.moves.clear();
         Coordinates id = this.square.getID();
-        int nextRank = id.getRank() + direction;
+        int nextRank = id.getX() + direction;
         if (board.inBounds(nextRank)){
             *//*
             Check directly in front of the piece
              *//*
-            int curFile = id.getFile();
+            int curFile = id.getY();
             Coordinates idToCheck = new Coordinates(nextRank, curFile);
             if(!board.getSquare(idToCheck).isOccupied()) {
                 this.moves.add(idToCheck);

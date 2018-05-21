@@ -22,8 +22,8 @@ public class Rook extends Piece {
     protected void updatePossibleMoves() {
         this.moves.clear();
         Coordinates curID = this.square.getID();
-        final int curRank = curID.getRank();
-        final int curFile = curID.getFile();
+        final int curRank = curID.getX();
+        final int curFile = curID.getY();
         final int[] directions = {-1, 1};
         for (int direction : directions) {
             boolean checkSquare = true;
