@@ -5,6 +5,7 @@ import Game.Pieces.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class Board {
     /*
@@ -14,13 +15,14 @@ public class Board {
     private Square[][] grid;
     private PieceType[] backRowOrder;
     private Map<TeamColor, Piece> kings;
-    private MoveType lastMove;
+    private Stack<MoveType> previousMoves;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
      */
     public Board() {
         kings = new HashMap<>();
+        previousMoves = new Stack<>();
         backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
                 PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();
@@ -214,20 +216,15 @@ public class Board {
      */
     private boolean legalByBoardLogic(Coordinates newCoords, Piece piece) {
         boolean isLegal = false;
-        Coordinates oldCoords = piece.getCoordinates();
         Square newSquare = getSquare(newCoords);
         //Square must either be open or able to be killed
         if (!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
-            Piece pieceToRestore = newSquare.getPiece();
             //After moving, the team's king must not be in check
-            boolean previousHasMoved = piece.hasMoved();
             move(piece, newCoords);
             if (!inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
                 isLegal = true;
             }
-            move (piece, oldCoords);
-            newSquare.putPiece(pieceToRestore);
-            piece.setHasMoved(previousHasMoved);
+            revertMove();
         }
         return  isLegal;
     }
@@ -242,14 +239,17 @@ public class Board {
     private void move(Piece piece, Coordinates newCoords) {
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
-        this.lastMove = new MoveType(piece, newSquare);
+        this.previousMoves.push(new MoveType(piece, newSquare));
         oldSquare.setVacant();
         newSquare.putPiece(piece);
         piece.move(newCoords);
     }
     public void revertMove() {
-        move(this.lastMove.getNewPiece(), this.lastMove.getOldCoordinates());
-        getSquare(this.lastMove.getNewCoordinates()).putPiece(this.lastMove.getOldPiece());
+        if (!this.previousMoves.empty()) {
+            MoveType lastMove = this.previousMoves.pop();
+            move(lastMove.getNewPiece(), lastMove.getOldCoordinates());
+            getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
+        }
     }
 
     /**
