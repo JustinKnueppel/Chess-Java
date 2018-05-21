@@ -14,6 +14,7 @@ public class Board {
     private Square[][] grid;
     private PieceType[] backRowOrder;
     private Map<TeamColor, Piece> kings;
+    private MoveType lastMove;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
@@ -241,9 +242,14 @@ public class Board {
     private void move(Piece piece, Coordinates newCoords) {
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
+        this.lastMove = new MoveType(piece, newSquare);
         oldSquare.setVacant();
         newSquare.putPiece(piece);
         piece.move(newCoords);
+    }
+    public void revertMove() {
+        move(this.lastMove.getNewPiece(), this.lastMove.getOldCoordinates());
+        getSquare(this.lastMove.getNewCoordinates()).putPiece(this.lastMove.getOldPiece());
     }
 
     /**
