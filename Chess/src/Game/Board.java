@@ -268,13 +268,14 @@ public class Board {
             //If multiple moves are legal, reduce the prospective move as much as possible
             if (moveMultiple) {
                 //Multiplier must be the same for x and y
-                int multiplier = 1;
+                int xMultiplier = -1;
+                int yMultiplier;
                 //Don't adjust if a good move is 0
                 if (move[0] != 0) {
                     //If newX is evenly divisible by move[0], get the multiplier, otherwise move will not work
                     if (evenDivis(newX, move[0])) {
-                        multiplier = newX / move[0];
-                        newX /= multiplier;
+                        xMultiplier = newX / move[0];
+                        newX /= xMultiplier;
                     } else {
                         continue;
                     }
@@ -286,9 +287,8 @@ public class Board {
                 if (move[1] != 0) {
                     //If newY is evenly divisible by move[1], check the multiplier with the previous one
                     if (evenDivis(newY, move[1])) {
-                        if (newY / move[1] == multiplier) {
-                            newY /= multiplier;
-                        } else {
+                        yMultiplier = newY / move[1];
+                        if (xMultiplier != -1 && xMultiplier != yMultiplier) {
                             continue;
                         }
                     }
@@ -296,13 +296,28 @@ public class Board {
                 } else if (newY != 0) {
                     continue;
                 }
+                //Check if view is obstructed
+                if (obstructedView(piece, prospectiveMove)) {
+                    continue;
+                }
             }
             if (new int[]{newX, newY} == move) {
                 isLegal = true;
                 break;
             }
+
         }
         return isLegal;
+    }
+    private boolean obstructedView(Piece piece, int[] attemptedMove) {
+        int max = attemptedMove[0] != 0 ? attemptedMove[0] : attemptedMove[1];
+        int direction = max / Math.abs(max);
+        for (int step = direction; Math.abs(step) < Math.abs(max); step+= direction) {
+            if (getSquare(new Coordinates(piece.getCoordinates().getX() + step, piece.getCoordinates().getY() + step)).isOccupied()) {
+                return true;
+            }
+        }
+        return false;
     }
     private boolean enPassantLegal(Piece pawn) {
         boolean isLegal = false;
