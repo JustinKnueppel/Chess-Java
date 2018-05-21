@@ -15,7 +15,7 @@ public abstract class Piece extends Pane {
 
     private double mouseX, mouseY;
 
-
+    final static int RANK_DISPLAY_OFFSET = 7;
     //Used for the image URLs
     public static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
@@ -93,11 +93,9 @@ public abstract class Piece extends Pane {
         //Place the image in the correct Position
 
         //Necessary due to indexing in Javafx starting in top left, and a chess board using bottom left
-        final int RANK_DISPLAY_OFFSET = 7;
 
-        int file = this.coordinates.getY();
-        int rank = this.coordinates.getX();
-        iv.relocate(file * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - rank) * View.TILE_SIZE - (View.TILE_SIZE / 2));
+
+        move(this.coordinates);
         getChildren().add(iv);
     }
 
@@ -116,7 +114,7 @@ public abstract class Piece extends Pane {
      */
     public void move(Coordinates newCoordinates) {
         this.coordinates = newCoordinates;
-        relocate(coordinates.getY() * View.TILE_SIZE, coordinates.getX() * View.TILE_SIZE);
+        relocate(coordinates.getX() * View.TILE_SIZE - (View.TILE_SIZE / 2), (RANK_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE - (View.TILE_SIZE / 2));
     }
 
 
