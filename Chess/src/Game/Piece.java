@@ -15,7 +15,7 @@ public abstract class Piece extends Pane {
 
     private double mouseX, mouseY;
     //Necessary due to indexing in Javafx starting in top left, and a chess board using bottom left
-    final static int RANK_DISPLAY_OFFSET = 7;
+    final static int Y_DISPLAY_OFFSET = 7;
     //Used for the image URLs
     static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
 
@@ -40,9 +40,10 @@ public abstract class Piece extends Pane {
         });
         setOnMouseDragged(e -> {
             relocate(e.getSceneX() - mouseX + (coordinates.getX() * View.TILE_SIZE ),
-                    e.getSceneY() - mouseY + ((RANK_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE));
+                    e.getSceneY() - mouseY + ((Y_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE));
         });
     }
+
     /**
      * Get the team of this.
      * @return
@@ -112,8 +113,9 @@ public abstract class Piece extends Pane {
      */
     public void move(Coordinates newCoordinates) {
         this.coordinates = newCoordinates;
-        relocate(coordinates.getX() * View.TILE_SIZE , (RANK_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE );
+        relocate(coordinates.getX() * View.TILE_SIZE , (Y_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE );
     }
+
 
 
     /**

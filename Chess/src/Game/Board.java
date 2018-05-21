@@ -1,5 +1,7 @@
 package Game;
 
+import GUI.View;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,6 +128,11 @@ public class Board {
                 piece = null;
                 break;
         }
+        piece.setOnMouseReleased(e -> {
+            int x = toBoard(piece.getLayoutX());
+            int y = toBoard(piece.getLayoutY());
+            //determine if legal move, have way to abort move, have way to do move
+        });
         return piece;
     }
 
@@ -306,6 +313,9 @@ public class Board {
      */
     private boolean evenDivis(int num, int mod) {
         return num % mod == 0;
+    }
+    private int toBoard(double pixel) {
+        return (int)(pixel + View.TILE_SIZE / 2) / View.TILE_SIZE;
     }
 
 
