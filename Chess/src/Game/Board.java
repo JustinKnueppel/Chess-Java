@@ -335,6 +335,25 @@ public class Board {
         }
         return isLegal;
     }
+    private boolean castleLegal(Piece king, int newX) {
+        boolean isLegal = false;
+        int kingX = king.getCoordinates().getX();
+        int kingY = king.getCoordinates().getY();
+        if (!king.hasMoved() && Math.abs(newX - kingX) == 2) {
+            int rookFile = newX > 0 ? GRID_SIZE - 1 : 0;
+            Square rookSquare = getSquare(new Coordinates(rookFile, kingY));
+            if (rookSquare.isOccupied() && !rookSquare.getPiece().hasMoved() && rookSquare.getPiece().getType() == PieceType.ROOK) {
+                //Check danger squares for king, and occupation of squares in between
+                if(!obstructedView(king, new int[]{rookSquare.getID().getX(), rookSquare.getID().getY()})) {
+                    if (!inCheck(getSquare(new Coordinates((newX + kingX)/2, kingY)), king.getTeam())
+                            && !inCheck(getSquare(new Coordinates(newX, kingY)), king.getTeam())) {
+                        isLegal = true;
+                    }
+                }
+            }
+        }
+        return isLegal;
+    }
 
     /**
      * Check if x is evenly divisible by mod.
