@@ -200,7 +200,12 @@ public class Board {
 
 
 
-        } else if (pieceType == PieceType.KING || pieceType == PieceType.KNIGHT){
+        } else if (pieceType == PieceType.KING) {
+            isLegal = Math.abs(moveDifference[0]) == 2 ? castleLegal(piece, newCoords.getX()) :
+                    legalByPieceLogic(moveDifference, piece, false) && legalByBoardLogic(newCoords, piece);
+            //TODO: Need a way to make castle move
+
+        } else if (pieceType == PieceType.KNIGHT){
             isLegal = legalByPieceLogic(moveDifference, piece, false) && legalByBoardLogic(newCoords, piece);
         } else {
             isLegal = legalByPieceLogic(moveDifference, piece, true) && legalByBoardLogic(newCoords, piece);
