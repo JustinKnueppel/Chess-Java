@@ -3,13 +3,13 @@ package Game.Pieces;
 import Game.Coordinates;
 import Game.Square;
 
-public final class MoveType {
+public final class Move {
     private Piece oldPiece;
     private Piece newPiece;
     private Coordinates oldCoordinates;
     private Coordinates newCoordinates;
 
-    public MoveType(Piece movingPiece, Square newSquare) {
+    public Move(Piece movingPiece, Square newSquare) {
         this.newPiece = movingPiece;
         this.newCoordinates = newSquare.getID();
         this.oldCoordinates = movingPiece.getCoordinates();

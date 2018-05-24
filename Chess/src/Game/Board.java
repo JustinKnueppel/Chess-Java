@@ -15,7 +15,7 @@ public class Board {
     private Square[][] grid;
     private PieceType[] backRowOrder;
     private Map<TeamColor, Piece> kings;
-    private Stack<MoveType> previousMoves;
+    private Stack<Move> previousMoves;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
@@ -247,14 +247,14 @@ public class Board {
     private void move(Piece piece, Coordinates newCoords) {
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
-        this.previousMoves.push(new MoveType(piece, newSquare));
+        this.previousMoves.push(new Move(piece, newSquare));
         oldSquare.setVacant();
         newSquare.putPiece(piece);
         piece.move(newCoords);
     }
     public void revertMove() {
         if (!this.previousMoves.empty()) {
-            MoveType lastMove = this.previousMoves.pop();
+            Move lastMove = this.previousMoves.pop();
             move(lastMove.getNewPiece(), lastMove.getOldCoordinates());
             getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
         }
@@ -329,7 +329,7 @@ public class Board {
     }
     private boolean enPassantLegal(Piece pawn, int xChange) {
         boolean isLegal = false;
-        MoveType lastMove = previousMoves.peek();
+        Move lastMove = previousMoves.peek();
         Coordinates enemyPawnLocation = lastMove.getNewCoordinates();
         Coordinates currentLocation = pawn.getCoordinates();
         if (lastMove.getNewPiece().getType() == PieceType.PAWN
