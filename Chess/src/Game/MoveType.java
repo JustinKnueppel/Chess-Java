@@ -1,5 +1,5 @@
 package Game;
 
 public enum MoveType {
-    NORMAL, KILL, EN_PASSANT, CASTLE
+    NONE, NORMAL, KILL, EN_PASSANT, CASTLE
 }
