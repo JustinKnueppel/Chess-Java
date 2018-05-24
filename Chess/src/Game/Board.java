@@ -180,7 +180,7 @@ public class Board {
 
             int[][] moveSet = piece.getPossibleMoves();
             if ((moveDifference == moveSet[0] || moveDifference == moveSet[3])
-                    && ((newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) || enPassantLegal(piece))) {
+                    && ((newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) || enPassantLegal(piece, moveDifference[0]))) {
                 isLegal = legalByBoardLogic(newCoords, piece);
                 //TODO: Need a way to delete the piece for en passant
             } else if (moveDifference == moveSet[1] || moveDifference == moveSet[2]) {
@@ -327,14 +327,14 @@ public class Board {
         }
         return false;
     }
-    private boolean enPassantLegal(Piece pawn) {
+    private boolean enPassantLegal(Piece pawn, int xChange) {
         boolean isLegal = false;
         MoveType lastMove = previousMoves.peek();
         Coordinates enemyPawnLocation = lastMove.getNewCoordinates();
         Coordinates currentLocation = pawn.getCoordinates();
         if (lastMove.getNewPiece().getType() == PieceType.PAWN
                 && Math.abs(enemyPawnLocation.getY() - lastMove.getOldCoordinates().getY()) == 2) {
-            if (currentLocation.getY() == enemyPawnLocation.getY() && Math.abs(currentLocation.getX() - enemyPawnLocation.getX()) == 1) {
+            if (currentLocation.getY() == enemyPawnLocation.getY() && enemyPawnLocation.getX() - currentLocation.getX() == xChange) {
                 isLegal = true;
             }
         }
@@ -366,6 +366,9 @@ public class Board {
         Piece rook = getCastleRookSquare(king, newX).getPiece();
         move(king, new Coordinates(newX, king.getCoordinates().getY()));
         move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()));
+    }
+    private void enPassantMove(Piece pawn){
+
     }
 
     /**
