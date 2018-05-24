@@ -345,8 +345,7 @@ public class Board {
         int kingX = king.getCoordinates().getX();
         int kingY = king.getCoordinates().getY();
         if (!king.hasMoved() && Math.abs(newX - kingX) == 2) {
-            int rookFile = newX > 0 ? GRID_SIZE - 1 : 0;
-            Square rookSquare = getSquare(new Coordinates(rookFile, kingY));
+            Square rookSquare = getCastleRookSquare(king, newX);
             if (rookSquare.isOccupied() && !rookSquare.getPiece().hasMoved() && rookSquare.getPiece().getType() == PieceType.ROOK) {
                 //Check danger squares for king, and occupation of squares in between
                 if(!obstructedView(king, new int[]{rookSquare.getID().getX(), rookSquare.getID().getY()})) {
@@ -358,6 +357,15 @@ public class Board {
             }
         }
         return isLegal;
+    }
+    private Square getCastleRookSquare(Piece king, int newX) {
+        int rookFile = newX > king.getCoordinates().getX() ? GRID_SIZE - 1 : 0;
+        return getSquare(new Coordinates(rookFile, king.getCoordinates().getY()));
+    }
+    private void castleMove(Piece king, int newX) {
+        Piece rook = getCastleRookSquare(king, newX).getPiece();
+        move(king, new Coordinates(newX, king.getCoordinates().getY()));
+        move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()));
     }
 
     /**
