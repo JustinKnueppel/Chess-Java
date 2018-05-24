@@ -367,8 +367,9 @@ public class Board {
         move(king, new Coordinates(newX, king.getCoordinates().getY()));
         move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()));
     }
-    private void enPassantMove(Piece pawn){
-
+    private void enPassantMove(Piece pawn, Coordinates newCoords){
+        move(pawn, newCoords);
+        getSquare(previousMoves.peek().getNewCoordinates()).setVacant();
     }
 
     /**
