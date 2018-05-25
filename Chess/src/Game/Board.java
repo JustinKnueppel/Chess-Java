@@ -181,7 +181,7 @@ public class Board {
                 int[][] moveSet = piece.getPossibleMoves();
                 if (moveDifference == moveSet[0] || moveDifference == moveSet[3]) {
                     if (newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) {
-                        moveType = MoveType.KILL;
+                        moveType = MoveType.NORMAL;
                     } else if (enPassantLegal(piece, moveDifference[0])){
                         moveType = MoveType.EN_PASSANT;
                     }
@@ -206,6 +206,7 @@ public class Board {
             case KNIGHT:
                 moveType = legalByPieceLogic(moveDifference, piece, false);
                 break;
+                //Bishop, Rook, and Queen all use multiple move logic - could split to diagonal and straightaways
             case BISHOP:
             case ROOK:
             case QUEEN:
@@ -259,7 +260,6 @@ public class Board {
                 this.previousMoves.pop();
                 break;
             case NORMAL:
-            case KILL:
                 oldSquare.setVacant();
                 newSquare.putPiece(piece);
                 piece.move(newCoords);
@@ -284,7 +284,6 @@ public class Board {
                 case NONE:
                     break;
                 case NORMAL:
-                case KILL:
                     getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
                     break;
                 case EN_PASSANT:
