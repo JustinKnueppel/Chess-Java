@@ -136,8 +136,11 @@ public class Board {
             int x = toBoard(piece.getLayoutX());
             int y = toBoard(piece.getLayoutY());
             //determine if legal move, have way to abort move, have way to do move
-            if (isLegalMove(piece, new Coordinates(x, y))) {
-
+            MoveType moveType = isLegalMove(piece, new Coordinates(x, y));
+            if (moveType != MoveType.NONE) {
+                move(piece, new Coordinates(x, y), moveType);
+            } else {
+                //some way to abort move
             }
         });
         return piece;
@@ -164,7 +167,7 @@ public class Board {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
     public MoveType isLegalMove(Piece piece, Coordinates newCoords) {
-        MoveType moveType;
+        MoveType moveType = MoveType.NONE;
         //Get starting coordinates
         int oldX = piece.getCoordinates().getX();
         int oldY = piece.getCoordinates().getY();
@@ -227,7 +230,7 @@ public class Board {
             //Square must either be open or able to be killed
             if (!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
                 //After moving, the team's king must not be in check
-                move(piece, newCoords, MoveType);
+                move(piece, newCoords, moveType);
                 if (inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
                     moveType = MoveType.NONE;
                 }
@@ -289,8 +292,8 @@ public class Board {
      *      The piece attempting to move
      * @return true iff the move is legal based on the type of piece
      */
-    private boolean legalByPieceLogic(int[] prospectiveMove, Piece piece, boolean moveMultiple) {
-        boolean isLegal = false;
+    private MoveType legalByPieceLogic(int[] prospectiveMove, Piece piece, boolean moveMultiple) {
+        MoveType moveType = MoveType.NONE;
         int newX = prospectiveMove[0];
         int newY = prospectiveMove[1];
         for (int[] move : piece.getPossibleMoves()) {
@@ -331,12 +334,12 @@ public class Board {
                 }
             }
             if (new int[]{newX, newY} == move) {
-                isLegal = true;
+                moveType = MoveType.NORMAL;
                 break;
             }
 
         }
-        return isLegal;
+        return moveType;
     }
     private boolean obstructedView(Piece piece, int[] attemptedMove) {
         int max = attemptedMove[0] != 0 ? attemptedMove[0] : attemptedMove[1];
