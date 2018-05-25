@@ -196,55 +196,21 @@ public class Board {
                 }
                 break;
             case KING:
-                break;
+                if (Math.abs(moveDifference[0]) == 2 && castleLegal(piece, newCoords.getX())) {
+                    moveType = MoveType.CASTLE;
+                    break;
+                }
             case KNIGHT:
+                moveType = legalByPieceLogic(moveDifference, piece, false);
                 break;
             case BISHOP:
-                break;
             case ROOK:
-                break;
             case QUEEN:
+                moveType = legalByPieceLogic(moveDifference, piece, true);
                 break;
         }
-        /*
-        Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
-         */
-        if (pieceType == PieceType.PAWN) {
-
-         /*   int[][] moveSet = piece.getPossibleMoves();
-            if ((moveDifference == moveSet[0] || moveDifference == moveSet[3])
-                    && ((newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) || enPassantLegal(piece, moveDifference[0]))) {
-                isLegal = legalByBoardLogic(newCoords, piece);
-                //TODO: Need a way to delete the piece for en passant
-            } else if (moveDifference == moveSet[1] || moveDifference == moveSet[2]) {
-                Square oneStep;
-                if (moveDifference == moveSet[1]) {
-                    oneStep = getSquare(newCoords);
-                    if (!oneStep.isOccupied()) {
-                        isLegal = legalByBoardLogic(newCoords, piece);
-                    }
-                } else {
-                    oneStep = getSquare(new Coordinates(oldX, (newCoords.getY() + oldY) / 2));
-                    if (!oneStep.isOccupied() && !newSquare.isOccupied()) {
-                        isLegal = legalByBoardLogic(newCoords, piece);
-                    }
-                }
-            }
-*/
-
-
-        } else if (pieceType == PieceType.KING) {
-            isLegal = Math.abs(moveDifference[0]) == 2 ? castleLegal(piece, newCoords.getX()) :
-                    legalByPieceLogic(moveDifference, piece, false) && legalByBoardLogic(newCoords, piece);
-            //TODO: Need a way to make castle move
-
-        } else if (pieceType == PieceType.KNIGHT){
-            isLegal = legalByPieceLogic(moveDifference, piece, false) && legalByBoardLogic(newCoords, piece);
-        } else {
-            isLegal = legalByPieceLogic(moveDifference, piece, true) && legalByBoardLogic(newCoords, piece);
-
-        }
-        return isLegal;
+        moveType = legalByBoardLogic(newCoords, piece);
+        return moveType;
     }
 
     /**
