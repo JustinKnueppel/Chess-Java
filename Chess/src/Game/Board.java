@@ -279,8 +279,23 @@ public class Board {
         //TODO: revert using MoveTypes
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
-            move(lastMove.getNewPiece(), lastMove.getOldCoordinates());
-            getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
+            move(lastMove.getNewPiece(), lastMove.getOldCoordinates(), MoveType.NORMAL);
+            switch (lastMove.getMoveType()) {
+                case NONE:
+                    break;
+                case NORMAL:
+                case KILL:
+                    getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
+                    break;
+                case EN_PASSANT:
+                    //TODO: figure out a way to get the old pawn back in its spot
+                    break;
+                case CASTLE:
+                    //TODO: move the rook back
+                    break;
+            }
+
+
         }
     }
 

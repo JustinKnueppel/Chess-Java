@@ -15,7 +15,11 @@ public final class Move {
         this.newPiece = movingPiece;
         this.newCoordinates = newSquare.getID();
         this.oldCoordinates = movingPiece.getCoordinates();
-        this.oldPiece = newSquare.isOccupied() ? newSquare.getPiece() : null;
+        if (moveType != MoveType.EN_PASSANT) {
+            this.oldPiece = newSquare.isOccupied() ? newSquare.getPiece() : null;
+        } else {
+            //TODO: find a way to get the deleted pawn
+        }
         this.moveType = moveType;
     }
     public Piece getOldPiece() {
