@@ -385,12 +385,14 @@ public class Board {
     }
     private void castleMove(Piece king, int newX) {
         Piece rook = getCastleRookSquare(king, newX).getPiece();
-        move(king, new Coordinates(newX, king.getCoordinates().getY()));
-        move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()));
+        //TODO this messes with previousMoves
+        move(king, new Coordinates(newX, king.getCoordinates().getY()), MoveType.NORMAL);
+        move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()), MoveType.NORMAL);
     }
     private void enPassantMove(Piece pawn, Coordinates newCoords){
-        move(pawn, newCoords);
         getSquare(previousMoves.peek().getNewCoordinates()).setVacant();
+        move(pawn, newCoords, MoveType.NORMAL);
+
     }
 
     /**
