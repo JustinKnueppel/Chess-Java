@@ -153,7 +153,7 @@ public class Board {
      *      The ID in grid
      * @return the Game.Square with the given ID
      */
-    public Square getSquare(Coordinates id) {
+    private Square getSquare(Coordinates id) {
         return grid[id.getX()][id.getY()];
     }
 
@@ -166,7 +166,7 @@ public class Board {
     private boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
-    public MoveType isLegalMove(Piece piece, Coordinates newCoords) {
+    private MoveType isLegalMove(Piece piece, Coordinates newCoords) {
         MoveType moveType = MoveType.NONE;
         //Get starting coordinates
         int oldX = piece.getCoordinates().getX();
@@ -275,7 +275,7 @@ public class Board {
         newSquare.putPiece(piece);
         piece.move(newCoords);
     }
-    public void revertMove() {
+    private void revertMove() {
         //TODO: revert using MoveTypes
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
