@@ -163,8 +163,8 @@ public class Board {
     private boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
-    public boolean isLegalMove(Piece piece, Coordinates newCoords) {
-        boolean isLegal = false;
+    public MoveType isLegalMove(Piece piece, Coordinates newCoords) {
+        MoveType moveType;
         //Get starting coordinates
         int oldX = piece.getCoordinates().getX();
         int oldY = piece.getCoordinates().getY();
@@ -173,12 +173,45 @@ public class Board {
 
         PieceType pieceType = piece.getType();
         int[] moveDifference = {newCoords.getX() - oldX, newCoords.getY() - oldY};
+        switch (pieceType) {
+            case PAWN:
+                int[][] moveSet = piece.getPossibleMoves();
+                if (moveDifference == moveSet[0] || moveDifference == moveSet[3]) {
+                    if (newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) {
+                        moveType = MoveType.KILL;
+                    } else if (enPassantLegal(piece, moveDifference[0])){
+                        moveType = MoveType.EN_PASSANT;
+                    }
+                } else if (moveDifference == moveSet[1] || moveDifference == moveSet[2]) {
+                    Square oneStep = moveDifference == moveSet[1] ? newSquare : getSquare(new Coordinates(oldX, (oldY + newCoords.getY()) / 2));
+                    if (!oneStep.isOccupied()) {
+                        if (moveDifference == moveSet[2]) {
+                            if (!newSquare.isOccupied()) {
+                                moveType = MoveType.NORMAL;
+                            }
+                        } else {
+                            moveType = MoveType.NORMAL;
+                        }
+                    }
+                }
+                break;
+            case KING:
+                break;
+            case KNIGHT:
+                break;
+            case BISHOP:
+                break;
+            case ROOK:
+                break;
+            case QUEEN:
+                break;
+        }
         /*
         Pawns have distinct move logic, then pieces that can only move one square, then multiple squares
          */
         if (pieceType == PieceType.PAWN) {
 
-            int[][] moveSet = piece.getPossibleMoves();
+         /*   int[][] moveSet = piece.getPossibleMoves();
             if ((moveDifference == moveSet[0] || moveDifference == moveSet[3])
                     && ((newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) || enPassantLegal(piece, moveDifference[0]))) {
                 isLegal = legalByBoardLogic(newCoords, piece);
@@ -197,7 +230,7 @@ public class Board {
                     }
                 }
             }
-
+*/
 
 
         } else if (pieceType == PieceType.KING) {
