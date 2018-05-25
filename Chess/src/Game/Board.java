@@ -209,7 +209,7 @@ public class Board {
                 moveType = legalByPieceLogic(moveDifference, piece, true);
                 break;
         }
-        moveType = legalByBoardLogic(newCoords, piece);
+        moveType = legalByBoardLogic(piece, newCoords, moveType);
         return moveType;
     }
 
@@ -221,19 +221,22 @@ public class Board {
      *      The piece to move
      * @return true iff new square is legal for piece to move to
      */
-    private boolean legalByBoardLogic(Coordinates newCoords, Piece piece) {
-        boolean isLegal = false;
-        Square newSquare = getSquare(newCoords);
-        //Square must either be open or able to be killed
-        if (!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
-            //After moving, the team's king must not be in check
-            move(piece, newCoords);
-            if (!inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
-                isLegal = true;
+    private MoveType legalByBoardLogic(Piece piece,Coordinates newCoords, MoveType moveType) {
+        if (moveType != MoveType.NONE) {
+            Square newSquare = getSquare(newCoords);
+            //Square must either be open or able to be killed
+            if (!newSquare.isOccupied() || newSquare.getPiece().getTeam() != piece.getTeam()) {
+                //After moving, the team's king must not be in check
+                move(piece, newCoords, MoveType);
+                if (inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
+                    moveType = MoveType.NONE;
+                }
+                revertMove();
+            } else {
+                moveType = MoveType.NONE;
             }
-            revertMove();
         }
-        return  isLegal;
+        return  moveType;
     }
 
     /**
