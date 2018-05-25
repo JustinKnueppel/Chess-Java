@@ -246,15 +246,34 @@ public class Board {
      * @param newCoords
      *      New coordinates for piece
      */
-    private void move(Piece piece, Coordinates newCoords) {
+    private void move(Piece piece, Coordinates newCoords, MoveType moveType) {
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
-        this.previousMoves.push(new Move(piece, newSquare));
+        this.previousMoves.push(new Move(piece, newSquare, moveType));
+        switch (moveType) {
+            case NONE:
+                //If a NONE type move somehow passes, this keeps the previous moves correct
+                this.previousMoves.pop();
+                break;
+            case NORMAL:
+            case KILL:
+                oldSquare.setVacant();
+                newSquare.putPiece(piece);
+                piece.move(newCoords);
+                break;
+            case EN_PASSANT:
+                enPassantMove(piece, newCoords);
+                break;
+            case CASTLE:
+                castleMove(piece, newCoords.getX());
+                break;
+        }
         oldSquare.setVacant();
         newSquare.putPiece(piece);
         piece.move(newCoords);
     }
     public void revertMove() {
+        //TODO: revert using MoveTypes
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
             move(lastMove.getNewPiece(), lastMove.getOldCoordinates());
