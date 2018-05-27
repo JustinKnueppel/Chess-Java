@@ -265,10 +265,10 @@ public class Board {
                 piece.move(newCoords);
                 break;
             case EN_PASSANT:
-                Piece enemyPawn = enPassantMove(piece, newCoords);
+                this.previousMoves.peek().setEnPassantPawn(enPassantMove(piece, newCoords));
                 break;
             case CASTLE:
-                Piece rook = castleMove(piece, newCoords.getX());
+                this.previousMoves.peek().setCastleRook(castleMove(piece, newCoords.getX()));
                 break;
         }
         oldSquare.setVacant();
