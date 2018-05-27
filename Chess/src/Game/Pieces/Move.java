@@ -10,6 +10,8 @@ public final class Move {
     private Coordinates oldCoordinates;
     private Coordinates newCoordinates;
     private MoveType moveType;
+    private Piece castleRook;
+    private Piece enPassantPawn;
 
     public Move(Piece movingPiece, Square newSquare, MoveType moveType) {
         this.newPiece = movingPiece;
@@ -34,12 +36,25 @@ public final class Move {
         return newCoordinates;
     }
 
-    public Coordinates getOldCoordinates() {
-
-        return oldCoordinates;
-    }
+    public Coordinates getOldCoordinates() { return oldCoordinates; }
 
     public MoveType getMoveType() {
         return moveType;
+    }
+
+    public Piece getCastleRook() {
+        return castleRook;
+    }
+
+    public void setCastleRook(Piece castleRook) {
+        this.castleRook = castleRook;
+    }
+
+    public void setEnPassantPawn(Piece enPassantPawn) {
+        this.enPassantPawn = enPassantPawn;
+    }
+
+    public Piece getEnPassantPawn() {
+        return enPassantPawn;
     }
 }
