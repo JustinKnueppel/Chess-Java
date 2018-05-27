@@ -265,10 +265,10 @@ public class Board {
                 piece.move(newCoords);
                 break;
             case EN_PASSANT:
-                enPassantMove(piece, newCoords);
+                Piece enemyPawn = enPassantMove(piece, newCoords);
                 break;
             case CASTLE:
-                castleMove(piece, newCoords.getX());
+                Piece rook = castleMove(piece, newCoords.getX());
                 break;
         }
         oldSquare.setVacant();
@@ -400,15 +400,19 @@ public class Board {
         int rookFile = newX > king.getCoordinates().getX() ? GRID_SIZE - 1 : 0;
         return getSquare(new Coordinates(rookFile, king.getCoordinates().getY()));
     }
-    private void castleMove(Piece king, int newX) {
+    private Piece castleMove(Piece king, int newX) {
         Piece rook = getCastleRookSquare(king, newX).getPiece();
         //TODO this messes with previousMoves
         move(king, new Coordinates(newX, king.getCoordinates().getY()), MoveType.NORMAL);
         move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()), MoveType.NORMAL);
+        return rook;
     }
-    private void enPassantMove(Piece pawn, Coordinates newCoords){
-        getSquare(previousMoves.peek().getNewCoordinates()).setVacant();
+    private Piece enPassantMove(Piece pawn, Coordinates newCoords){
+        Square enemyPawnSquare = getSquare(previousMoves.peek().getNewCoordinates());
+        Piece enemyPawn = enemyPawnSquare.getPiece();
+        enemyPawnSquare.setVacant();
         move(pawn, newCoords, MoveType.NORMAL);
+        return enemyPawn;
 
     }
 
