@@ -276,7 +276,6 @@ public class Board {
         piece.move(newCoords);
     }
     private void revertMove() {
-        //TODO: revert using MoveTypes
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
             move(lastMove.getNewPiece(), lastMove.getOldCoordinates(), MoveType.NORMAL);
@@ -287,10 +286,10 @@ public class Board {
                     getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
                     break;
                 case EN_PASSANT:
-                    //TODO: figure out a way to get the old pawn back in its spot
+                    getSquare(lastMove.getEnPassantPawn().getCoordinates()).putPiece(lastMove.getEnPassantPawn());
                     break;
                 case CASTLE:
-                    //TODO: move the rook back
+                    getSquare(lastMove.getCastleRook().getCoordinates()).putPiece(lastMove.getCastleRook());
                     break;
             }
 
