@@ -36,7 +36,7 @@ public class Pawn extends Piece {
                 *//*
                 Check if moving twice is possible
                  *//*
-                if(!this.hasMoved && board.inBounds(nextRank + direction)) {
+                if(!this.getHasMoved && board.inBounds(nextRank + direction)) {
                     addMoveIfLegal(nextRank + direction, curFile, false);
                 }
             }

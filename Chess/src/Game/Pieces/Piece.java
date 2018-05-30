@@ -84,7 +84,7 @@ public abstract class Piece extends Pane {
     /**
      * Initializes the image representation of the piece.
      */
-    void initImage() {
+    private void initImage() {
         //Set the image of the correct piece
         String imageURL = getImageURL();
         Image img = new Image(imageURL);
@@ -130,9 +130,9 @@ public abstract class Piece extends Pane {
 
     /**
      * Determine if the piece has moves.
-     * @return this.hasMoved
+     * @return this.getHasMoved
      */
-    public boolean hasMoved() {
+    public boolean getHasMoved() {
         return hasMoved;
     }
     public void setHasMoved(boolean hasMoved) {this.hasMoved = hasMoved;}
