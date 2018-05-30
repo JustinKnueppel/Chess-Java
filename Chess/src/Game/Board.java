@@ -259,10 +259,12 @@ public class Board {
                 //If a NONE type move somehow passes, this keeps the previous moves correct
                 this.previousMoves.pop();
                 break;
+            case HELPER:
+                //Regular move except it does not interfere with this.previousMoves
+                this.previousMoves.pop();
             case NORMAL:
                 oldSquare.setVacant();
                 newSquare.putPiece(piece);
-                piece.move(newCoords);
                 break;
             case EN_PASSANT:
                 this.previousMoves.peek().setEnPassantPawn(enPassantMove(piece, newCoords));
@@ -271,9 +273,6 @@ public class Board {
                 this.previousMoves.peek().setCastleRook(castleMove(piece, newCoords.getX()));
                 break;
         }
-        oldSquare.setVacant();
-        newSquare.putPiece(piece);
-        piece.move(newCoords);
     }
     private void revertMove() {
         if (!this.previousMoves.empty()) {
@@ -401,16 +400,15 @@ public class Board {
     }
     private Piece castleMove(Piece king, int newX) {
         Piece rook = getCastleRookSquare(king, newX).getPiece();
-        //TODO this messes with previousMoves
-        move(king, new Coordinates(newX, king.getCoordinates().getY()), MoveType.NORMAL);
-        move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()), MoveType.NORMAL);
+        move(king, new Coordinates(newX, king.getCoordinates().getY()), MoveType.HELPER);
+        move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()), MoveType.HELPER);
         return rook;
     }
     private Piece enPassantMove(Piece pawn, Coordinates newCoords){
         Square enemyPawnSquare = getSquare(previousMoves.peek().getNewCoordinates());
         Piece enemyPawn = enemyPawnSquare.getPiece();
         enemyPawnSquare.setVacant();
-        move(pawn, newCoords, MoveType.NORMAL);
+        move(pawn, newCoords, MoveType.HELPER);
         return enemyPawn;
 
     }
