@@ -140,7 +140,7 @@ public class Board {
             if (moveType != MoveType.NONE) {
                 move(piece, new Coordinates(x, y), moveType);
             } else {
-                //some way to abort move
+                piece.move(piece.getCoordinates());
             }
         });
         return piece;
