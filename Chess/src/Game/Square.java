@@ -11,6 +11,7 @@ public class Square extends Rectangle{
     private Coordinates id;
     private boolean occupied;
     private Piece piece;
+    final static int Y_DISPLAY_OFFSET = 7;
     /**
      * Public constructor to initialize a square.
      * @param id
@@ -25,7 +26,7 @@ public class Square extends Rectangle{
         setHeight(View.TILE_SIZE);
         setFill(light ? Color.valueOf(LIGHT_COLOR) : Color.valueOf(DARK_COLOR));
 
-        relocate(id.getY() * View.TILE_SIZE, id.getX() * View.TILE_SIZE);
+        relocate(id.getX() * View.TILE_SIZE, (Y_DISPLAY_OFFSET - id.getY()) * View.TILE_SIZE);
     }
 
     /**

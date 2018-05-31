@@ -154,7 +154,7 @@ public class Board {
      * @return the Game.Square with the given ID
      */
     private Square getSquare(Coordinates id) {
-        return grid[id.getX()][id.getY()];
+        return grid[id.getY()][id.getX()];
     }
 
     /**
@@ -451,8 +451,8 @@ public class Board {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByDiagonal(Coordinates curID, TeamColor team) {
-        int curRank = curID.getX();
-        int curFile = curID.getY();
+        int curRank = curID.getY();
+        int curFile = curID.getX();
         int pawnAdjust = team == TeamColor.WHITE ? 1 : -1;
         int pawnThreatRank = curRank + pawnAdjust;
         int[] directions = {-1, 1};
@@ -492,8 +492,8 @@ public class Board {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByStraightaway (Coordinates curID, TeamColor team) {
-        int curRank = curID.getX();
-        int curFile = curID.getY();
+        int curRank = curID.getY();
+        int curFile = curID.getX();
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         for (int[] adjustments : directions) {
             int multiplier = 1;
@@ -530,8 +530,8 @@ public class Board {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByKnight (Coordinates curID, TeamColor team) {
-        int curRank = curID.getX();
-        int curFile = curID.getY();
+        int curRank = curID.getY();
+        int curFile = curID.getX();
         int[][] directions = {{2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
         int[] sides = {-1, 1};
         for (int[] direction : directions) {

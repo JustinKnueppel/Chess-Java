@@ -115,7 +115,7 @@ public abstract class Piece extends Pane {
      */
     public void move(Coordinates newCoordinates) {
         this.coordinates = newCoordinates;
-        relocate(coordinates.getX() * View.TILE_SIZE , (Y_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE );
+        relocate(coordinates.getY() * View.TILE_SIZE , (Y_DISPLAY_OFFSET - coordinates.getX()) * View.TILE_SIZE );
     }
 
 
