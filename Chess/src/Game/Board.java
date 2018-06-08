@@ -141,7 +141,7 @@ public class Board extends GridPane {
         }
         piece.setOnMouseReleased(e -> {
             int x = toBoard(piece.getLayoutX());
-            int y = toBoard(piece.getLayoutY());
+            int y = GRID_SIZE - 1 - toBoard(piece.getLayoutY());
             //determine if legal move, have way to abort move, have way to do move
             MoveType moveType = isLegalMove(piece, new Coordinates(x, y));
             if (moveType != MoveType.NONE) {
