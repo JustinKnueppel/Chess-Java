@@ -31,18 +31,8 @@ public class View extends Application{
     private Group pieceGroup = new Group();
 
     private Parent createContent() {
-        GridPane root = new GridPane();
-        root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
-        for (int rank = 0; rank < HEIGHT; rank++) {
-            for (int file = 0; file < WIDTH; file++) {
-                Square square = controller.getModel().getGrid()[rank][file];
-                tileGroup.getChildren().add(square);
-                if (square.isOccupied()) {
-                    pieceGroup.getChildren().add(square.getPiece());
-                }
-            }
-        }
-        root.getChildren().addAll(tileGroup, pieceGroup);
+        Group root = new Group();
+        root.getChildren().add(controller.getModel().getBoard());
 
         return root;
     }
