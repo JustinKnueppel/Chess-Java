@@ -5,6 +5,7 @@ import Game.Coordinates;
 import Game.TeamColor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public abstract class Piece extends Pane {
@@ -115,7 +116,8 @@ public abstract class Piece extends Pane {
      */
     public void move(Coordinates newCoordinates) {
         this.coordinates = newCoordinates;
-        relocate(coordinates.getY() * View.TILE_SIZE , (Y_DISPLAY_OFFSET - coordinates.getX()) * View.TILE_SIZE );
+        GridPane.setColumnIndex(this, coordinates.getX());
+        GridPane.setRowIndex(this, coordinates.getY());
     }
 
 
