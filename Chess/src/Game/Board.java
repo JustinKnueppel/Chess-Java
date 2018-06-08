@@ -174,6 +174,15 @@ public class Board extends GridPane {
     private boolean inBounds(int pos) {
         return pos >= 0 && pos < this.GRID_SIZE;
     }
+
+    /**
+     * Determines the type of move attempted by the given piece.
+     * @param piece
+     *      The piece attempting to move
+     * @param newCoords
+     *      The potential new coordinates for piece
+     * @return a MoveType corresponding to the legality of the move
+     */
     private MoveType isLegalMove(Piece piece, Coordinates newCoords) {
         MoveType moveType = MoveType.NONE;
         //Get starting coordinates
@@ -282,6 +291,10 @@ public class Board extends GridPane {
                 break;
         }
     }
+
+    /**
+     * If possible, undo the last made move
+     */
     private void revertMove() {
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
@@ -361,7 +374,17 @@ public class Board extends GridPane {
         }
         return moveType;
     }
+
+    /**
+     * Determines if piece as any pieces in between it and its new square.
+     * @param piece
+     *      The piece attempting to move
+     * @param attemptedMove
+     *      The addition to the piece's [x, y] coordinates
+     * @return true iff there are no pieces between piece and its new square
+     */
     private boolean obstructedView(Piece piece, int[] attemptedMove) {
+        //TODO: can currently be passed 0, 0 and get divide by 0 error
         int max = attemptedMove[0] != 0 ? attemptedMove[0] : attemptedMove[1];
         int direction = max / Math.abs(max);
         for (int step = direction; Math.abs(step) < Math.abs(max); step+= direction) {
@@ -371,6 +394,15 @@ public class Board extends GridPane {
         }
         return false;
     }
+
+    /**
+     * Check if en passant is legal for the given pawn.
+     * @param pawn
+     *      The pawn attempting en Passant
+     * @param xChange
+     *      The x direction in which the pawn is attempting to capture
+     * @return true iff en Passant is legal for the given pawn and direction
+     */
     private boolean enPassantLegal(Piece pawn, int xChange) {
         boolean isLegal = false;
         Move lastMove = previousMoves.peek();
