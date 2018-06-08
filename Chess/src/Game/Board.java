@@ -74,7 +74,6 @@ public class Board extends GridPane {
      * Place the correct pieces on the chess board according to this.backRowOrder and a second rank of pawns.
      */
     private void initializePieces() {
-        final int blackOffset = 7;
         final int whiteBackRow = 0;
         final int whitePawnRow = 1;
         final int blackBackRow = 7;
@@ -96,7 +95,7 @@ public class Board extends GridPane {
             Place black pieces
              */
             this.grid[blackBackRow][column]
-                    .putPiece(getPieceByName(this.backRowOrder[blackOffset - column], new Coordinates(column, blackBackRow), TeamColor.BLACK));
+                    .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(column, blackBackRow), TeamColor.BLACK));
             add(this.grid[blackBackRow][column].getPiece(), column, viewOffset - blackBackRow);
             this.grid[blackPawnRow][column]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(column, blackPawnRow), TeamColor.BLACK));
