@@ -2,12 +2,13 @@ package Game;
 
 import GUI.View;
 import Game.Pieces.*;
+import javafx.scene.layout.GridPane;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-public class Board {
+public class Board extends GridPane {
     /*
     Declare useful constants and private variables
      */
@@ -64,6 +65,7 @@ public class Board {
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int column = 0; column < GRID_SIZE; column++) {
                 grid[row][column] = new Square((row + column) % 2 == 0, new Coordinates(row, column));
+                add(grid[row][column], column, row);
             }
         }
     }
@@ -84,15 +86,19 @@ public class Board {
              */
             this.grid[whiteBackRow][column]
                     .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(whiteBackRow, column), TeamColor.WHITE));
+            add(this.grid[whiteBackRow][column].getPiece(), column, whiteBackRow);
             this.grid[whitePawnRow][column]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(whitePawnRow, column), TeamColor.WHITE));
+            add(this.grid[whitePawnRow][column].getPiece(), column, whitePawnRow);
             /*
             Place black pieces
              */
             this.grid[blackBackRow][column]
                     .putPiece(getPieceByName(this.backRowOrder[blackOffset - column], new Coordinates(blackBackRow, column), TeamColor.BLACK));
+            add(this.grid[blackBackRow][column].getPiece(), column, blackBackRow);
             this.grid[blackPawnRow][column]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(blackPawnRow, column), TeamColor.BLACK));
+            add(this.grid[blackPawnRow][column].getPiece(), column, blackPawnRow);
         }
 
     }
