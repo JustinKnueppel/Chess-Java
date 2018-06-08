@@ -80,25 +80,27 @@ public class Board extends GridPane {
         final int blackBackRow = 7;
         final int blackPawnRow = 6;
 
+        final int viewOffset = 7;
+
         for(int column = 0; column < this.GRID_SIZE; column++) {
             /*
             Place white pieces
              */
             this.grid[whiteBackRow][column]
-                    .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(whiteBackRow, column), TeamColor.WHITE));
-            add(this.grid[whiteBackRow][column].getPiece(), column, whiteBackRow);
+                    .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(column, whiteBackRow), TeamColor.WHITE));
+            add(this.grid[whiteBackRow][column].getPiece(), column, viewOffset - whiteBackRow);
             this.grid[whitePawnRow][column]
-                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(whitePawnRow, column), TeamColor.WHITE));
-            add(this.grid[whitePawnRow][column].getPiece(), column, whitePawnRow);
+                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(column, whitePawnRow), TeamColor.WHITE));
+            add(this.grid[whitePawnRow][column].getPiece(), column, viewOffset - whitePawnRow);
             /*
             Place black pieces
              */
             this.grid[blackBackRow][column]
-                    .putPiece(getPieceByName(this.backRowOrder[blackOffset - column], new Coordinates(blackBackRow, column), TeamColor.BLACK));
-            add(this.grid[blackBackRow][column].getPiece(), column, blackBackRow);
+                    .putPiece(getPieceByName(this.backRowOrder[blackOffset - column], new Coordinates(column, blackBackRow), TeamColor.BLACK));
+            add(this.grid[blackBackRow][column].getPiece(), column, viewOffset - blackBackRow);
             this.grid[blackPawnRow][column]
-                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(blackPawnRow, column), TeamColor.BLACK));
-            add(this.grid[blackPawnRow][column].getPiece(), column, blackPawnRow);
+                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(column, blackPawnRow), TeamColor.BLACK));
+            add(this.grid[blackPawnRow][column].getPiece(), column, viewOffset - blackPawnRow);
         }
 
     }
