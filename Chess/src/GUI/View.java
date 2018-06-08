@@ -1,15 +1,9 @@
 package GUI;
 
-import Game.Square;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class View extends Application{
@@ -24,11 +18,6 @@ public class View extends Application{
     }
 
     public static final int TILE_SIZE = 100;
-    public static final int WIDTH = 8;
-    public static final int HEIGHT = 8;
-
-    private Group tileGroup = new Group();
-    private Group pieceGroup = new Group();
 
     private Parent createContent() {
         Group root = new Group();
