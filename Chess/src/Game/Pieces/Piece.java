@@ -42,8 +42,15 @@ public abstract class Piece extends Pane {
             mouseY = e.getSceneY();
         });
         setOnMouseDragged(e -> {
-            relocate(e.getSceneX() - mouseX + (coordinates.getX() * View.TILE_SIZE ),
-                    e.getSceneY() - mouseY + ((Y_DISPLAY_OFFSET - coordinates.getY()) * View.TILE_SIZE));
+            double offsetX = e.getSceneX() - mouseX;
+            double offsetY = e.getSceneY() - mouseY;
+
+            Piece piece = (Piece)e.getSource();
+            piece.setTranslateX(piece.getTranslateX() + offsetX);
+            piece.setTranslateY(piece.getTranslateY() + offsetY);
+
+            mouseX = e.getSceneX();
+            mouseY = e.getSceneY();
         });
     }
 
