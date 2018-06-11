@@ -17,6 +17,10 @@ public class Board extends GridPane {
     private PieceType[] backRowOrder;
     private Map<TeamColor, Piece> kings;
     private Stack<Move> previousMoves;
+    /*
+    Used to determine which team can move
+     */
+    private int moveCounter;
 
     /**
      * Create GRID_SIZE rank GRID_SIZE sized board and place pieces on it.
@@ -28,6 +32,7 @@ public class Board extends GridPane {
                 PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();
         initializePieces();
+        moveCounter = 0;
     }
 
     /**
@@ -144,11 +149,13 @@ public class Board extends GridPane {
             int y = GRID_SIZE - 1 - toBoard(e.getSceneY());
             System.out.println(x + "  " + y);
             //determine if legal move, have way to abort move, have way to do move
-            MoveType moveType = isLegalMove(piece, new Coordinates(x, y));
-            if (moveType != MoveType.NONE) {
-                move(piece, new Coordinates(x, y), moveType);
-            } else {
-                piece.move(piece.getCoordinates());
+            if ((piece.getTeam() == TeamColor.WHITE ? 0 : 1) == (moveCounter % 2)) {
+                MoveType moveType = isLegalMove(piece, new Coordinates(x, y));
+                if (moveType != MoveType.NONE) {
+                    move(piece, new Coordinates(x, y), moveType);
+                } else {
+                    piece.move(piece.getCoordinates());
+                }
             }
         });
         return piece;
@@ -271,14 +278,14 @@ public class Board extends GridPane {
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
         this.previousMoves.push(new Move(piece, newSquare, moveType));
+        this.moveCounter++;
         switch (moveType) {
             case NONE:
                 //If a NONE type move somehow passes, this keeps the previous moves correct
-                this.previousMoves.pop();
-                break;
             case HELPER:
                 //Regular move except it does not interfere with this.previousMoves
                 this.previousMoves.pop();
+                moveCounter--;
             case NORMAL:
                 oldSquare.setVacant();
                 newSquare.putPiece(piece);
