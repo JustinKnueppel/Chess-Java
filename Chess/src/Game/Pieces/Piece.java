@@ -40,6 +40,7 @@ public abstract class Piece extends Pane {
         setOnMousePressed(e -> {
             mouseX = e.getSceneX();
             mouseY = e.getSceneY();
+            System.out.println("init x: " + this.coordinates.getX() + " init y: " +  this.coordinates.getY());
         });
         setOnMouseDragged(e -> {
             double offsetX = e.getSceneX() - mouseX;
@@ -122,9 +123,10 @@ public abstract class Piece extends Pane {
      *      The target square for this
      */
     public void move(Coordinates newCoordinates) {
+        final int viewOffset = 7;
         this.coordinates = newCoordinates;
         GridPane.setColumnIndex(this, coordinates.getX());
-        GridPane.setRowIndex(this, coordinates.getY());
+        GridPane.setRowIndex(this, viewOffset - coordinates.getY());
     }
 
 
