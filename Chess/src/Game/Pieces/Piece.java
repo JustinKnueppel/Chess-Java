@@ -123,10 +123,9 @@ public abstract class Piece extends Pane {
      *      The target square for this
      */
     public void move(Coordinates newCoordinates) {
-        final int viewOffset = 7;
         this.coordinates = newCoordinates;
         GridPane.setColumnIndex(this, coordinates.getX());
-        GridPane.setRowIndex(this, viewOffset - coordinates.getY());
+        GridPane.setRowIndex(this, View.Y_OFFSET - coordinates.getY());
     }
 
 

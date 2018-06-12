@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 public class View extends Application{
     private Controller controller;
+    public final static int Y_OFFSET = 7;
 
     public static void main(String args) {
         launch(args);

@@ -67,12 +67,15 @@ public class Board extends GridPane {
      */
     private void initializeGrid() {
         this.grid = new Square[GRID_SIZE][GRID_SIZE];
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int column = 0; column < GRID_SIZE; column++) {
-                grid[row][column] = new Square((row + column) % 2 == 0, new Coordinates(row, column));
-                add(grid[row][column], column, row);
+        for (int x = 0; x < GRID_SIZE; x++) {
+            for (int y = 0; y < GRID_SIZE; y++) {
+                grid[x][y] = new Square((x + y) % 2 != 0, new Coordinates(x, y));
+                add(grid[x][y], x, yToView(y));
             }
         }
+    }
+    public int yToView(int y) {
+        return View.Y_OFFSET - y;
     }
 
     /**
@@ -84,27 +87,26 @@ public class Board extends GridPane {
         final int blackBackRow = 7;
         final int blackPawnRow = 6;
 
-        final int viewOffset = 7;
 
-        for(int column = 0; column < this.GRID_SIZE; column++) {
+        for(int x = 0; x < this.GRID_SIZE; x++) {
             /*
             Place white pieces
              */
-            this.grid[whiteBackRow][column]
-                    .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(column, whiteBackRow), TeamColor.WHITE));
-            add(this.grid[whiteBackRow][column].getPiece(), column, viewOffset - whiteBackRow);
-            this.grid[whitePawnRow][column]
-                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(column, whitePawnRow), TeamColor.WHITE));
-            add(this.grid[whitePawnRow][column].getPiece(), column, viewOffset - whitePawnRow);
+            this.grid[x][whiteBackRow]
+                    .putPiece(getPieceByName(this.backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
+            add(this.grid[x][whiteBackRow].getPiece(), x, yToView(whiteBackRow));
+            this.grid[x][whitePawnRow]
+                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
+            add(this.grid[x][whitePawnRow].getPiece(), x, yToView(whitePawnRow));
             /*
             Place black pieces
              */
-            this.grid[blackBackRow][column]
-                    .putPiece(getPieceByName(this.backRowOrder[column], new Coordinates(column, blackBackRow), TeamColor.BLACK));
-            add(this.grid[blackBackRow][column].getPiece(), column, viewOffset - blackBackRow);
-            this.grid[blackPawnRow][column]
-                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(column, blackPawnRow), TeamColor.BLACK));
-            add(this.grid[blackPawnRow][column].getPiece(), column, viewOffset - blackPawnRow);
+            this.grid[x][blackBackRow]
+                    .putPiece(getPieceByName(this.backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
+            add(this.grid[x][blackBackRow].getPiece(), x, yToView(blackBackRow));
+            this.grid[x][blackPawnRow]
+                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
+            add(this.grid[x][blackPawnRow].getPiece(), x, yToView(blackPawnRow));
         }
 
     }
@@ -169,7 +171,7 @@ public class Board extends GridPane {
      * @return the Game.Square with the given ID
      */
     private Square getSquare(Coordinates id) {
-        return grid[id.getY()][id.getX()];
+        return grid[id.getX()][id.getY()];
     }
 
     /**
