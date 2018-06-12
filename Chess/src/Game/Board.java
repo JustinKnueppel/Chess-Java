@@ -74,7 +74,14 @@ public class Board extends GridPane {
             }
         }
     }
-    public int convertY(int y) {
+
+    /**
+     * Convert Y values between Board and View.
+     * @param y
+     *      The y value being converted
+     * @return View.Y_OFFSET - y
+     */
+    private int convertY(int y) {
         return View.Y_OFFSET - y;
     }
 
@@ -425,6 +432,15 @@ public class Board extends GridPane {
         }
         return isLegal;
     }
+
+    /**
+     * Checks if the given king is able to castle to the new x position.
+     * @param king
+     *      The king piece attempting to castle
+     * @param newX
+     *      The new x coordinate for the king
+     * @return true iff the king is able to castle to the new square given chess rules
+     */
     private boolean castleLegal(Piece king, int newX) {
         boolean isLegal = false;
         int kingX = king.getCoordinates().getX();
@@ -443,16 +459,43 @@ public class Board extends GridPane {
         }
         return isLegal;
     }
+
+    /**
+     * Retrieve the square of the rook with which the given king would castle.
+     * @param king
+     *      The king that is trying to castle
+     * @param newX
+     *      The new x coordinate for the king upon castling
+     * @return either the first or final file on the back rank of king.team depending on the king's new square
+     */
     private Square getCastleRookSquare(Piece king, int newX) {
         int rookFile = newX > king.getCoordinates().getX() ? GRID_SIZE - 1 : 0;
         return getSquare(new Coordinates(rookFile, king.getCoordinates().getY()));
     }
+
+    /**
+     * Special move for the king that involves both the king and a rook.
+     * @param king
+     *      The king to be moved
+     * @param newX
+     *      The new x coordinate for the king
+     * @return the rook which was involved in castling
+     */
     private Piece castleMove(Piece king, int newX) {
         Piece rook = getCastleRookSquare(king, newX).getPiece();
         move(king, new Coordinates(newX, king.getCoordinates().getY()), MoveType.HELPER);
         move(rook, new Coordinates((newX + king.getCoordinates().getX())/2, king.getCoordinates().getY()), MoveType.HELPER);
         return rook;
     }
+
+    /**
+     * Special move for a pawn that involves a capture of another pawn.
+     * @param pawn
+     *      The pawn moving via en Passant
+     * @param newCoords
+     *      The new coordinates for the moving pawn
+     * @return the pawn that is captured via en Passant
+     */
     private Piece enPassantMove(Piece pawn, Coordinates newCoords){
         Square enemyPawnSquare = getSquare(previousMoves.peek().getNewCoordinates());
         Piece enemyPawn = enemyPawnSquare.getPiece();
@@ -473,8 +516,16 @@ public class Board extends GridPane {
     private boolean evenDivis(int num, int mod) {
         return num % mod == 0;
     }
+
+    /**
+     * Transform pixel coordinates from view into a board integer index.
+     * @param pixel
+     *      The pixel on the screen
+     * @return an integer conversion of the pixel
+     */
     private int toBoard(double pixel) {
         return (int)(pixel + View.TILE_SIZE / 2) / View.TILE_SIZE;
+        //TODO: try not adding View.TILE_SIZE / 2 to see if it fixes snapping issues to the right tile
     }
 
 
