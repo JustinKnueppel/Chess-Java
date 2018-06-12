@@ -70,11 +70,11 @@ public class Board extends GridPane {
         for (int x = 0; x < GRID_SIZE; x++) {
             for (int y = 0; y < GRID_SIZE; y++) {
                 grid[x][y] = new Square((x + y) % 2 != 0, new Coordinates(x, y));
-                add(grid[x][y], x, yToView(y));
+                add(grid[x][y], x, convertY(y));
             }
         }
     }
-    public int yToView(int y) {
+    public int convertY(int y) {
         return View.Y_OFFSET - y;
     }
 
@@ -94,19 +94,19 @@ public class Board extends GridPane {
              */
             this.grid[x][whiteBackRow]
                     .putPiece(getPieceByName(this.backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
-            add(this.grid[x][whiteBackRow].getPiece(), x, yToView(whiteBackRow));
+            add(this.grid[x][whiteBackRow].getPiece(), x, convertY(whiteBackRow));
             this.grid[x][whitePawnRow]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
-            add(this.grid[x][whitePawnRow].getPiece(), x, yToView(whitePawnRow));
+            add(this.grid[x][whitePawnRow].getPiece(), x, convertY(whitePawnRow));
             /*
             Place black pieces
              */
             this.grid[x][blackBackRow]
                     .putPiece(getPieceByName(this.backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
-            add(this.grid[x][blackBackRow].getPiece(), x, yToView(blackBackRow));
+            add(this.grid[x][blackBackRow].getPiece(), x, convertY(blackBackRow));
             this.grid[x][blackPawnRow]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
-            add(this.grid[x][blackPawnRow].getPiece(), x, yToView(blackPawnRow));
+            add(this.grid[x][blackPawnRow].getPiece(), x, convertY(blackPawnRow));
         }
 
     }
@@ -148,7 +148,7 @@ public class Board extends GridPane {
         }
         piece.setOnMouseReleased(e -> {
             int x = toBoard(e.getSceneX());
-            int y = GRID_SIZE - 1 - toBoard(e.getSceneY());
+            int y = convertY(toBoard(e.getSceneY()));
             System.out.println("x after release: " + x + " y after release: " + y);
             //determine if legal move, have way to abort move, have way to do move
             if ((piece.getTeam() == TeamColor.WHITE ? 0 : 1) == (moveCounter % 2)) {
