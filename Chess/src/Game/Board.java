@@ -154,12 +154,14 @@ public class Board extends GridPane {
                 break;
         }
         piece.setOnMouseReleased(e -> {
+            System.out.println("x scene: " + e.getSceneX() + " y scene: " + e.getSceneY());
             int x = toBoard(e.getSceneX());
             int y = convertY(toBoard(e.getSceneY()));
             System.out.println("x after release: " + x + " y after release: " + y);
             //determine if legal move, have way to abort move, have way to do move
             if ((piece.getTeam() == TeamColor.WHITE ? 0 : 1) == (moveCounter % 2)) {
                 MoveType moveType = isLegalMove(piece, new Coordinates(x, y));
+                System.out.println(moveType);
                 if (moveType != MoveType.NONE) {
                     move(piece, new Coordinates(x, y), moveType);
                 } else {
@@ -354,7 +356,7 @@ public class Board extends GridPane {
                 //Don't adjust if a good move is 0
                 if (move[0] != 0) {
                     //If newX is evenly divisible by move[0], get the multiplier, otherwise move will not work
-                    if (evenDivis(newX, move[0])) {
+                    if (newX != 0 && evenDivis(newX, move[0])) {
                         xMultiplier = newX / move[0];
                         newX /= xMultiplier;
                     } else {
@@ -367,7 +369,7 @@ public class Board extends GridPane {
                 //Don't adjust if a good move is 0
                 if (move[1] != 0) {
                     //If newY is evenly divisible by move[1], check the multiplier with the previous one
-                    if (evenDivis(newY, move[1])) {
+                    if (newY != 0 && evenDivis(newY, move[1])) {
                         yMultiplier = newY / move[1];
                         if (xMultiplier != -1 && xMultiplier != yMultiplier) {
                             continue;
@@ -378,7 +380,7 @@ public class Board extends GridPane {
                     continue;
                 }
                 //Check if view is obstructed
-                if (obstructedView(piece, prospectiveMove)) {
+                if ((prospectiveMove[0] != 0 || prospectiveMove[1] != 0) && obstructedView(piece, prospectiveMove)) {
                     continue;
                 }
             }
@@ -400,7 +402,7 @@ public class Board extends GridPane {
      * @return true iff there are no pieces between piece and its new square
      */
     private boolean obstructedView(Piece piece, int[] attemptedMove) {
-        //TODO: can currently be passed 0, 0 and get divide by 0 error
+        assert !(attemptedMove[0] == 0 && attemptedMove[1] == 0) : "Cannot move to same square";
         int max = attemptedMove[0] != 0 ? attemptedMove[0] : attemptedMove[1];
         int direction = max / Math.abs(max);
         for (int step = direction; Math.abs(step) < Math.abs(max); step+= direction) {
