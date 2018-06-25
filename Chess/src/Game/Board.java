@@ -181,6 +181,8 @@ public class Board extends GridPane {
      * @return the Game.Square with the given ID
      */
     private Square getSquare(Coordinates id) {
+        assert inBounds(id.getX()) : "X out of bounds for getSquare with x=" + id.getX();
+        assert inBounds(id.getY()) : "Y out of bounds for getSquare with y=" + id.getY();
         return grid[id.getX()][id.getY()];
     }
 
@@ -644,13 +646,24 @@ public class Board extends GridPane {
      * @return true iff !team can attack curID
      */
     private boolean threatenedByKnight (Coordinates curID, TeamColor team) {
-        int curRank = curID.getY();
-        int curFile = curID.getX();
+        int curX = curID.getX();
+        int curY = curID.getY();
         int[][] directions = {{2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
         int[] sides = {-1, 1};
         for (int[] direction : directions) {
             for (int side : sides) {
-                Square toCheck = getSquare(new Coordinates(curRank + direction[0], curFile + direction[1] * side));
+                /*
+                Check if knight square is in bounds
+                 */
+                int knightX = curX + direction[0];
+                int knightY = curY + direction[1] * side;
+                if (!inBounds(knightX) || !inBounds(knightY)) {
+                    continue;
+                }
+                /*
+                See if an enemy knight occupies the given square
+                 */
+                Square toCheck = getSquare(new Coordinates(knightX, knightY));
                 if (toCheck.isOccupied()) {
                     Piece piece = toCheck.getPiece();
                     if (piece.getTeam() != team) {
