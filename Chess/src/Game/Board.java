@@ -166,6 +166,7 @@ public class Board extends GridPane {
                 if (moveType != MoveType.NONE) {
                     move(piece, new Coordinates(x, y), moveType);
                 } else {
+                    //TODO: force revert the attempted move
                     piece.move(piece.getCoordinates());
                 }
             }
@@ -298,13 +299,12 @@ public class Board extends GridPane {
      *      New coordinates for piece
      */
     private void move(Piece piece, Coordinates newCoords, MoveType moveType) {
+        assert moveType != MoveType.NONE : "MoveType.NONE passed to move method";
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
         this.previousMoves.push(new Move(piece, newSquare, moveType));
         this.moveCounter++;
         switch (moveType) {
-            case NONE:
-                //If a NONE type move somehow passes, this keeps the previous moves correct
             case HELPER:
                 //Regular move except it does not interfere with this.previousMoves
                 this.previousMoves.pop();
