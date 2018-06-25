@@ -275,6 +275,9 @@ public class Board extends GridPane {
                 moveType = MoveType.NONE;
             }
         }
+        if (moveType == MoveType.NONE) {
+            System.out.println("Move failed board logic");
+        }
         return  moveType;
     }
 
@@ -389,6 +392,9 @@ public class Board extends GridPane {
                 break;
             }
 
+        }
+        if (moveType == MoveType.NONE) {
+            System.out.println("Illegal by piece logic");
         }
         return moveType;
     }
@@ -526,8 +532,7 @@ public class Board extends GridPane {
      * @return an integer conversion of the pixel
      */
     private int toBoard(double pixel) {
-        return (int)(pixel + View.TILE_SIZE / 2) / View.TILE_SIZE;
-        //TODO: try not adding View.TILE_SIZE / 2 to see if it fixes snapping issues to the right tile
+        return (int)(pixel) / View.TILE_SIZE;
     }
 
 
