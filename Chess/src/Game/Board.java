@@ -4,6 +4,7 @@ import GUI.View;
 import Game.Pieces.*;
 import javafx.scene.layout.GridPane;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -208,22 +209,24 @@ public class Board extends GridPane {
         int oldY = piece.getCoordinates().getY();
 
         Square newSquare = getSquare(newCoords);
+        assert newSquare.getID().equals(newCoords) : "Retrieved square does not match given coordinates";
 
         PieceType pieceType = piece.getType();
         int[] moveDifference = {newCoords.getX() - oldX, newCoords.getY() - oldY};
+        System.out.println("moveDifference: x=" + moveDifference[0] + " y=" + moveDifference[1]);
         switch (pieceType) {
             case PAWN:
                 int[][] moveSet = piece.getPossibleMoves();
-                if (moveDifference == moveSet[0] || moveDifference == moveSet[3]) {
+                if (Arrays.equals(moveDifference, moveSet[0]) || Arrays.equals(moveDifference, moveSet[3])) {
                     if (newSquare.isOccupied() && newSquare.getPiece().getTeam() != piece.getTeam()) {
                         moveType = MoveType.NORMAL;
                     } else if (enPassantLegal(piece, moveDifference[0])){
                         moveType = MoveType.EN_PASSANT;
                     }
-                } else if (moveDifference == moveSet[1] || moveDifference == moveSet[2]) {
-                    Square oneStep = moveDifference == moveSet[1] ? newSquare : getSquare(new Coordinates(oldX, (oldY + newCoords.getY()) / 2));
+                } else if (Arrays.equals(moveDifference, moveSet[1]) || Arrays.equals(moveDifference, moveSet[2])) {
+                    Square oneStep = Arrays.equals(moveDifference, moveSet[1]) ? newSquare : getSquare(new Coordinates(oldX, (oldY + newCoords.getY()) / 2));
                     if (!oneStep.isOccupied()) {
-                        if (moveDifference == moveSet[2]) {
+                        if (Arrays.equals(moveDifference, moveSet[2])) {
                             if (!newSquare.isOccupied()) {
                                 moveType = MoveType.NORMAL;
                             }
@@ -268,12 +271,16 @@ public class Board extends GridPane {
                 //After moving, the team's king must not be in check
                 move(piece, newCoords, moveType);
                 if (inCheck(getSquare(getKing(piece.getTeam()).getCoordinates()), piece.getTeam())) {
+                    System.out.println("Your king is in check");
                     moveType = MoveType.NONE;
                 }
                 revertMove();
             } else {
+                System.out.println("Square occupied by same team");
                 moveType = MoveType.NONE;
             }
+        } else {
+            System.out.println("legalByBoardLogic was passed MoveType.NONE as arg");
         }
         if (moveType == MoveType.NONE) {
             System.out.println("Move failed board logic");
@@ -387,7 +394,7 @@ public class Board extends GridPane {
                     continue;
                 }
             }
-            if (new int[]{newX, newY} == move) {
+            if (Arrays.equals(new int[]{newX, newY}, move)) {
                 moveType = MoveType.NORMAL;
                 break;
             }

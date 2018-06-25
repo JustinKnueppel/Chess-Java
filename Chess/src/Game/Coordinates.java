@@ -58,5 +58,16 @@ public class Coordinates {
         return new String(new char[]{LETTERS.charAt(x), NUMBERS.charAt(y)});
 
     }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Coordinates)) {
+            return false;
+        }
+        Coordinates c = (Coordinates)o;
+        return c.getX() == this.getX() && c.getY() == this.getY();
+    }
 
 }
