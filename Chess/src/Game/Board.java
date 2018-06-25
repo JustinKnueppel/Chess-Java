@@ -333,7 +333,9 @@ public class Board extends GridPane {
                 case NONE:
                     break;
                 case NORMAL:
-                    getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
+                    if (lastMove.wasCapture()) {
+                        getSquare(lastMove.getNewCoordinates()).putPiece(lastMove.getOldPiece());
+                    }
                     break;
                 case EN_PASSANT:
                     getSquare(lastMove.getEnPassantPawn().getCoordinates()).putPiece(lastMove.getEnPassantPawn());

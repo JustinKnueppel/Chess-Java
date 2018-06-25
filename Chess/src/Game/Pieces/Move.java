@@ -5,6 +5,7 @@ import Game.MoveType;
 import Game.Square;
 
 public final class Move {
+    private boolean wasCapture;
     private Piece oldPiece;
     private Piece newPiece;
     private Coordinates oldCoordinates;
@@ -17,13 +18,14 @@ public final class Move {
         this.newPiece = movingPiece;
         this.newCoordinates = newSquare.getID();
         this.oldCoordinates = movingPiece.getCoordinates();
-        if (moveType != MoveType.EN_PASSANT) {
-            this.oldPiece = newSquare.isOccupied() ? newSquare.getPiece() : null;
-        } else {
-            //TODO: find a way to get the deleted pawn
-        }
+        this.wasCapture = newSquare.isOccupied() || moveType == MoveType.EN_PASSANT;
+        /*
+        Old piece will be separate from a pawn captured via En Passant
+         */
+        this.oldPiece = newSquare.isOccupied() ? newSquare.getPiece() : null;
         this.moveType = moveType;
     }
+    public boolean wasCapture() {return wasCapture;}
     public Piece getOldPiece() {
         return oldPiece;
     }
