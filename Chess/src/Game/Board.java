@@ -445,13 +445,15 @@ public class Board extends GridPane {
      */
     private boolean enPassantLegal(Piece pawn, int xChange) {
         boolean isLegal = false;
-        Move lastMove = previousMoves.peek();
-        Coordinates enemyPawnLocation = lastMove.getNewCoordinates();
-        Coordinates currentLocation = pawn.getCoordinates();
-        if (lastMove.getNewPiece().getType() == PieceType.PAWN
-                && Math.abs(enemyPawnLocation.getY() - lastMove.getOldCoordinates().getY()) == 2) {
-            if (currentLocation.getY() == enemyPawnLocation.getY() && enemyPawnLocation.getX() - currentLocation.getX() == xChange) {
-                isLegal = true;
+        if (!previousMoves.empty()) {
+            Move lastMove = previousMoves.peek();
+            Coordinates enemyPawnLocation = lastMove.getNewCoordinates();
+            Coordinates currentLocation = pawn.getCoordinates();
+            if (lastMove.getNewPiece().getType() == PieceType.PAWN
+                    && Math.abs(enemyPawnLocation.getY() - lastMove.getOldCoordinates().getY()) == 2) {
+                if (currentLocation.getY() == enemyPawnLocation.getY() && enemyPawnLocation.getX() - currentLocation.getX() == xChange) {
+                    isLegal = true;
+                }
             }
         }
         return isLegal;

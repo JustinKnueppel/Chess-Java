@@ -41,6 +41,7 @@ public abstract class Piece extends Pane {
             mouseX = e.getSceneX();
             mouseY = e.getSceneY();
             System.out.println("init x: " + this.coordinates.getX() + " init y: " +  this.coordinates.getY());
+            System.out.println("init mX " + mouseX + " init mY " + mouseY);
         });
         setOnMouseDragged(e -> {
             double offsetX = e.getSceneX() - mouseX;
