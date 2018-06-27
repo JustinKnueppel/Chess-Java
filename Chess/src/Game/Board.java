@@ -302,13 +302,17 @@ public class Board extends GridPane {
         assert moveType != MoveType.NONE : "MoveType.NONE passed to move method";
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
-        this.previousMoves.push(new Move(piece, newSquare, moveType));
-        this.moveCounter++;
+        /*
+        Helper moves are normal moves, but do not change other attributes of board logic
+         */
+        if (moveType != MoveType.HELPER) {
+            this.previousMoves.push(new Move(piece, newSquare, moveType));
+            this.moveCounter++;
+            piece.setHasMoved(true);
+        }
         switch (moveType) {
             case HELPER:
-                //Regular move except it does not interfere with this.previousMoves
-                this.previousMoves.pop();
-                moveCounter--;
+                //Regular move except it does not affect board logic
             case NORMAL:
                 oldSquare.setVacant();
                 newSquare.putPiece(piece);
@@ -329,6 +333,7 @@ public class Board extends GridPane {
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
             move(lastMove.getNewPiece(), lastMove.getOldCoordinates(), MoveType.NORMAL);
+            lastMove.getNewPiece().setHasMoved(lastMove.newPieceHadMoved());
             switch (lastMove.getMoveType()) {
                 case NONE:
                     break;

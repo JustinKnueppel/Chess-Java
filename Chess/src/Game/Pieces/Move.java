@@ -8,6 +8,7 @@ public final class Move {
     private boolean wasCapture;
     private Piece oldPiece;
     private Piece newPiece;
+    private boolean newPieceHadMoved;
     private Coordinates oldCoordinates;
     private Coordinates newCoordinates;
     private MoveType moveType;
@@ -16,6 +17,7 @@ public final class Move {
 
     public Move(Piece movingPiece, Square newSquare, MoveType moveType) {
         this.newPiece = movingPiece;
+        this.newPieceHadMoved = movingPiece.getHasMoved();
         this.newCoordinates = newSquare.getID();
         this.oldCoordinates = movingPiece.getCoordinates();
         this.wasCapture = newSquare.isOccupied() || moveType == MoveType.EN_PASSANT;
@@ -33,6 +35,8 @@ public final class Move {
     public Piece getNewPiece() {
         return newPiece;
     }
+
+    public boolean newPieceHadMoved() {return newPieceHadMoved; }
 
     public Coordinates getNewCoordinates() {
         return newCoordinates;
