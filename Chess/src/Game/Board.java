@@ -125,7 +125,7 @@ public class Board extends GridPane {
      *      The team to which the piece belongs for initialization
      * @return a specific implementation of Game.Pieces.Piece based on name
      */
-    private Piece getPieceByName(PieceType type, Coordinates coordinates, TeamColor team) {
+    public Piece getPieceByName(PieceType type, Coordinates coordinates, TeamColor team) {
         Piece piece;
         switch (type) {
             case ROOK:
@@ -296,7 +296,7 @@ public class Board extends GridPane {
      * @param newCoords
      *      New coordinates for piece
      */
-    private void move(Piece piece, Coordinates newCoords, MoveType moveType) {
+    public void move(Piece piece, Coordinates newCoords, MoveType moveType) {
         assert moveType != MoveType.NONE : "MoveType.NONE passed to move method";
         Square oldSquare = getSquare(piece.getCoordinates());
         Square newSquare = getSquare(newCoords);
