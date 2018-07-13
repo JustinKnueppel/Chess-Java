@@ -15,7 +15,6 @@ public class Board extends GridPane {
      */
     private final int GRID_SIZE = 8;
     private Square[][] grid;
-    private PieceType[] backRowOrder;
     private Map<TeamColor, Piece> kings;
     private Stack<Move> previousMoves;
     /*
@@ -29,10 +28,7 @@ public class Board extends GridPane {
     public Board() {
         kings = new HashMap<>();
         previousMoves = new Stack<>();
-        backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
-                PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         initializeGrid();
-        initializePieces();
         moveCounter = 0;
     }
 
@@ -87,9 +83,11 @@ public class Board extends GridPane {
     }
 
     /**
-     * Place the correct pieces on the chess board according to this.backRowOrder and a second rank of pawns.
+     * Place the correct pieces on the chess board
      */
-    private void initializePieces() {
+    public void initializePieces() {
+        final PieceType[] backRowOrder = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN,
+                PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
         final int whiteBackRow = 0;
         final int whitePawnRow = 1;
         final int blackBackRow = 7;
@@ -101,7 +99,7 @@ public class Board extends GridPane {
             Place white pieces
              */
             this.grid[x][whiteBackRow]
-                    .putPiece(getPieceByName(this.backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
+                    .putPiece(getPieceByName(backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
             add(this.grid[x][whiteBackRow].getPiece(), x, convertY(whiteBackRow));
             this.grid[x][whitePawnRow]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
@@ -110,7 +108,7 @@ public class Board extends GridPane {
             Place black pieces
              */
             this.grid[x][blackBackRow]
-                    .putPiece(getPieceByName(this.backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
+                    .putPiece(getPieceByName(backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
             add(this.grid[x][blackBackRow].getPiece(), x, convertY(blackBackRow));
             this.grid[x][blackPawnRow]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
