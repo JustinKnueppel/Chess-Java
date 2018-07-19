@@ -100,19 +100,19 @@ public class Board extends GridPane {
              */
             this.grid[x][whiteBackRow]
                     .putPiece(getPieceByName(backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
-            add(this.grid[x][whiteBackRow].getPiece(), x, convertY(whiteBackRow));
+//            add(this.grid[x][whiteBackRow].getPiece(), x, convertY(whiteBackRow));
             this.grid[x][whitePawnRow]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
-            add(this.grid[x][whitePawnRow].getPiece(), x, convertY(whitePawnRow));
+//            add(this.grid[x][whitePawnRow].getPiece(), x, convertY(whitePawnRow));
             /*
             Place black pieces
              */
             this.grid[x][blackBackRow]
                     .putPiece(getPieceByName(backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
-            add(this.grid[x][blackBackRow].getPiece(), x, convertY(blackBackRow));
+//            add(this.grid[x][blackBackRow].getPiece(), x, convertY(blackBackRow));
             this.grid[x][blackPawnRow]
                     .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
-            add(this.grid[x][blackPawnRow].getPiece(), x, convertY(blackPawnRow));
+//            add(this.grid[x][blackPawnRow].getPiece(), x, convertY(blackPawnRow));
         }
 
     }
@@ -152,7 +152,7 @@ public class Board extends GridPane {
                 piece = null;
                 break;
         }
-        piece.setOnMouseReleased(e -> {
+      /*  piece.setOnMouseReleased(e -> {
             System.out.println("x scene: " + e.getSceneX() + " y scene: " + e.getSceneY());
             int x = toBoard(e.getSceneX());
             int y = convertY(toBoard(e.getSceneY()));
@@ -168,7 +168,7 @@ public class Board extends GridPane {
                     piece.move(piece.getCoordinates());
                 }
             }
-        });
+        });*/
         return piece;
     }
 
@@ -203,7 +203,7 @@ public class Board extends GridPane {
      *      The potential new coordinates for piece
      * @return a MoveType corresponding to the legality of the move
      */
-    private MoveType isLegalMove(Piece piece, Coordinates newCoords) {
+    public MoveType isLegalMove(Piece piece, Coordinates newCoords) {
         MoveType moveType = MoveType.NONE;
         //Get starting coordinates
         int oldX = piece.getCoordinates().getX();

@@ -38,9 +38,23 @@ class KingTest {
         Move Piece
          */
         Coordinates newCoords = new Coordinates(4, 5);
-        board.move(king, newCoords, MoveType.NORMAL);
+        MoveType moveType = board.isLegalMove(king, newCoords);
+        board.move(king, newCoords, moveType);
 
+        assertEquals(moveType, MoveType.NORMAL);
         assertEquals(king, board.getGrid()[newCoords.getX()][newCoords.getY()].getPiece());
+    }
+    public void testDown() {
+
+    }
+    private void testMove(Piece piece, Coordinates newCoordinates) {
+        Board board = new Board();
+        board.getGrid()[piece.getCoordinates().getX()][piece.getCoordinates().getY()].putPiece(piece);
+        MoveType moveType = board.isLegalMove(piece, newCoordinates);
+
+        assertEquals(moveType, MoveType.NORMAL);
+        assertEquals(piece, board.getGrid()[piece.getCoordinates().getX()][piece.getCoordinates().getY()]);
+
     }
 
 
