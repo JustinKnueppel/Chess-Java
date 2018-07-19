@@ -51,15 +51,6 @@ public class Board extends GridPane {
     }
 
     /**
-     * Set a king to a given team.
-     * @param king
-     *      The king being set
-     */
-    private void setKing(Piece king) {
-        kings.put(king.getTeam(), king);
-    }
-
-    /**
      * Initializes this.grid with ID'd squares in the style of A1, B2 etc.
      */
     private void initializeGrid() {
@@ -99,59 +90,37 @@ public class Board extends GridPane {
             Place white pieces
              */
             this.grid[x][whiteBackRow]
-                    .putPiece(getPieceByName(backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
-//            add(this.grid[x][whiteBackRow].getPiece(), x, convertY(whiteBackRow));
+                    .putPiece(Piece.getPieceByName(backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
+
             this.grid[x][whitePawnRow]
-                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
-//            add(this.grid[x][whitePawnRow].getPiece(), x, convertY(whitePawnRow));
+                    .putPiece(Piece.getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
+
             /*
             Place black pieces
              */
             this.grid[x][blackBackRow]
-                    .putPiece(getPieceByName(backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
-//            add(this.grid[x][blackBackRow].getPiece(), x, convertY(blackBackRow));
-            this.grid[x][blackPawnRow]
-                    .putPiece(getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
-//            add(this.grid[x][blackPawnRow].getPiece(), x, convertY(blackPawnRow));
-        }
+                    .putPiece(Piece.getPieceByName(backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
 
+            this.grid[x][blackPawnRow]
+                    .putPiece(Piece.getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
+
+        }
+        setKings();
     }
 
     /**
-     * Based on a PieceType, return an initialized object of the correct implementation.
-     * @param type
-     *      The type of the piece
-     * @param team
-     *      The team to which the piece belongs for initialization
-     * @return a specific implementation of Game.Pieces.Piece based on name
+     * Populate the kings hashmap.
      */
-    public Piece getPieceByName(PieceType type, Coordinates coordinates, TeamColor team) {
-        Piece piece;
-        switch (type) {
-            case ROOK:
-                piece = new Rook(coordinates, team);
-                break;
-            case KNIGHT:
-                piece = new Knight(coordinates, team);
-                break;
-            case BISHOP:
-                piece = new Bishop(coordinates, team);
-                break;
-            case QUEEN:
-                piece = new  Queen(coordinates, team);
-                break;
-            case KING:
-                piece = new King(coordinates, team);
-                setKing(piece);
-                break;
-            case PAWN:
-                piece = new Pawn(coordinates, team);
-                break;
-            default:
-                System.out.println("Game.Pieces.Piece could not be initialized");
-                piece = null;
-                break;
+    private void setKings() {
+        for(Square[] row : grid) {
+            for (Square square : row) {
+                if (square.isOccupied() && square.getPiece().getType() == PieceType.KING) {
+                    kings.put(square.getPiece().getTeam(), square.getPiece());
+                }
+            }
         }
+    }
+
       /*  piece.setOnMouseReleased(e -> {
             System.out.println("x scene: " + e.getSceneX() + " y scene: " + e.getSceneY());
             int x = toBoard(e.getSceneX());
@@ -169,8 +138,7 @@ public class Board extends GridPane {
                 }
             }
         });*/
-        return piece;
-    }
+
 
 
     /**
