@@ -4,58 +4,52 @@ import Game.MoveType;
 import Game.Pieces.Piece;
 import Game.Pieces.PieceType;
 import Game.TeamColor;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import javafx.application.Application;
+import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.api.function.Executable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class KingTest {
+    private Board board;
+    private Piece piece;
+    private Coordinates startCoords;
     @BeforeEach
-    void init() {
-        Application app = new Application() {
-            @Override
-            public void start(Stage primaryStage) throws Exception {
-                primaryStage.setScene(new Scene(new Pane()));
-                primaryStage.show();
-            }
-        };
-    }
-    @Test
-    public void testUp() {
+    void initBoard() {
         /*
         Initialize custom board
          */
-        Board board = new Board();
-        Coordinates startCoords = new Coordinates(4, 4);
-        Piece king = board.getPieceByName(PieceType.KING, startCoords, TeamColor.WHITE);
-        board.getGrid()[startCoords.getX()][startCoords.getY()].putPiece(king);
-        /*
-        Move Piece
-         */
-        Coordinates newCoords = new Coordinates(4, 5);
-        MoveType moveType = board.isLegalMove(king, newCoords);
-        board.move(king, newCoords, moveType);
-
-        assertEquals(moveType, MoveType.NORMAL);
-        assertEquals(king, board.getGrid()[newCoords.getX()][newCoords.getY()].getPiece());
-    }
-    public void testDown() {
-
-    }
-    private void testMove(Piece piece, Coordinates newCoordinates) {
-        Board board = new Board();
-        board.getGrid()[piece.getCoordinates().getX()][piece.getCoordinates().getY()].putPiece(piece);
-        MoveType moveType = board.isLegalMove(piece, newCoordinates);
-
-        assertEquals(moveType, MoveType.NORMAL);
-        assertEquals(piece, board.getGrid()[piece.getCoordinates().getX()][piece.getCoordinates().getY()]);
-
+        board = new Board();
+        board.initializePieces();
+        startCoords = new Coordinates(4,4 );
+        piece = Piece.getPieceByName(PieceType.KING, startCoords, TeamColor.WHITE);
+        board.getGrid()[startCoords.getX()][startCoords.getY()].putPiece(piece);
     }
 
+    @TestFactory
+    public Collection<DynamicTest> testMoves() {
+
+        Collection<DynamicTest> dynamicTests = new ArrayList<>();
+
+        for (int[] move : piece.getPossibleMoves()) {
+            Coordinates newCoords = new Coordinates(piece.getCoordinates().getX() + move[0], piece.getCoordinates().getY() + move[1]);
+            MoveType moveType = board.isLegalMove(piece, newCoords);
+            board.move(piece, newCoords, moveType);
+
+            Executable exec = () -> assertEquals(moveType, MoveType.NORMAL);
+
+            String testName = "Testing move to X:" + newCoords.getX() + " Y:" + newCoords.getY();
+
+            DynamicTest dynamicTest = DynamicTest.dynamicTest(testName, exec);
+
+            dynamicTests.add(dynamicTest);
+            board.revertMove();
+
+        }
+
+        return dynamicTests;
+    }
 
 }

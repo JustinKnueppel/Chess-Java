@@ -295,7 +295,7 @@ public class Board extends GridPane {
     /**
      * If possible, undo the last made move
      */
-    private void revertMove() {
+    public void revertMove() {
         if (!this.previousMoves.empty()) {
             Move lastMove = this.previousMoves.pop();
             move(lastMove.getNewPiece(), lastMove.getOldCoordinates(), MoveType.NORMAL);
