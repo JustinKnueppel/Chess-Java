@@ -125,7 +125,7 @@ public abstract class Piece {
     /**
      * Retrieve image representation of this.
      */
-    private Image getImage() {
+    public Image getImage() {
         if (this.image == null) {
             //Set the image of the correct piece
             String imageURL = getImageURL();

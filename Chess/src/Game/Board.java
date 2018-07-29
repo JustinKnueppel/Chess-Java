@@ -13,7 +13,7 @@ public class Board extends GridPane {
     /*
     Declare useful constants and private variables
      */
-    private final int GRID_SIZE = 8;
+    public final int GRID_SIZE = 8;
     private Square[][] grid;
     private Map<TeamColor, Piece> kings;
     private Stack<Move> previousMoves;

@@ -4,17 +4,20 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class View extends Application{
     private Controller controller;
     public final static int Y_OFFSET = 7;
+    private Image[][] pieces;
 
     public static void main(String args) {
         launch(args);
     }
     private void createMVC() {
         Model model = new Model();
+        pieces = new Image[model.getBoard().GRID_SIZE][model.getBoard().GRID_SIZE];
         this.controller = new Controller(this, model);
     }
 
@@ -37,6 +40,10 @@ public class View extends Application{
     
     public static void main(String[] args) {
     	launch(args);
+    }
+    
+    public Image[][] getPieces() {
+    	return this.pieces;
     }
 
 

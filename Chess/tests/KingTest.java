@@ -1,3 +1,5 @@
+package Chess.tests;
+
 import Game.Board;
 import Game.Coordinates;
 import Game.MoveType;
