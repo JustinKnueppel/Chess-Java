@@ -13,7 +13,7 @@ public class Board extends GridPane {
     /*
     Declare useful constants and private variables
      */
-    public final int GRID_SIZE = 8;
+    public static final int GRID_SIZE = 8;
     private Square[][] grid;
     private Map<TeamColor, Piece> kings;
     private Stack<Move> previousMoves;
@@ -85,7 +85,7 @@ public class Board extends GridPane {
         final int blackPawnRow = 6;
 
 
-        for(int x = 0; x < this.GRID_SIZE; x++) {
+        for(int x = 0; x < GRID_SIZE; x++) {
             /*
             Place white pieces
              */
@@ -160,7 +160,7 @@ public class Board extends GridPane {
      * @return true iff 0 <= pos < this.GRID_SIZE
      */
     private boolean inBounds(int pos) {
-        return pos >= 0 && pos < this.GRID_SIZE;
+        return pos >= 0 && pos < GRID_SIZE;
     }
 
     /**
