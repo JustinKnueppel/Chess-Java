@@ -3,6 +3,8 @@ package GUI;
 import java.util.ArrayList;
 
 import Game.Board;
+import Game.Coordinates;
+import Game.Pieces.Piece;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -22,8 +24,7 @@ public class View extends Application{
         launch(args);
     }
     private void createMVC() {  
-        Model model = new Model();
-        this.controller = new Controller(this, model);
+        this.controller = new Controller(this);
     }
 
     public static final int TILE_SIZE = 100;
@@ -50,13 +51,35 @@ public class View extends Application{
     public static void main(String[] args) {
     	launch(args);
     }
-    
-    public GridPane getPieces() {
-    	return this.pieces;
+
+    /*
+     * Public methods for controller to use.
+     */
+
+    /**
+     * Process potential move.
+     * @param oldCoords
+     *          Starting coordinates of moving piece.
+     * @param newCoords
+     *          Ending coordinates of moving piece.
+     */
+    public void processMove(Coordinates oldCoords, Coordinates newCoords) {
+        this.controller.processMove(oldCoords, newCoords);
     }
-    
-    public GridPane getSquares() {
-    	return this.squares;
+    /**
+     * Place given pieces on board.
+     * @param pieces
+     *      List of pieces to be placed on board
+     */
+    public void placePieces(ArrayList<Piece> pieces) {
+        //TODO: Place each piece by its coordinates
+    }
+
+    /**
+     * Remove all pieces from board.
+     */
+    public void clearBoard() {
+        //TODO: Remove all pieces from board
     }
 
 

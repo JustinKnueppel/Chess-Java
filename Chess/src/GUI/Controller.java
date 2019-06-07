@@ -3,6 +3,7 @@ package GUI;
 import java.util.ArrayList;
 
 import Game.Board;
+import Game.Coordinates;
 import Game.Square;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,30 +13,18 @@ public class Controller {
     private View view;
     private Model model;
     
-    public Controller(View view, Model model) {
+    public Controller(View view) {
         this.view = view;
-        this.model = model;
-        updateView();
+        this.model = new Model();
+        this.view.placePieces(this.model.getPieces());
     }
 
-    public Model getModel() {
-        return model;
+    public void processMove(Coordinates oldCoords, Coordinates newCoords) {
+        if (this.model.legalMove(oldCoords, newCoords)) {
+            this.model.makeMove(oldCoords, newCoords);
+            this.view.placePieces(this.model.getPieces());
+        }
     }
 
-    public View getView() {
-        return view;
-    }
-    private void updateView() {
-    	Square[][] grid = model.getGrid();
-    	GridPane pieces = view.getPieces();
-    	
-    	for (int x = 0; x < Board.GRID_SIZE; x++) {
-    		for (int y = 0; y < Board.GRID_SIZE; y++ ) {
-    			/*
-    			 * Add the pieces to the gridpane, then delete all children before the first added
-    			 */
-    			Image img = grid[x][y].isOccupied() ? grid[x][y].getPiece().getImage() : null;
-    		}
-    	}
-    }
+
 }
