@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Game.Board;
 import Game.Coordinates;
 import Game.Pieces.King;
+import Game.Pieces.Pawn;
 import Game.Pieces.Piece;
 import Game.Pieces.PieceType;
 import Game.TeamColor;
@@ -105,8 +106,7 @@ public class View extends Application{
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(createContent());
         this.controller = new Controller(this);
-        Piece piece = new King(new Coordinates(1, 0), TeamColor.WHITE);
-        placePiece(piece);
+
         primaryStage.setTitle("Chess");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -216,9 +216,12 @@ public class View extends Application{
      * Remove all pieces from board.
      */
     public void clearBoard() {
-        //TODO: Remove all pieces from board
+        for (Node node: this.pieces.getChildren()) {
+            if (!(node instanceof ImageView)) {
+                continue;
+            }
+            ImageView imageView = (ImageView) node;
+            imageView.setImage(null);
+        }
     }
-
-
-
 }
