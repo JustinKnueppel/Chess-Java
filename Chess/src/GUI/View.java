@@ -10,12 +10,15 @@ import Game.Pieces.Piece;
 import Game.Pieces.PieceType;
 import Game.TeamColor;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -70,6 +73,9 @@ public class View extends Application{
                 imageView.setFitHeight(TILE_SIZE);
                 imageView.setFitWidth(TILE_SIZE);
 
+                /*
+                 * Place view
+                 */
                 Coordinates coordinates = convertCoordinates(new Coordinates(i, j));
                 piecesGrid.add(imageView, coordinates.getX(), coordinates.getY());
             }
@@ -176,6 +182,10 @@ public class View extends Application{
         picturePath.append(".png");
 
         Image pieceImage = new Image(picturePath.toString());
+
+        /*
+         * Place piece
+         */
 
         Node square = getSquare(convertCoordinates(piece.getCoordinates()));
         if (!(square instanceof ImageView)) {

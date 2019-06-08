@@ -13,11 +13,14 @@ public class Model {
     public Model() {
         this.board = new Board();
         this.grid = board.getGrid();
+        this.board.initializePieces();
     }
 
     public ArrayList<Piece> getPieces() {
-        //TODO: Get pieces from board
-        return new ArrayList<>();
+        ArrayList<Piece> pieces = new ArrayList<>();
+        pieces.addAll(this.board.getBlackPieces());
+        pieces.addAll(this.board.getWhitePieces());
+        return pieces;
     }
     public boolean legalMove(Coordinates oldCoords, Coordinates newCoords) {
         //TODO: Determine if move is legal

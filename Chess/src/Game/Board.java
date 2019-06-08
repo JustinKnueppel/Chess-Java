@@ -4,10 +4,7 @@ import GUI.View;
 import Game.Pieces.*;
 import javafx.scene.layout.GridPane;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class Board extends GridPane {
     /*
@@ -17,6 +14,8 @@ public class Board extends GridPane {
     private Square[][] grid;
     private Map<TeamColor, Piece> kings;
     private Stack<Move> previousMoves;
+    private ArrayList<Piece> whitePieces;
+    private ArrayList<Piece> blackPieces;
     /*
     Used to determine which team can move
      */
@@ -85,24 +84,36 @@ public class Board extends GridPane {
         final int blackPawnRow = 6;
 
 
+        this.whitePieces = new ArrayList<>();
+        this.blackPieces = new ArrayList<>();
+        Piece piece;
+
         for(int x = 0; x < GRID_SIZE; x++) {
             /*
             Place white pieces
              */
+            piece = Piece.getPieceByName(backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE);
+            this.whitePieces.add(piece);
             this.grid[x][whiteBackRow]
-                    .putPiece(Piece.getPieceByName(backRowOrder[x], new Coordinates(x, whiteBackRow), TeamColor.WHITE));
+                    .putPiece(piece);
 
+            piece = Piece.getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE);
+            this.whitePieces.add(piece);
             this.grid[x][whitePawnRow]
-                    .putPiece(Piece.getPieceByName(PieceType.PAWN, new Coordinates(x, whitePawnRow), TeamColor.WHITE));
+                    .putPiece(piece);
 
             /*
             Place black pieces
              */
+            piece = Piece.getPieceByName(backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK);
+            this.blackPieces.add(piece);
             this.grid[x][blackBackRow]
-                    .putPiece(Piece.getPieceByName(backRowOrder[x], new Coordinates(x, blackBackRow), TeamColor.BLACK));
+                    .putPiece(piece);
 
+            piece = Piece.getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK);
+            this.blackPieces.add(piece);
             this.grid[x][blackPawnRow]
-                    .putPiece(Piece.getPieceByName(PieceType.PAWN, new Coordinates(x, blackPawnRow), TeamColor.BLACK));
+                    .putPiece(piece);
 
         }
         setKings();
@@ -650,5 +661,13 @@ public class Board extends GridPane {
             }
         }
         return false;
+    }
+
+    public ArrayList<Piece> getWhitePieces() {
+        return whitePieces;
+    }
+
+    public ArrayList<Piece> getBlackPieces() {
+        return blackPieces;
     }
 }
