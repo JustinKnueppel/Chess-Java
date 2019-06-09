@@ -17,7 +17,7 @@ public final class Move {
 
     public Move(Piece movingPiece, Square newSquare, MoveType moveType) {
         this.newPiece = movingPiece;
-        this.newPieceHadMoved = movingPiece.getHasMoved();
+        this.newPieceHadMoved = movingPiece.hasMoved();
         this.newCoordinates = newSquare.getID();
         this.oldCoordinates = movingPiece.getCoordinates();
         this.wasCapture = newSquare.isOccupied() || moveType == MoveType.EN_PASSANT;

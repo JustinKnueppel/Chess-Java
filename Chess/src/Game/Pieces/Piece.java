@@ -2,7 +2,6 @@ package Game.Pieces;
 
 import Game.Coordinates;
 import Game.TeamColor;
-import javafx.scene.image.Image;
 
 
 public abstract class Piece {
@@ -11,10 +10,7 @@ public abstract class Piece {
     boolean hasMoved;
     PieceType type;
     Coordinates coordinates;
-    private Image image;
     int[][] possibleMoves;
-    //Used for the image URLs
-    static String PRE_IMAGE = "file:\\C:\\Users\\justi\\IdeaProjects\\Chess-Java\\Chess\\Images\\";
     /**
      * Based on a PieceType, return an initialized object of the correct implementation.
      * @param type
@@ -67,24 +63,6 @@ public abstract class Piece {
         this.hasMoved = false;
         initMoveDirections();
         initPieceType();
-/*
-        setOnMousePressed(e -> {
-            mouseX = e.getSceneX();
-            mouseY = e.getSceneY();
-            System.out.println("init x: " + this.coordinates.getX() + " init y: " +  this.coordinates.getY());
-            System.out.println("init mX " + mouseX + " init mY " + mouseY);
-        });
-        setOnMouseDragged(e -> {
-            double offsetX = e.getSceneX() - mouseX;
-            double offsetY = e.getSceneY() - mouseY;
-
-            Piece piece = (Piece)e.getSource();
-            piece.setTranslateX(piece.getTranslateX() + offsetX);
-            piece.setTranslateY(piece.getTranslateY() + offsetY);
-
-            mouseX = e.getSceneX();
-            mouseY = e.getSceneY();
-        });*/
     }
 
     /**
@@ -123,27 +101,6 @@ public abstract class Piece {
     abstract void initPieceType();
 
     /**
-     * Retrieve image representation of this.
-     */
-    public Image getImage() {
-        if (this.image == null) {
-            //Set the image of the correct piece
-            String imageURL = getImageURL();
-            image = new Image(imageURL);
-        }
-        return image;
-
-    }
-
-    /**
-     * Retrieve the correct image URL based on the piece.
-     * @return a PNG url
-     */
-    private String getImageURL() {
-        return PRE_IMAGE + this.team.name() + this.type.name() + ".png";
-    }
-
-    /**
      * Moves the given piece to new Coordinates.
      * @param newCoordinates
      *      The target square for this
@@ -163,10 +120,10 @@ public abstract class Piece {
     }
 
     /**
-     * Determine if the piece has moves.
+     * Determine if the piece has moved.
      * @return this.getHasMoved
      */
-    public boolean getHasMoved() {
+    public boolean hasMoved() {
         return hasMoved;
     }
     public void setHasMoved(boolean hasMoved) {this.hasMoved = hasMoved;}

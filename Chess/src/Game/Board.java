@@ -428,9 +428,9 @@ public class Board extends GridPane {
         boolean isLegal = false;
         int kingX = king.getCoordinates().getX();
         int kingY = king.getCoordinates().getY();
-        if (!king.getHasMoved() && Math.abs(newX - kingX) == 2) {
+        if (!king.hasMoved() && Math.abs(newX - kingX) == 2) {
             Square rookSquare = getCastleRookSquare(king, newX);
-            if (rookSquare.isOccupied() && !rookSquare.getPiece().getHasMoved() && rookSquare.getPiece().getType() == PieceType.ROOK) {
+            if (rookSquare.isOccupied() && !rookSquare.getPiece().hasMoved() && rookSquare.getPiece().getType() == PieceType.ROOK) {
                 //Check danger squares for king, and occupation of squares in between
                 if(!obstructedView(king, new int[]{rookSquare.getID().getX(), rookSquare.getID().getY()})) {
                     if (!inCheck(getSquare(new Coordinates((newX + kingX)/2, kingY)), king.getTeam())

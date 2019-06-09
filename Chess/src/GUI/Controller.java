@@ -22,6 +22,7 @@ public class Controller {
     public void processMove(Coordinates oldCoords, Coordinates newCoords) {
         if (this.model.legalMove(oldCoords, newCoords)) {
             this.model.makeMove(oldCoords, newCoords);
+            this.view.clearBoard();
             this.view.placePieces(this.model.getPieces());
         }
     }
