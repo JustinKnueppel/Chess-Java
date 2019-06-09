@@ -74,6 +74,13 @@ public class View extends Application{
                 imageView.setFitWidth(TILE_SIZE);
 
                 /*
+                 * Set event handlers
+                 */
+
+                imageView.setOnMousePressed(imageViewOnMousePressedEventHandler);
+                imageView.setOnMouseDragged(imageViewOnMouseDraggedEventHandler);
+
+                /*
                  * Place view
                  */
                 Coordinates coordinates = convertCoordinates(new Coordinates(i, j));
@@ -198,7 +205,42 @@ public class View extends Application{
     }
 
     /*
+     * Event handlers
+     */
+
+    private double orgSceneX, orgSceneY;
+    private double orgTranslateX, orgTranslateY;
+
+    EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    orgSceneX = mouseEvent.getSceneX();
+                    orgSceneY = mouseEvent.getSceneY();
+                    orgTranslateX = ((ImageView)(mouseEvent.getSource())).getTranslateX();
+                    orgTranslateY = ((ImageView)(mouseEvent.getSource())).getTranslateY();
+                }
+            };
+
+    EventHandler<MouseEvent> imageViewOnMouseDraggedEventHandler =
+            new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    double offsetX = mouseEvent.getSceneX() - orgSceneX;
+                    double offsetY = mouseEvent.getSceneY() - orgSceneY;
+                    double newTranslateX = orgTranslateX + offsetX;
+                    double newTranslateY = orgTranslateY + offsetY;
+
+                    ((ImageView)(mouseEvent.getSource())).setTranslateX(newTranslateX);
+                    ((ImageView)(mouseEvent.getSource())).setTranslateY(newTranslateY);
+                }
+            };
+
+    /*
+     * =====================================
      * Public methods for controller to use.
+     * =====================================
      */
 
     /**
