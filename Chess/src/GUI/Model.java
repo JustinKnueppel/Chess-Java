@@ -24,7 +24,7 @@ public class Model {
     }
     public boolean legalMove(Coordinates oldCoords, Coordinates newCoords) {
         //TODO: Determine if move is legal
-        return false;
+        return true;
     }
     public void makeMove(Coordinates oldCoords, Coordinates newCoords) {
         //TODO: Make move

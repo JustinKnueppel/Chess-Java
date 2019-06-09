@@ -132,26 +132,6 @@ public class Board extends GridPane {
         }
     }
 
-      /*  piece.setOnMouseReleased(e -> {
-            System.out.println("x scene: " + e.getSceneX() + " y scene: " + e.getSceneY());
-            int x = toBoard(e.getSceneX());
-            int y = convertY(toBoard(e.getSceneY()));
-            System.out.println("x after release: " + x + " y after release: " + y);
-            //determine if legal move, have way to abort move, have way to do move
-            if ((piece.getTeam() == TeamColor.WHITE ? 0 : 1) == (moveCounter % 2)) {
-                MoveType moveType = isLegalMove(piece, new Coordinates(x, y));
-                System.out.println(moveType);
-                if (moveType != MoveType.NONE) {
-                    move(piece, new Coordinates(x, y), moveType);
-                } else {
-                    //TODO: force revert the attempted move
-                    piece.move(piece.getCoordinates());
-                }
-            }
-        });*/
-
-
-
     /**
      * Given a String ID, return the corresponding Game.Square.
      * @param id

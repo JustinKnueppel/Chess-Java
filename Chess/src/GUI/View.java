@@ -79,6 +79,7 @@ public class View extends Application{
 
                 imageView.setOnMousePressed(imageViewOnMousePressedEventHandler);
                 imageView.setOnMouseDragged(imageViewOnMouseDraggedEventHandler);
+                imageView.setOnMouseReleased(imageViewOnMouseReleasedEventHandler);
 
                 /*
                  * Place view
@@ -204,12 +205,26 @@ public class View extends Application{
         imageView.setImage(pieceImage);
     }
 
+    /**
+     * Process potential move.
+     * @param oldCoords
+     *          Starting coordinates of moving piece.
+     * @param newCoords
+     *          Ending coordinates of moving piece.
+     */
+    private void processMove(Coordinates oldCoords, Coordinates newCoords) {
+        this.controller.processMove(oldCoords, newCoords);
+    }
+
     /*
+     * ==================
      * Event handlers
+     * ==================
      */
 
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
+    private Coordinates start, finish;
 
     EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
             new EventHandler<MouseEvent>() {
@@ -219,6 +234,10 @@ public class View extends Application{
                     orgSceneY = mouseEvent.getSceneY();
                     orgTranslateX = ((ImageView)(mouseEvent.getSource())).getTranslateX();
                     orgTranslateY = ((ImageView)(mouseEvent.getSource())).getTranslateY();
+
+                    int xCoord = (int)(orgSceneX / 100.0);
+                    int yCoord = Y_OFFSET - (int)(orgSceneY / 100.0);
+                    start = new Coordinates(xCoord, yCoord);
                 }
             };
 
@@ -237,22 +256,27 @@ public class View extends Application{
                 }
             };
 
+    EventHandler<MouseEvent> imageViewOnMouseReleasedEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    double newX = mouseEvent.getSceneX();
+                    double newY = mouseEvent.getSceneY();
+
+                    int xCoord = (int)(newX / 100.0);
+                    int yCoord = Y_OFFSET - (int)(newY / 100.0);
+                    finish = new Coordinates(xCoord, yCoord);
+
+                    processMove(start, finish);
+                }
+            };
+
     /*
      * =====================================
      * Public methods for controller to use.
      * =====================================
      */
 
-    /**
-     * Process potential move.
-     * @param oldCoords
-     *          Starting coordinates of moving piece.
-     * @param newCoords
-     *          Ending coordinates of moving piece.
-     */
-    public void processMove(Coordinates oldCoords, Coordinates newCoords) {
-        this.controller.processMove(oldCoords, newCoords);
-    }
     /**
      * Place given pieces on board.
      * @param pieces
