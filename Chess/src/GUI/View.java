@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 import Game.Board;
 import Game.Coordinates;
-import Game.Pieces.King;
-import Game.Pieces.Pawn;
 import Game.Pieces.Piece;
-import Game.Pieces.PieceType;
 import Game.TeamColor;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -17,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -84,7 +80,7 @@ public class View extends Application{
                 /*
                  * Place view
                  */
-                Coordinates coordinates = convertCoordinates(new Coordinates(i, j));
+                Coordinates coordinates = Controller.convertBoardCoordinates(new Coordinates(i, j));
                 piecesGrid.add(imageView, coordinates.getX(), coordinates.getY());
             }
         }
@@ -130,15 +126,7 @@ public class View extends Application{
     	launch(args);
     }
 
-    /**
-     * Convert board coordinates to visual coordinates
-     * @param coordinates
-     *          coordinates of piece on board
-     * @return coordinates of corresponding square on view
-     */
-    private static Coordinates convertCoordinates(Coordinates coordinates) {
-        return new Coordinates(coordinates.getX(), (Y_OFFSET - coordinates.getY()));
-    }
+
 
     /**
      * Return the square at the given coordinates.
@@ -195,7 +183,7 @@ public class View extends Application{
          * Place piece
          */
 
-        Node square = getSquare(convertCoordinates(piece.getCoordinates()));
+        Node square = getSquare(Controller.convertBoardCoordinates(piece.getCoordinates()));
         if (!(square instanceof ImageView)) {
             System.out.println("Image View not found");
             return;
@@ -206,14 +194,18 @@ public class View extends Application{
     }
 
     /**
-     * Process potential move.
-     * @param oldCoords
-     *          Starting coordinates of moving piece.
-     * @param newCoords
-     *          Ending coordinates of moving piece.
+     * Process potential move on mouse released.
+     * @param oldX
+     *      Original x coordinate
+     * @param oldY
+     *      Original y coordinate
+     * @param newX
+     *      New x coordinate
+     * @param newY
+     *      New y coordinate
      */
-    private void processMove(Coordinates oldCoords, Coordinates newCoords) {
-        this.controller.processMove(oldCoords, newCoords);
+    private void processMove(double oldX, double oldY, double newX, double newY) {
+        this.controller.processMove(oldX, oldY, newX, newY);
     }
 
     /*
@@ -226,7 +218,7 @@ public class View extends Application{
     private double orgTranslateX, orgTranslateY;
     private Coordinates start, finish;
 
-    EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
+    private EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -234,14 +226,10 @@ public class View extends Application{
                     orgSceneY = mouseEvent.getSceneY();
                     orgTranslateX = ((ImageView)(mouseEvent.getSource())).getTranslateX();
                     orgTranslateY = ((ImageView)(mouseEvent.getSource())).getTranslateY();
-
-                    int xCoord = (int)(orgSceneX / 100.0);
-                    int yCoord = Y_OFFSET - (int)(orgSceneY / 100.0);
-                    start = new Coordinates(xCoord, yCoord);
                 }
             };
 
-    EventHandler<MouseEvent> imageViewOnMouseDraggedEventHandler =
+    private EventHandler<MouseEvent> imageViewOnMouseDraggedEventHandler =
             new EventHandler<MouseEvent>() {
 
                 @Override
@@ -256,18 +244,14 @@ public class View extends Application{
                 }
             };
 
-    EventHandler<MouseEvent> imageViewOnMouseReleasedEventHandler =
+    private EventHandler<MouseEvent> imageViewOnMouseReleasedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double newX = mouseEvent.getSceneX();
                     double newY = mouseEvent.getSceneY();
 
-                    int xCoord = (int)(newX / 100.0);
-                    int yCoord = Y_OFFSET - (int)(newY / 100.0);
-                    finish = new Coordinates(xCoord, yCoord);
-
-                    processMove(start, finish);
+                    processMove(orgSceneX, orgSceneY, newX, newY);
                 }
             };
 
