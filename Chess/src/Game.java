@@ -97,6 +97,10 @@ public class Game {
      * ==================
      */
 
+    public Board getBoard() {
+        return this.board;
+    }
+
     /**
      * Determine if move is legal.
      * @param start
