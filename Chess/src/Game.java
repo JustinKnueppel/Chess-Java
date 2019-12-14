@@ -11,6 +11,20 @@ public class Game {
         this.board = new Board();
         this.whiteThreatens = new HashSet<>();
         this.blackThreatens = new HashSet<>();
+
+        setPieces();
+    }
+
+    private void setPieces() {
+        final PieceType[] backRow = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
+
+        for (int file = 0; file < Board.GRID_SIZE; file++) {
+            for (int rank : new int[]{0, 7}) {
+                TeamColor team = rank == 0 ? TeamColor.WHITE : TeamColor.BLACK;
+                Coordinate coordinate = Coordinate.fromIndices(file, rank);
+                this.board.getSquare(coordinate).setPiece(new Piece(backRow[rank], team));
+            }
+        }
     }
 
     /**
