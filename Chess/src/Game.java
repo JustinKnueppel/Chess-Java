@@ -76,4 +76,59 @@ public class Game {
             }
         }
     }
+
+    /*
+     * ==================
+     * = Public methods =
+     * ==================
+     */
+
+    /**
+     * Determine if move is legal.
+     * @param start
+     *      Starting coordinate of the moving piece
+     * @param end
+     *      Ending coordinate of the moving piece
+     * @return true iff the move is legal
+     */
+    public boolean isLegalMove(Coordinate start, Coordinate end) {
+        return true;
+    }
+
+    /**
+     * Make the desired move in the model.
+     * @param start
+     *      Starting coordinate of the moving piece
+     * @param end
+     *      Ending coordinate of the moving piece
+     */
+    public void makeMove(Coordinate start, Coordinate end) {
+        Square startSquare = this.board.getSquare(start);
+        Square endSquare = this.board.getSquare(end);
+
+        endSquare.setPiece(startSquare.getPiece());
+        startSquare.removePiece();
+        endSquare.getPiece().setMoved(true);
+    }
+
+    /**
+     * Determine if checkmate has been delivered.
+     * @param teamColor
+     *      Team which has [not] delivered checkmate
+     * @return true iff @teamColor has delivered checkmate
+     */
+    public boolean checkmate(TeamColor teamColor) {
+        return false;
+    }
+
+    /**
+     * Determine if stalemate has been forced.
+     * @param teamColor
+     *      Team which has [not] forced stalemate
+     * @return true iff @teamColor has forced stalemate
+     */
+    public boolean stalemate(TeamColor teamColor) {
+        return false;
+    }
+
 }
