@@ -14,4 +14,15 @@ public enum Coordinate {
 
         return Coordinate.valueOf(String.valueOf(fileOrder.charAt(file)) + String.valueOf(rankOrder.charAt(rank)));
     }
+
+    public int[] toIndices() {
+        final String fileOrder = "ABCDEFGH";
+        final String rankOrder = "12345678";
+
+        String stringCoordinate = this.toString();
+        int x = fileOrder.indexOf(stringCoordinate.charAt(0));
+        int y = fileOrder.indexOf(stringCoordinate.charAt(1));
+
+        return new int[]{x, y};
+    }
 }

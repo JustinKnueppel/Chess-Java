@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -6,6 +7,8 @@ public class Game {
     private Board board;
     private Set<Coordinate> whiteThreatens;
     private Set<Coordinate> blackThreatens;
+    private ArrayList<Coordinate[]> whiteLegalMoves;
+    private ArrayList<Coordinate[]> blackLegalMoves;
 
     public Game() {
         this.board = new Board();
@@ -50,12 +53,37 @@ public class Game {
         return squares.contains(coordinate);
     }
 
-    void addThreats(Square square) {
+    private boolean validIndices(int x, int y) {
+        return x >= 0 && x < Board.GRID_SIZE && y >= 0 && y < Board.GRID_SIZE;
+    }
+
+    void updateThreatsMoves(Coordinate coordinate) {
         Set<Coordinate> threatens = new HashSet<>();
+        ArrayList<Coordinate[]> legalMoves = new ArrayList<>();
+
+        int[] startIndices = coordinate.toIndices();
+        int[] directions = new int[]{-1, 0, 1};
+
+        Piece piece = this.board.getSquare(coordinate).getPiece();
 
         //TODO: Add move logic to find threatened squares
-        switch (square.getPiece().getType()) {
+        switch (piece.getType()) {
             case KING: {
+                for (int i : directions) {
+                    for (int j : directions) {
+                        if (i == 0 && j == 0) {
+                            continue;
+                        }
+                        int newX = startIndices[0] + i;
+                        int newY = startIndices[1] + j;
+                        Square square = this.board.getSquare(Coordinate.fromIndices(newX, newY));
+
+                        threatens.add(Coordinate.fromIndices(newX, newY));
+                        if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.fromIndices(newX, newY)});
+                        }
+                    }
+                }
                 break;
             }
             case PAWN: {
@@ -76,7 +104,7 @@ public class Game {
 
 
         }
-        if (square.getPiece().getColor() == TeamColor.WHITE) {
+        if (piece.getColor() == TeamColor.WHITE) {
             whiteThreatens.addAll(threatens);
         } else {
             blackThreatens.addAll(threatens);
@@ -84,17 +112,19 @@ public class Game {
     }
 
     /**
-     * Update all squares that each team threatens.
+     * Update all squares that each team threatens and all legal moves.
      */
-    void updateThreatenedSquares() {
+    void updateMoves() {
         whiteThreatens.clear();
         blackThreatens.clear();
+        whiteLegalMoves.clear();
+        blackLegalMoves.clear();
 
         Square square;
         for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {
             square = board.getSquare(coordinate);
             if (square.occupied()) {
-                addThreats(square);
+                updateThreatsMoves(coordinate);
             }
         }
     }
