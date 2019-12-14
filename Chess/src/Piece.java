@@ -1,6 +1,7 @@
 public class Piece {
     private PieceType type;
     private TeamColor color;
+    private boolean moved;
 
     public Piece(PieceType type, TeamColor color) {
         this.type = type;
@@ -13,5 +14,13 @@ public class Piece {
 
     public TeamColor getColor() {
         return color;
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 }
