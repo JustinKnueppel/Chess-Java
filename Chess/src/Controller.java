@@ -9,11 +9,11 @@ public class Controller {
     }
 
     private void updateBoard() {
-        for (int i = 0; i < Board.GRID_SIZE; i++) {
-            for (int j = 0; j < Board.GRID_SIZE; j++) {
-                Square square = this.model.getBoard().getSquare(Coordinate.fromIndices(i, j));
+        for (int file = 0; file < Board.GRID_SIZE; file++) {
+            for (int rank = 0; rank < Board.GRID_SIZE; rank++) {
+                Square square = this.model.getBoard().getSquare(Coordinate.fromIndices(file, rank));
                 if (square.occupied()) {
-                    this.view.placePiece(i, j, square.getPiece());
+                    this.view.placePiece(file, Board.GRID_SIZE - rank - 1, square.getPiece());
                 }
             }
         }
@@ -25,9 +25,18 @@ public class Controller {
      * ======================
      */
 
-    public void processMove(double startX, double startY, double endX, double endY) {
+    public void processMove(int startX, int viewStartY, int endX, int viewEndY) {
+        int startY = Board.GRID_SIZE - 1 - viewStartY;
+        int endY = Board.GRID_SIZE - 1 - viewEndY;
+        System.out.println(String.format("Start x: %d, start y: %d", startX, startY));
+        System.out.println(String.format("End x: %d, end y: %d", endX, endY));
+
         //TODO: convert to coordinates
         //TODO: Check for move legality
         //TODO: Make move
+        this.model.makeMove(Coordinate.fromIndices(startX, startY), Coordinate.fromIndices(endX, endY));
+        this.view.clearBoard();
+        this.updateBoard();
+
     }
 }

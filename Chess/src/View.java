@@ -196,7 +196,13 @@ public class View extends Application {
      */
 
     public void clearBoard() {
-        //TODO: Clear board of all pieces
+        for (Node node: this.pieces.getChildren()) {
+            if (!(node instanceof ImageView)) {
+                continue;
+            }
+            ImageView imageView = (ImageView) node;
+            imageView.setImage(null);
+        }
     }
 
     public void placePiece(int x, int y, Piece piece) {

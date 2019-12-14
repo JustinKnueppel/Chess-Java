@@ -22,7 +22,15 @@ public class Game {
             for (int rank : new int[]{0, 7}) {
                 TeamColor team = rank == 0 ? TeamColor.WHITE : TeamColor.BLACK;
                 Coordinate coordinate = Coordinate.fromIndices(file, rank);
-                this.board.getSquare(coordinate).setPiece(new Piece(backRow[rank], team));
+                this.board.getSquare(coordinate).setPiece(new Piece(backRow[file], team));
+            }
+        }
+
+        for (int file = 0; file < Board.GRID_SIZE; file++) {
+            for (int rank : new int[]{1, 6}) {
+                TeamColor team = rank == 1 ? TeamColor.WHITE : TeamColor.BLACK;
+                Coordinate coordinate = Coordinate.fromIndices(file, rank);
+                this.board.getSquare(coordinate).setPiece(new Piece(PieceType.PAWN, team));
             }
         }
     }
