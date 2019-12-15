@@ -71,22 +71,41 @@ public class Game {
             case KING: {
                 for (int i : directions) {
                     for (int j : directions) {
-                        if (i == 0 && j == 0) {
+                        if (i == 0 && j == 0 || !validIndices(startIndices[0] + i, startIndices[1] + j)) {
                             continue;
                         }
                         int newX = startIndices[0] + i;
                         int newY = startIndices[1] + j;
-                        Square square = this.board.getSquare(Coordinate.fromIndices(newX, newY));
+                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Square square = this.board.getSquare(newCoordinate);
 
-                        threatens.add(Coordinate.fromIndices(newX, newY));
+                        threatens.add(newCoordinate);
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.fromIndices(newX, newY)});
+                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
                         }
                     }
                 }
                 break;
             }
             case PAWN: {
+                int direction = piece.getColor() == TeamColor.WHITE ? 1 : -1;
+                if (validIndices(startIndices[0], startIndices[1] + direction)) {
+                    Coordinate oneStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction);
+                    Square oneStep = this.board.getSquare(oneStepCoordinate);
+                    if (!oneStep.occupied()) {
+                        legalMoves.add(new Coordinate[]{coordinate, oneStepCoordinate});
+                    }
+
+                    if (!piece.hasMoved()) {
+                        if (validIndices(startIndices[0], startIndices[1] * 2)) {
+                            Coordinate twoStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction * 2);
+                            Square twoStep = this.board.getSquare(twoStepCoordinate);
+                            if (!twoStep.occupied()) {
+                                legalMoves.add(new Coordinate[]{coordinate, twoStepCoordinate});
+                            }
+                        }
+                    }
+                }
                 break;
             }
             case ROOK: {
