@@ -62,13 +62,14 @@ public class Game {
         ArrayList<Coordinate[]> legalMoves = new ArrayList<>();
 
         int[] startIndices = coordinate.toIndices();
-        int[] directions = new int[]{-1, 0, 1};
 
         Piece piece = this.board.getSquare(coordinate).getPiece();
 
         //TODO: Add move logic to find threatened squares
         switch (piece.getType()) {
             case KING: {
+                int[] directions = new int[]{-1, 0, 1};
+
                 for (int i : directions) {
                     for (int j : directions) {
                         if (i == 0 && j == 0 || !validIndices(startIndices[0] + i, startIndices[1] + j)) {
@@ -89,6 +90,10 @@ public class Game {
             }
             case PAWN: {
                 int direction = piece.getColor() == TeamColor.WHITE ? 1 : -1;
+
+                /*
+                 * Forward moves
+                 */
                 if (validIndices(startIndices[0], startIndices[1] + direction)) {
                     Coordinate oneStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction);
                     Square oneStep = this.board.getSquare(oneStepCoordinate);
@@ -106,18 +111,176 @@ public class Game {
                         }
                     }
                 }
+
+                /*
+                 * Capturing moves
+                 */
+                for (int side : new int[]{-1,1}) {
+                    int newX = startIndices[0] + side;
+                    int newY = startIndices[1] + direction;
+                    if (validIndices(newX, newY)) {
+                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Square target = this.board.getSquare(newCoordinate);
+
+                        threatens.add(newCoordinate);
+                        if (target.occupied() && target.getPiece().getColor() != piece.getColor()) {
+                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                        }
+                    }
+                }
                 break;
             }
             case ROOK: {
+                int[]  directions = new int[]{-1, 1};
+
+                /*
+                 * Vertical moves
+                 */
+                int newX = startIndices[0];
+                for (int direction : directions) {
+                    int multiplier = 1;
+                    int newY = startIndices[1] + direction * multiplier;
+
+                    while (validIndices(newX, newY)) {
+                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Square square = this.board.getSquare(newCoordinate);
+                        threatens.add(newCoordinate);
+
+                        if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                        }
+
+                        if (square.occupied()) {
+                            break;
+                        }
+                        multiplier++;
+                        newY = startIndices[1] + direction * multiplier;
+                    }
+                }
+
+                /*
+                 * Horizontal moves
+                 */
+                int newY = startIndices[1];
+                for (int direction : directions) {
+                    int multiplier = 1;
+                    newX = startIndices[0] + direction * multiplier;
+
+                    while (validIndices(newX, newY)) {
+                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Square square = this.board.getSquare(newCoordinate);
+                        threatens.add(newCoordinate);
+
+                        if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                        }
+
+                        if (square.occupied()) {
+                            break;
+                        }
+                        multiplier++;
+                        newX = startIndices[0] + direction * multiplier;
+                    }
+                }
                 break;
             }
             case QUEEN: {
+                int[] directions = new int[]{-1, 0, 1};
+
+                for (int i : directions) {
+                    for (int j : directions) {
+                        if (i == 0 && j == 0 || !validIndices(startIndices[0] + i, startIndices[1] + j)) {
+                            continue;
+                        }
+                        int multpilier = 1;
+                        int newX = startIndices[0] + i;
+                        int newY = startIndices[1] + j;
+                        while (validIndices(newX, newY)) {
+                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Square square = this.board.getSquare(newCoordinate);
+
+                            threatens.add(newCoordinate);
+                            if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            }
+                            /*
+                             * Stop when you hit a piece
+                             */
+                            if (square.occupied()) {
+                                break;
+                            }
+                            multpilier++;
+                            newX = startIndices[0] + i * multpilier;
+                            newY = startIndices[1] + j * multpilier;
+                        }
+
+                    }
+                }
                 break;
             }
             case BISHOP: {
+                int[] directions = new int[]{-1,1};
+
+                for (int i : directions) {
+                    for (int j : directions) {
+                        int multiplier = 1;
+                        int newX = startIndices[0] + i * multiplier;
+                        int newY = startIndices[0] + j * multiplier;
+
+                        while (validIndices(newX, newY)) {
+                            Coordinate newCorrdinate = Coordinate.fromIndices(newX, newY);
+                            Square square = this.board.getSquare(newCorrdinate);
+                            threatens.add(newCorrdinate);
+
+                            if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                                legalMoves.add(new Coordinate[]{coordinate, newCorrdinate});
+                            }
+
+                            if (square.occupied()) {
+                                break;
+                            }
+
+                            multiplier++;
+                            newX = startIndices[0] + i * multiplier;
+                            newY = startIndices[0] + j * multiplier;
+
+                        }
+                    }
+                }
                 break;
             }
             case KNIGHT: {
+                int[] oneStep = new int[]{-1, 1};
+                int[] twoStep = new int[]{-2, 2};
+
+                for (int i : oneStep) {
+                    for (int j: twoStep) {
+                        int newX = startIndices[0] + i;
+                        int newY = startIndices[1] + j;
+                        if (validIndices(newX, newY)) {
+                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Square square = this.board.getSquare(newCoordinate);
+                            threatens.add(newCoordinate);
+
+                            if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            }
+                        }
+
+                        newX = startIndices[0] + j;
+                        newY = startIndices[1] + i;
+                        if (validIndices(newX, newY)) {
+                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Square square = this.board.getSquare(newCoordinate);
+                            threatens.add(newCoordinate);
+
+                            if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
+                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            }
+                        }
+
+                    }
+                }
                 break;
             }
 
