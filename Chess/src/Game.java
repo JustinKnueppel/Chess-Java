@@ -14,6 +14,8 @@ public class Game {
         this.board = new Board();
         this.whiteThreatens = new HashSet<>();
         this.blackThreatens = new HashSet<>();
+        this.whiteLegalMoves = new ArrayList<>();
+        this.blackLegalMoves = new ArrayList<>();
 
         setPieces();
     }
@@ -65,7 +67,6 @@ public class Game {
 
         Piece piece = this.board.getSquare(coordinate).getPiece();
 
-        //TODO: Add move logic to find threatened squares
         switch (piece.getType()) {
             case KING: {
                 int[] directions = new int[]{-1, 0, 1};
@@ -99,10 +100,11 @@ public class Game {
                     Square oneStep = this.board.getSquare(oneStepCoordinate);
                     if (!oneStep.occupied()) {
                         legalMoves.add(new Coordinate[]{coordinate, oneStepCoordinate});
-                    }
 
-                    if (!piece.hasMoved()) {
-                        if (validIndices(startIndices[0], startIndices[1] * 2)) {
+                        /*
+                         * Two steps
+                         */
+                        if (!piece.hasMoved() && validIndices(startIndices[0], startIndices[1] + direction * 2)) {
                             Coordinate twoStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction * 2);
                             Square twoStep = this.board.getSquare(twoStepCoordinate);
                             if (!twoStep.occupied()) {
@@ -225,7 +227,7 @@ public class Game {
                     for (int j : directions) {
                         int multiplier = 1;
                         int newX = startIndices[0] + i * multiplier;
-                        int newY = startIndices[0] + j * multiplier;
+                        int newY = startIndices[1] + j * multiplier;
 
                         while (validIndices(newX, newY)) {
                             Coordinate newCorrdinate = Coordinate.fromIndices(newX, newY);
@@ -287,9 +289,11 @@ public class Game {
 
         }
         if (piece.getColor() == TeamColor.WHITE) {
-            whiteThreatens.addAll(threatens);
+            this.whiteThreatens.addAll(threatens);
+            this.whiteLegalMoves.addAll(legalMoves);
         } else {
-            blackThreatens.addAll(threatens);
+            this.blackThreatens.addAll(threatens);
+            this.blackLegalMoves.addAll(legalMoves);
         }
     }
 
@@ -330,6 +334,12 @@ public class Game {
      * @return true iff the move is legal
      */
     public boolean isLegalMove(Coordinate start, Coordinate end) {
+        updateMoves();
+        TeamColor team = this.board.getSquare(start).getPiece().getColor();
+        ArrayList<Coordinate[]> legalMoves = team.equals(TeamColor.WHITE) ? this.whiteLegalMoves : this.blackLegalMoves;
+        Set<Coordinate> threatens = team.equals(TeamColor.WHITE) ? this.whiteThreatens : this.blackThreatens;
+
+        //TODO: Add more move logic
         return true;
     }
 
