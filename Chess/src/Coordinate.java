@@ -21,8 +21,13 @@ public enum Coordinate {
 
         String stringCoordinate = this.toString();
         int x = fileOrder.indexOf(stringCoordinate.charAt(0));
-        int y = fileOrder.indexOf(stringCoordinate.charAt(1));
+        int y = rankOrder.indexOf(stringCoordinate.charAt(1));
 
         return new int[]{x, y};
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
     }
 }
