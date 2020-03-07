@@ -31,12 +31,16 @@ public class Controller {
         System.out.println(String.format("Start x: %d, start y: %d", startX, startY));
         System.out.println(String.format("End x: %d, end y: %d", endX, endY));
 
-        //TODO: convert to coordinates
-        //TODO: Check for move legality
-        //TODO: Make move
-        this.model.makeMove(Coordinate.fromIndices(startX, startY), Coordinate.fromIndices(endX, endY));
-        this.view.clearBoard();
-        this.updateBoard();
+        //convert to coordinates
+        Coordinate start = Coordinate.fromIndices(startX, startY);
+        Coordinate end = Coordinate.fromIndices(endX, endY);
+        //Check for move legality
+        if (this.model.isLegalMove(start, end)) {
+            //Make move
+            this.model.makeMove(Coordinate.fromIndices(startX, startY), Coordinate.fromIndices(endX, endY));
+            this.view.clearBoard();
+            this.updateBoard();
+        }
 
     }
 }
