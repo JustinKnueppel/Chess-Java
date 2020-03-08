@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Game {
     private Board board;
@@ -230,12 +228,13 @@ public class Game {
                         int newY = startIndices[1] + j * multiplier;
 
                         while (validIndices(newX, newY)) {
-                            Coordinate newCorrdinate = Coordinate.fromIndices(newX, newY);
-                            Square square = this.board.getSquare(newCorrdinate);
-                            threatens.add(newCorrdinate);
+                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Square square = this.board.getSquare(newCoordinate);
+
+                            threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCorrdinate});
+                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
                             }
 
                             if (square.occupied()) {
@@ -244,7 +243,7 @@ public class Game {
 
                             multiplier++;
                             newX = startIndices[0] + i * multiplier;
-                            newY = startIndices[0] + j * multiplier;
+                            newY = startIndices[1] + j * multiplier;
 
                         }
                     }
@@ -339,8 +338,7 @@ public class Game {
         ArrayList<Coordinate[]> legalMoves = team.equals(TeamColor.WHITE) ? this.whiteLegalMoves : this.blackLegalMoves;
         Set<Coordinate> threatens = team.equals(TeamColor.WHITE) ? this.whiteThreatens : this.blackThreatens;
 
-        //TODO: Add more move logic
-        return true;
+        return legalMoves.stream().anyMatch(a -> Arrays.equals(a, new Coordinate[] {start, end}));
     }
 
     /**
