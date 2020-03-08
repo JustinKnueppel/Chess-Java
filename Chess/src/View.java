@@ -185,6 +185,10 @@ public class View extends Application {
                     double newX = mouseEvent.getSceneX();
                     double newY = mouseEvent.getSceneY();
 
+                    /* Reset ImageView location */
+                    ((ImageView)(mouseEvent.getSource())).setTranslateX(orgTranslateX);
+                    ((ImageView)(mouseEvent.getSource())).setTranslateY(orgTranslateY);
+
                     processMove(orgSceneX, orgSceneY, newX, newY);
                 }
             };
