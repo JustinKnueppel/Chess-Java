@@ -18,6 +18,23 @@ public class Game {
         setPieces();
     }
 
+    /**
+     * Get the king position for the given team.
+     * @param team
+     *      The team whose king is in question
+     * @return
+     *      The coordinates of @team's king
+     */
+    private Coordinate getKingCoordinate(TeamColor team) {
+        for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {
+            Square square = board.getSquare(coordinate);
+            if (square.occupied() && square.getPiece().getType().equals(PieceType.KING) && square.getPiece().getColor().equals(team)) {
+                return coordinate;
+            }
+        }
+        return null;
+    }
+
     private void setPieces() {
         final PieceType[] backRow = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
 
@@ -51,6 +68,20 @@ public class Game {
         Set<Coordinate> squares = teamColor == TeamColor.WHITE ? whiteThreatens : blackThreatens;
 
         return squares.contains(coordinate);
+    }
+
+    /**
+     * Determine if @team is in check.
+     * @param team
+     *      The team in question
+     * @return
+     *      true iff @team is in check
+     */
+    private boolean inCheck(TeamColor team) {
+        Set<Coordinate> threatens = team.equals(TeamColor.WHITE) ? this.blackThreatens : this.whiteThreatens;
+        Coordinate kingCoordinate = this.getKingCoordinate(team);
+
+        return threatens.contains(kingCoordinate);
     }
 
     private boolean validIndices(int x, int y) {
@@ -333,10 +364,25 @@ public class Game {
      * @return true iff the move is legal
      */
     public boolean isLegalMove(Coordinate start, Coordinate end) {
+        /* Update threatened squares and moves legal by piece logic */
         updateMoves();
+
         TeamColor team = this.board.getSquare(start).getPiece().getColor();
+
         ArrayList<Coordinate[]> legalMoves = team.equals(TeamColor.WHITE) ? this.whiteLegalMoves : this.blackLegalMoves;
-        Set<Coordinate> threatens = team.equals(TeamColor.WHITE) ? this.whiteThreatens : this.blackThreatens;
+
+        boolean legalByPieceLogic = legalMoves.stream().anyMatch(a -> Arrays.equals(a, new Coordinate[] {start, end}));
+        System.out.printf("King is in check? %s\n", inCheck(team));
+        /* Return early if not legal by piece logic */
+        if (!legalByPieceLogic) {
+            return false;
+        }
+        /* Check if move would put king in check */
+
+        for (Coordinate[] move : legalMoves) {
+            //TODO: Check if move causes king to be in check
+        }
+
 
         return legalMoves.stream().anyMatch(a -> Arrays.equals(a, new Coordinate[] {start, end}));
     }
