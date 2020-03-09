@@ -1,3 +1,5 @@
+import java.util.EnumSet;
+
 public class Board {
     static final int GRID_SIZE = 8;
     private Square[][] board;
@@ -34,6 +36,24 @@ public class Board {
         int rank = rankOrder.indexOf(coordinate.toString().charAt(1));
 
         return new int[]{file, rank};
+    }
+
+    /**
+     * Get deep copy of this.
+     * @return
+     *      Copy of @this
+     */
+    public Board Copy() {
+        Board copy = new Board();
+
+        for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {
+            Square oldSquare = this.getSquare(coordinate);
+            if (oldSquare.occupied()) {
+                copy.getSquare(coordinate).setPiece(oldSquare.getPiece().copy());
+            }
+        }
+
+        return copy;
     }
 
     /**
