@@ -43,7 +43,7 @@ public class Board {
      * @return
      *      Copy of @this
      */
-    public Board Copy() {
+    public Board copy() {
         Board copy = new Board();
 
         for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {

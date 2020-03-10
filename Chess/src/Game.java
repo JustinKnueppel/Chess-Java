@@ -18,6 +18,14 @@ public class Game {
         setPieces();
     }
 
+    private Game(Board board) {
+        this.board = board;
+        this.whiteThreatens = new HashSet<>();
+        this.blackThreatens = new HashSet<>();
+        this.whiteLegalMoves = new ArrayList<>();
+        this.blackLegalMoves = new ArrayList<>();
+    }
+
     /**
      * Get the king position for the given team.
      * @param team
@@ -378,11 +386,21 @@ public class Game {
             return false;
         }
         /* Check if move would put king in check */
+        /* Create copy of the model */
+        Game copy = new Game(this.board.copy());
 
-        for (Coordinate[] move : legalMoves) {
-            //TODO: Check if move causes king to be in check
+        /* Test move on copy */
+        copy.makeMove(start, end);
+
+        copy.updateMoves();
+
+        /* If move leaves the team in check, it is not legal */
+        if(copy.inCheck(team)) {
+            System.out.printf("%s to %s leaves king in check\n", start, end);
+
+            return false;
+
         }
-
 
         return legalMoves.stream().anyMatch(a -> Arrays.equals(a, new Coordinate[] {start, end}));
     }
