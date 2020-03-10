@@ -353,6 +353,35 @@ public class Game {
         }
     }
 
+    /**
+     * Check if any moves legal by piece movement are legal on board.
+     * @param team
+     *      Team that may be able to move
+     * @return
+     *      true iff @team has any legal moves
+     */
+    private boolean anyLegalMoves(TeamColor team) {
+        ArrayList<Coordinate[]> legalMoves = team.equals(TeamColor.WHITE) ? whiteLegalMoves : blackLegalMoves;
+
+        ArrayList<Coordinate[]> illegalMoves = new ArrayList<>();
+        for (Coordinate[] move : legalMoves) {
+            /* Create copy of the model */
+            Game copy = new Game(this.board.copy());
+
+            /* Test move on copy */
+            copy.makeMove(move[0], move[1]);
+
+            copy.updateMoves();
+
+            /* If move leaves the team in check, it is not legal */
+            if(copy.inCheck(team)) {
+                illegalMoves.add(move);
+            }
+        }
+
+        return legalMoves.size() == illegalMoves.size();
+    }
+
     /*
      * ==================
      * = Public methods =
@@ -428,7 +457,8 @@ public class Game {
      * @return true iff @teamColor has delivered checkmate
      */
     public boolean checkmate(TeamColor teamColor) {
-        return false;
+        updateMoves();
+        return anyLegalMoves(teamColor) && inCheck(teamColor);
     }
 
     /**
@@ -438,7 +468,8 @@ public class Game {
      * @return true iff @teamColor has forced stalemate
      */
     public boolean stalemate(TeamColor teamColor) {
-        return false;
+        updateMoves();
+        return anyLegalMoves(teamColor) && !inCheck(teamColor);
     }
 
 }

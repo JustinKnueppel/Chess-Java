@@ -6,8 +6,20 @@ public class Controller {
     public Controller(View view) {
         this.view = view;
         this.model = new Game();
-        moveCounter = 0;
+        this.moveCounter = 0;
         updateBoard();
+    }
+
+    private void checkIfGameOver() {
+        TeamColor team = this.moveCounter % 2 == 0 ? TeamColor.WHITE : TeamColor.BLACK;
+
+        if (this.model.checkmate(team)) {
+            TeamColor winner = this.moveCounter % 2 == 0 ? TeamColor.BLACK : TeamColor.WHITE;
+
+            System.out.printf("GAME OVER: %s WON!\n", winner);
+        } else if (this.model.stalemate(team)) {
+            System.out.println("GAME OVER: STALEMATE");
+        }
     }
 
     private void updateBoard() {
@@ -54,5 +66,7 @@ public class Controller {
 
         this.view.clearBoard();
         this.updateBoard();
+
+        this.checkIfGameOver();
     }
 }
