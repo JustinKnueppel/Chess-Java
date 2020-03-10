@@ -1,10 +1,12 @@
 public class Controller {
     private View view;
     private Game model;
+    private int moveCounter;
 
     public Controller(View view) {
         this.view = view;
         this.model = new Game();
+        moveCounter = 0;
         updateBoard();
     }
 
@@ -34,11 +36,15 @@ public class Controller {
         /* Convert to coordinates */
         Coordinate start = Coordinate.fromIndices(startX, startY);
         Coordinate end = Coordinate.fromIndices(endX, endY);
+
+        TeamColor whoseMove = moveCounter % 2 == 0 ? TeamColor.WHITE : TeamColor.BLACK;
+        TeamColor pieceColor = this.model.getBoard().getSquare(start).getPiece().getColor();
         /* Check for move legality */
-        if (this.model.isLegalMove(start, end)) {
+        if (pieceColor == whoseMove && !start.equals(end) && this.model.isLegalMove(start, end)) {
             System.out.println("Move is legal");
             /* Make move */
             this.model.makeMove(Coordinate.fromIndices(startX, startY), Coordinate.fromIndices(endX, endY));
+            moveCounter++;
 
         } else {
             /* Reset illegal move */
