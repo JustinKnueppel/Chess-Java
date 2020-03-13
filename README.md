@@ -43,7 +43,6 @@ This game is created using the Model-View-Controller (MVC) design. The entry poi
 ### Core
 
 - En Passant
-- Castling
 - Pawn promotion
 
 ### Features

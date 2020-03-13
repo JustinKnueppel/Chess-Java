@@ -124,6 +124,57 @@ public class Game {
                         }
                     }
                 }
+
+                /* Check for castling */
+                TeamColor team = piece.getColor().equals(TeamColor.WHITE) ? TeamColor.WHITE : TeamColor.BLACK;
+                if (!piece.hasMoved() && !inCheck(team)) {
+                    TeamColor oppositeTeam = piece.getColor().equals(TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
+
+                    if (team.equals(TeamColor.WHITE)) {
+                        /* White kingside castles */
+                        if (!this.board.getSquare(Coordinate.F1).occupied() &&
+                                !isAttacked(Coordinate.F1, oppositeTeam) &&
+                                !this.board.getSquare(Coordinate.G1).occupied() &&
+                                !isAttacked(Coordinate.G1, oppositeTeam) &&
+                                this.board.getSquare(Coordinate.H1).occupied() &&
+                                !this.board.getSquare(Coordinate.H1).getPiece().hasMoved()) {
+                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.G1});
+                        }
+
+                        /* White queenside castles */
+                        if (!this.board.getSquare(Coordinate.D1).occupied() &&
+                                !isAttacked(Coordinate.D1, oppositeTeam) &&
+                                !this.board.getSquare(Coordinate.C1).occupied() &&
+                                !isAttacked(Coordinate.C1, oppositeTeam) &&
+                                !this.board.getSquare(Coordinate.B1).occupied() &&
+                                this.board.getSquare(Coordinate.A1).occupied() &&
+                                !this.board.getSquare(Coordinate.A1).getPiece().hasMoved()) {
+                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.C1});
+                        }
+                    } else {
+                        /* Black kingside castles */
+                        if (!this.board.getSquare(Coordinate.F8).occupied() &&
+                                !isAttacked(Coordinate.F8, oppositeTeam) &&
+                                !this.board.getSquare(Coordinate.G8).occupied() &&
+                                !isAttacked(Coordinate.G8, oppositeTeam) &&
+                                this.board.getSquare(Coordinate.H8).occupied() &&
+                                !this.board.getSquare(Coordinate.H8).getPiece().hasMoved()) {
+                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.G8});
+                        }
+
+                        /* White queenside castles */
+                        if (!this.board.getSquare(Coordinate.D8).occupied() &&
+                                !isAttacked(Coordinate.D8, oppositeTeam) &&
+                                !this.board.getSquare(Coordinate.C8).occupied() &&
+                                !isAttacked(Coordinate.C8, oppositeTeam) &&
+                                !this.board.getSquare(Coordinate.B8).occupied() &&
+                                this.board.getSquare(Coordinate.A8).occupied() &&
+                                !this.board.getSquare(Coordinate.A8).getPiece().hasMoved()) {
+                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.C8});
+                        }
+                    }
+
+                }
                 break;
             }
             case PAWN: {
@@ -448,6 +499,32 @@ public class Game {
         endSquare.setPiece(startSquare.getPiece());
         startSquare.removePiece();
         endSquare.getPiece().setMoved(true);
+
+        /* Check if move was castling */
+        if (endSquare.getPiece().getType().equals(PieceType.KING) &&
+                Math.abs(start.toIndices()[0] - end.toIndices()[0]) == 2) {
+            switch(end) {
+                case G1: { /* White kingside castles */
+                    makeMove(Coordinate.H1, Coordinate.F1);
+                    break;
+                }
+                case C1: { /* White queenside castles */
+                    makeMove(Coordinate.A1, Coordinate.D1);
+                    break;
+                }
+                case G8: { /* Black kingside castles */
+                    makeMove(Coordinate.H8, Coordinate.F8);
+                    break;
+                }
+                case A8: { /* Black queenside castles */
+                    makeMove(Coordinate.A8, Coordinate.D8);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
     }
 
     /**
