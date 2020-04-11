@@ -1,8 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Game {
     private Board board;
+    private Coordinate enPassantCoordinate;
     private Set<Coordinate> whiteThreatens;
     private Set<Coordinate> blackThreatens;
     private ArrayList<Coordinate[]> whiteLegalMoves;
@@ -213,7 +213,9 @@ public class Game {
                         Square target = this.board.getSquare(newCoordinate);
 
                         threatens.add(newCoordinate);
-                        if (target.occupied() && target.getPiece().getColor() != piece.getColor()) {
+                        boolean legalEnPassant = this.enPassantCoordinate != null && newCoordinate.equals(this.enPassantCoordinate);
+                        boolean legalNormalCapture = target.occupied() && target.getPiece().getColor() != piece.getColor();
+                        if (legalNormalCapture || legalEnPassant) {
                             legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
                         }
                     }
@@ -496,12 +498,14 @@ public class Game {
         Square startSquare = this.board.getSquare(start);
         Square endSquare = this.board.getSquare(end);
 
-        endSquare.setPiece(startSquare.getPiece());
+        Piece piece = startSquare.getPiece();
+
+        endSquare.setPiece(piece);
         startSquare.removePiece();
-        endSquare.getPiece().setMoved(true);
+        piece.setMoved(true);
 
         /* Check if move was castling */
-        if (endSquare.getPiece().getType().equals(PieceType.KING) &&
+        if (piece.getType().equals(PieceType.KING) &&
                 Math.abs(start.toIndices()[0] - end.toIndices()[0]) == 2) {
             switch(end) {
                 case G1: { /* White kingside castles */
@@ -524,6 +528,24 @@ public class Game {
                     break;
                 }
             }
+        }
+
+        /* Check if move was en passant */
+        if(piece.getType().equals(PieceType.PAWN) && end.equals(this.enPassantCoordinate)) {
+            /* Remove opponent pawn */
+            int x = end.toIndices()[0];
+            int y = start.toIndices()[1];
+
+            this.board.getSquare(Coordinate.fromIndices(x, y)).removePiece();
+        }
+        /* Set en passant square */
+        if (piece.getType().equals(PieceType.PAWN) && Math.abs(end.toIndices()[1] - start.toIndices()[1]) == 2) {
+            int x = start.toIndices()[0];
+            int y = (start.toIndices()[1] + end.toIndices()[1])/2;
+            this.enPassantCoordinate = Coordinate.fromIndices(x, y);
+
+        } else {
+            this.enPassantCoordinate = null;
         }
     }
 
