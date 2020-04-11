@@ -56,6 +56,10 @@ public class Controller {
             System.out.println("Move is legal");
             /* Make move */
             this.model.makeMove(Coordinate.fromIndices(startX, startY), Coordinate.fromIndices(endX, endY));
+            System.out.println("Pawn promoted? " + this.model.pawnPromoted());
+            if (this.model.pawnPromoted()) {
+                this.view.displayPromotionOptions(whoseMove);
+            }
             moveCounter++;
 
         } else {
@@ -63,6 +67,20 @@ public class Controller {
             System.out.println("Move is not legal");
 
         }
+
+        if (!this.model.pawnPromoted()) {
+            this.view.clearBoard();
+            this.updateBoard();
+
+            this.checkIfGameOver();
+        }
+
+    }
+
+    public void processPromotion(PieceType pieceType) {
+        this.model.promotePawn(pieceType);
+
+        this.view.disablePromotionOptions();
 
         this.view.clearBoard();
         this.updateBoard();

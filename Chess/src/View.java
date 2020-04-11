@@ -1,5 +1,8 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -7,12 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+
+import java.util.Arrays;
+import java.util.Stack;
 
 public class View extends Application {
 
@@ -21,6 +27,8 @@ public class View extends Application {
     private static final String LIGHT_SQUARE_COLOR = "#eeeed2";
     private Controller controller;
     private GridPane pieces;
+    private StackPane root;
+    private Stage stage;
 
     /**
      * Create square of a given color.
@@ -93,20 +101,32 @@ public class View extends Application {
         return piecesGrid;
     }
 
-    private Parent createContent() {
-        Group root = new Group();
+    private Group createMainContent() {
+        Group main = new Group();
         this.pieces = getPiecesGrid();
 
-        root.getChildren().add(getSquares());
-        root.getChildren().add(this.pieces);
+        main.getChildren().add(getSquares());
+        main.getChildren().add(this.pieces);
 
+        return main;
+    }
+    private Parent createContent() {
+        StackPane root = new StackPane();
+
+        Group mainContent = createMainContent();
+
+        root.getChildren().add(mainContent);
         return root;
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(createContent());
+        Parent root = createContent();
+        Scene scene = new Scene(root);
+
+        this.root = (StackPane) root;
         this.controller = new Controller(this);
 
+        this.stage = primaryStage;
         primaryStage.setTitle("Chess");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -131,6 +151,10 @@ public class View extends Application {
                 (int)(newY/TILE_SIZE));
     }
 
+    private void processPromotion(PieceType pieceType) {
+        this.controller.processPromotion(pieceType);
+    }
+
     private Node getSquare(int x, int y) {
         Node result = null;
 
@@ -141,6 +165,68 @@ public class View extends Application {
             }
         }
         return result;
+    }
+
+    private String getImagePath(TeamColor teamColor, PieceType pieceType) {
+        StringBuilder picturePath = new StringBuilder("file:Chess/Images/");
+        picturePath.append(teamColor.equals(TeamColor.WHITE) ? "White" : "Black");
+
+        switch (pieceType) {
+            case KING:
+                picturePath.append("King");
+                break;
+            case QUEEN:
+                picturePath.append("Queen");
+                break;
+            case ROOK:
+                picturePath.append("Rook");
+                break;
+            case PAWN:
+                picturePath.append("Pawn");
+                break;
+            case BISHOP:
+                picturePath.append("Bishop");
+                break;
+            case KNIGHT:
+                picturePath.append("Knight");
+        }
+
+        picturePath.append(".png");
+
+        return picturePath.toString();
+    }
+
+    private Image getPieceImage(Piece piece) {
+        String imagePath = getImagePath(piece.getColor(), piece.getType());
+
+        Image pieceImage = new Image(imagePath);
+        return pieceImage;
+    }
+
+    private Image getPieceImage(TeamColor teamColor, PieceType pieceType) {
+        String imagePath = getImagePath(teamColor, pieceType);
+
+        Image pieceImage = new Image(imagePath);
+        return pieceImage;
+    }
+
+    private PieceType filepathToPieceType(String filepath) {
+        String filepathLower = filepath.toLowerCase();
+        if (filepathLower.contains("queen")) {
+            return PieceType.QUEEN;
+        } else if (filepathLower.contains("knight")) {
+            return PieceType.KNIGHT;
+        } else if (filepathLower.contains("rook")) {
+            return PieceType.ROOK;
+        } else if (filepathLower.contains("bishop")) {
+            return PieceType.BISHOP;
+        } else if (filepathLower.contains("pawn")) {
+            return PieceType.PAWN;
+        } else if (filepathLower.contains("king")) {
+            return PieceType.KING;
+        } else {
+            return null;
+        }
     }
 
     /*
@@ -193,6 +279,17 @@ public class View extends Application {
                 }
             };
 
+    private EventHandler<MouseEvent> promotionPieceOnMousePressedEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    ImageView imageView = (ImageView) mouseEvent.getSource();
+                    String imageFilepath = imageView.getImage().getUrl();
+                    PieceType pieceType = filepathToPieceType(imageFilepath);
+                    processPromotion(pieceType);
+                }
+            };
+
     /*
      * ======================
      * == Public interface ==
@@ -210,32 +307,7 @@ public class View extends Application {
     }
 
     public void placePiece(int x, int y, Piece piece) {
-        StringBuilder picturePath = new StringBuilder("file:Chess/Images/");
-        picturePath.append(piece.getColor().equals(TeamColor.WHITE) ? "White" : "Black");
-
-        switch (piece.getType()) {
-            case KING:
-                picturePath.append("King");
-                break;
-            case QUEEN:
-                picturePath.append("Queen");
-                break;
-            case ROOK:
-                picturePath.append("Rook");
-                break;
-            case PAWN:
-                picturePath.append("Pawn");
-                break;
-            case BISHOP:
-                picturePath.append("Bishop");
-                break;
-            case KNIGHT:
-                picturePath.append("Knight");
-        }
-
-        picturePath.append(".png");
-
-        Image pieceImage = new Image(picturePath.toString());
+        Image pieceImage = getPieceImage(piece);
 
         /*
          * Place piece
@@ -249,5 +321,41 @@ public class View extends Application {
 
         ImageView imageView = (ImageView)square;
         imageView.setImage(pieceImage);
+    }
+
+    public void displayPromotionOptions(TeamColor teamColor) {
+        /* Possible promotion pieces */
+        PieceType[] promotionPieces = new PieceType[] {PieceType.QUEEN, PieceType.KNIGHT, PieceType.ROOK, PieceType.BISHOP};
+
+
+        Image[] pieceImages = new Image[promotionPieces.length];
+        for (int i = 0; i < promotionPieces.length; i++) {
+            pieceImages[i] = getPieceImage(teamColor, promotionPieces[i]);
+        }
+
+        FlowPane flowPane = new FlowPane();
+        flowPane.setPadding(new Insets(5, 5,5 , 5));
+        flowPane.setVgap(4);
+        flowPane.setHgap(4);
+        /* Center elements */
+        flowPane.setRowValignment(VPos.CENTER);
+        flowPane.setAlignment(Pos.CENTER);
+        /* Set dimensions of popup */
+        flowPane.setMaxWidth(TILE_SIZE * 3);
+        flowPane.setMaxHeight(TILE_SIZE);
+        flowPane.setPrefWrapLength(TILE_SIZE * 3);
+        flowPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        for (Image pieceImage : pieceImages) {
+            ImageView imageView = new ImageView(pieceImage);
+            imageView.setOnMousePressed(promotionPieceOnMousePressedEventHandler);
+            flowPane.getChildren().add(imageView);
+        }
+
+        this.root.getChildren().add(flowPane);
+    }
+
+    public void disablePromotionOptions() {
+        this.root.getChildren().remove(this.root.getChildren().size() - 1);
     }
 }

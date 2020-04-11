@@ -3,6 +3,7 @@ import java.util.*;
 public class Game {
     private Board board;
     private Coordinate enPassantCoordinate;
+    private boolean pawnPromoted;
     private Set<Coordinate> whiteThreatens;
     private Set<Coordinate> blackThreatens;
     private ArrayList<Coordinate[]> whiteLegalMoves;
@@ -435,6 +436,20 @@ public class Game {
         return legalMoves.size() == illegalMoves.size();
     }
 
+    private Coordinate findPromotingPawn() {
+        int[] backRanks = new int[] {0, 7};
+        for (int backRank : backRanks) {
+            for (int file = 0; file < Board.GRID_SIZE; file++) {
+                Coordinate coordinate = Coordinate.fromIndices(file, backRank);
+                Square target = this.board.getSquare(coordinate);
+                if (target.occupied() && target.getPiece().getType().equals(PieceType.PAWN)) {
+                    return coordinate;
+                }
+            }
+        }
+        return null;
+    }
+
     /*
      * ==================
      * = Public methods =
@@ -530,6 +545,10 @@ public class Game {
             }
         }
 
+        /* Check if pawn promoted */
+        int endRank = end.toIndices()[1];
+        this.pawnPromoted = piece.getType().equals(PieceType.PAWN) && (endRank == 0 || endRank == 7);
+
         /* Check if move was en passant */
         if(piece.getType().equals(PieceType.PAWN) && end.equals(this.enPassantCoordinate)) {
             /* Remove opponent pawn */
@@ -547,6 +566,17 @@ public class Game {
         } else {
             this.enPassantCoordinate = null;
         }
+    }
+
+    public boolean pawnPromoted() {
+        return this.pawnPromoted;
+    }
+
+    public void promotePawn(PieceType pieceType) {
+        Coordinate promotingPawn = findPromotingPawn();
+
+        Piece piece = new Piece(pieceType, getBoard().getSquare(promotingPawn).getPiece().getColor());
+        getBoard().getSquare(promotingPawn).setPiece(piece);
     }
 
     /**
