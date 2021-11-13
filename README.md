@@ -40,14 +40,8 @@ This game is created using the Model-View-Controller (MVC) design. The entry poi
 
 ## TODO
 
-### Core
-
-- En Passant
-- Pawn promotion
-
 ### Features
 
 - Undo button
 - Export/load PGN
 - Export/load FEN
-
