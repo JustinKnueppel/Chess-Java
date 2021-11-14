@@ -203,10 +203,10 @@ public class View extends Application {
         return pieceImage;
     }
 
-    private Image getPieceImage(TeamColor teamColor, PieceType pieceType) {
+    private LocatedImage getLocatedPieceImage(TeamColor teamColor, PieceType pieceType) {
         String imagePath = getImagePath(teamColor, pieceType);
 
-        Image pieceImage = new Image(imagePath);
+        LocatedImage pieceImage = new LocatedImage(imagePath);
         return pieceImage;
     }
 
@@ -284,7 +284,8 @@ public class View extends Application {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     ImageView imageView = (ImageView) mouseEvent.getSource();
-                    String imageFilepath = imageView.getImage().getUrl();
+                    LocatedImage image = (LocatedImage) imageView.getImage();
+                    String imageFilepath = image.getURL();
                     PieceType pieceType = filepathToPieceType(imageFilepath);
                     processPromotion(pieceType);
                 }
@@ -328,9 +329,9 @@ public class View extends Application {
         PieceType[] promotionPieces = new PieceType[] {PieceType.QUEEN, PieceType.KNIGHT, PieceType.ROOK, PieceType.BISHOP};
 
 
-        Image[] pieceImages = new Image[promotionPieces.length];
+        LocatedImage[] pieceImages = new LocatedImage[promotionPieces.length];
         for (int i = 0; i < promotionPieces.length; i++) {
-            pieceImages[i] = getPieceImage(teamColor, promotionPieces[i]);
+            pieceImages[i] = getLocatedPieceImage(teamColor, promotionPieces[i]);
         }
 
         FlowPane flowPane = new FlowPane();
