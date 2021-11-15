@@ -1,3 +1,5 @@
+package chess.view;
+
 import javafx.scene.image.Image;
 
 public class LocatedImage extends Image {

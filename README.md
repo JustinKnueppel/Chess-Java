@@ -22,21 +22,21 @@ This repository recreates the historic game of [chess](https://en.wikipedia.org/
 │   │   ├── WhiteQueen.png
 │   │   └── WhiteRook.png
 │   └── src
-│       ├── Board.java
-│       ├── Controller.java
-│       ├── Coordinate.java
-│       ├── Game.java
-│       ├── Piece.java
-│       ├── PieceType.java
-│       ├── Square.java
-│       ├── TeamColor.java
-│       └── View.java
+│       ├── chess.core.Board.java
+│       ├── chess.view.Controller.java
+│       ├── chess.core.Coordinate.java
+│       ├── chess.core.Game.java
+│       ├── chess.core.Piece.java
+│       ├── chess.core.PieceType.java
+│       ├── chess.core.Square.java
+│       ├── chess.core.TeamColor.java
+│       └── chess.view.View.java
 ├── out
 └── README.md
 
 ```
 
-This game is created using the Model-View-Controller (MVC) design. The entry point to run is the View class which will load the GUI.
+This game is created using the Model-chess.view.View-chess.view.Controller (MVC) design. The entry point to run is the chess.view.View class which will load the GUI.
 
 ## TODO
 

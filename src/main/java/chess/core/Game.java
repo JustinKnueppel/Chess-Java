@@ -1,3 +1,5 @@
+package chess.core;
+
 import java.util.*;
 
 public class Game {
@@ -67,7 +69,7 @@ public class Game {
     /**
      * Determine if coordinate is threatened.
      * @param coordinate
-     *      Square of interest
+     *      chess.core.Square of interest
      * @param teamColor
      *      Team that is [not] threatening the target square
      * @return

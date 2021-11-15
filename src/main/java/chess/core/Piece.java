@@ -1,3 +1,5 @@
+package chess.core;
+
 public class Piece {
     private PieceType type;
     private TeamColor color;
@@ -24,7 +26,7 @@ public class Piece {
     /**
      * Get this piece type.
      * @return
-     *      PieceType of this
+     *      chess.core.PieceType of this
      */
     public PieceType getType() {
         return type;
@@ -33,7 +35,7 @@ public class Piece {
     /**
      * Get the color of this.
      * @return
-     *      TeamColor of this
+     *      chess.core.TeamColor of this
      */
     public TeamColor getColor() {
         return color;

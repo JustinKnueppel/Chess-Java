@@ -1,3 +1,9 @@
+package chess.view;
+
+import chess.core.Board;
+import chess.core.Piece;
+import chess.core.PieceType;
+import chess.core.TeamColor;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,11 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-
-import java.util.Arrays;
-import java.util.Stack;
 
 public class View extends Application {
 
@@ -168,8 +170,10 @@ public class View extends Application {
     }
 
     private String getImagePath(TeamColor teamColor, PieceType pieceType) {
-        StringBuilder picturePath = new StringBuilder("file:Chess/Images/");
+        StringBuilder picturePath = new StringBuilder("/images/");
         picturePath.append(teamColor.equals(TeamColor.WHITE) ? "White" : "Black");
+
+        picturePath.append("-");
 
         switch (pieceType) {
             case KING:
@@ -316,7 +320,7 @@ public class View extends Application {
 
         Node square = getSquare(x, y);
         if (!(square instanceof ImageView)) {
-            System.out.println("Image View not found");
+            System.out.println("Image chess.view.View not found");
             return;
         }
 

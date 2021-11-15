@@ -1,7 +1,9 @@
+package chess.core;
+
 import java.util.EnumSet;
 
 public class Board {
-    static final int GRID_SIZE = 8;
+    public static final int GRID_SIZE = 8;
     private Square[][] board;
 
     public Board() {
@@ -25,7 +27,7 @@ public class Board {
     /**
      * Get the square in this.board corresponding to the given coordinate.
      * @param coordinate
-     *      Coordinate of the target square
+     *      chess.core.Coordinate of the target square
      * @return a 2-tuple with the file and rank indices of the target square
      */
     private int[] convertCoordinate(Coordinate coordinate) {
@@ -59,7 +61,7 @@ public class Board {
     /**
      * Retrieve the square at the given coordinate.
      * @param coordinate
-     *      Coordinate of the target square
+     *      chess.core.Coordinate of the target square
      * @return the target square
      */
     public Square getSquare(Coordinate coordinate) {

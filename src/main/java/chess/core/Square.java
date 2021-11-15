@@ -1,3 +1,5 @@
+package chess.core;
+
 public class Square {
     private Piece piece;
     public Square() {
@@ -24,7 +26,7 @@ public class Square {
     /**
      * Place piece in square.
      * @param piece
-     *      Piece to be placed
+     *      chess.core.Piece to be placed
      */
     public void setPiece(Piece piece) {
         this.piece = piece;

@@ -1,0 +1,29 @@
+// Works with Gradle 6.3 and Java 14
+
+// To run this do:
+// ./gradlew run
+
+// To build a distribution zip:
+// ./gradlew distZip
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+sourceCompatibility = 16
+targetCompatibility = 16
+
+version = '0.0.2'
+group = 'chess'
+mainClassName = "$moduleName/chess.view.View"
+
+javafx {
+    version = "16"
+    modules = [ 'javafx.controls', 'javafx.fxml']
+}
+
+repositories {
+    mavenCentral()
+}

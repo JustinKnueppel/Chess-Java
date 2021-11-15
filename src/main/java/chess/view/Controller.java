@@ -1,6 +1,10 @@
+package chess.view;
+
+import chess.core.*;
+
 public class Controller {
-    private View view;
-    private Game model;
+    private final View view;
+    private final Game model;
     private int moveCounter;
 
     public Controller(View view) {
@@ -42,8 +46,8 @@ public class Controller {
     public void processMove(int startX, int viewStartY, int endX, int viewEndY) {
         int startY = Board.GRID_SIZE - 1 - viewStartY;
         int endY = Board.GRID_SIZE - 1 - viewEndY;
-        System.out.println(String.format("Start x: %d, start y: %d", startX, startY));
-        System.out.println(String.format("End x: %d, end y: %d", endX, endY));
+        System.out.printf("Start x: %d, start y: %d%n", startX, startY);
+        System.out.printf("End x: %d, end y: %d%n", endX, endY);
 
         /* Convert to coordinates */
         Coordinate start = Coordinate.fromIndices(startX, startY);
