@@ -1,8 +1,8 @@
 package chess.core;
 
 public class Piece {
-    private PieceType type;
-    private TeamColor color;
+    private final PieceType type;
+    private final TeamColor color;
     private boolean moved;
 
     public Piece(PieceType type, TeamColor color) {
@@ -46,8 +46,8 @@ public class Piece {
      * @return
      *      true iff this has moved
      */
-    public boolean hasMoved() {
-        return moved;
+    public boolean hasNotMoved() {
+        return !moved;
     }
 
     /**

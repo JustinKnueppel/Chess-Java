@@ -3,13 +3,13 @@ package chess.core;
 import java.util.*;
 
 public class Game {
-    private Board board;
+    private final Board board;
     private Coordinate enPassantCoordinate;
     private boolean pawnPromoted;
-    private Set<Coordinate> whiteThreatens;
-    private Set<Coordinate> blackThreatens;
-    private ArrayList<Coordinate[]> whiteLegalMoves;
-    private ArrayList<Coordinate[]> blackLegalMoves;
+    private final Set<Coordinate> whiteThreatens;
+    private final Set<Coordinate> blackThreatens;
+    private final ArrayList<Coordinate[]> whiteLegalMoves;
+    private final ArrayList<Coordinate[]> blackLegalMoves;
 
     public Game() {
         this.board = new Board();
@@ -75,10 +75,10 @@ public class Game {
      * @return
      *      true iff @teamColor is threatening the square at coordinate @coordinate
      */
-    boolean isAttacked(Coordinate coordinate, TeamColor teamColor) {
+    boolean isNotAttacked(Coordinate coordinate, TeamColor teamColor) {
         Set<Coordinate> squares = teamColor == TeamColor.WHITE ? whiteThreatens : blackThreatens;
 
-        return squares.contains(coordinate);
+        return !squares.contains(coordinate);
     }
 
     /**
@@ -108,7 +108,7 @@ public class Game {
         Piece piece = this.board.getSquare(coordinate).getPiece();
 
         switch (piece.getType()) {
-            case KING: {
+            case KING -> {
                 int[] directions = new int[]{-1, 0, 1};
 
                 for (int i : directions) {
@@ -130,57 +130,56 @@ public class Game {
 
                 /* Check for castling */
                 TeamColor team = piece.getColor().equals(TeamColor.WHITE) ? TeamColor.WHITE : TeamColor.BLACK;
-                if (!piece.hasMoved() && !inCheck(team)) {
+                if (piece.hasNotMoved() && !inCheck(team)) {
                     TeamColor oppositeTeam = piece.getColor().equals(TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
 
                     if (team.equals(TeamColor.WHITE)) {
                         /* White kingside castles */
                         if (!this.board.getSquare(Coordinate.F1).occupied() &&
-                                !isAttacked(Coordinate.F1, oppositeTeam) &&
+                                isNotAttacked(Coordinate.F1, oppositeTeam) &&
                                 !this.board.getSquare(Coordinate.G1).occupied() &&
-                                !isAttacked(Coordinate.G1, oppositeTeam) &&
+                                isNotAttacked(Coordinate.G1, oppositeTeam) &&
                                 this.board.getSquare(Coordinate.H1).occupied() &&
-                                !this.board.getSquare(Coordinate.H1).getPiece().hasMoved()) {
-                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.G1});
+                                this.board.getSquare(Coordinate.H1).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.G1});
                         }
 
                         /* White queenside castles */
                         if (!this.board.getSquare(Coordinate.D1).occupied() &&
-                                !isAttacked(Coordinate.D1, oppositeTeam) &&
+                                isNotAttacked(Coordinate.D1, oppositeTeam) &&
                                 !this.board.getSquare(Coordinate.C1).occupied() &&
-                                !isAttacked(Coordinate.C1, oppositeTeam) &&
+                                isNotAttacked(Coordinate.C1, oppositeTeam) &&
                                 !this.board.getSquare(Coordinate.B1).occupied() &&
                                 this.board.getSquare(Coordinate.A1).occupied() &&
-                                !this.board.getSquare(Coordinate.A1).getPiece().hasMoved()) {
-                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.C1});
+                                this.board.getSquare(Coordinate.A1).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.C1});
                         }
                     } else {
                         /* Black kingside castles */
                         if (!this.board.getSquare(Coordinate.F8).occupied() &&
-                                !isAttacked(Coordinate.F8, oppositeTeam) &&
+                                isNotAttacked(Coordinate.F8, oppositeTeam) &&
                                 !this.board.getSquare(Coordinate.G8).occupied() &&
-                                !isAttacked(Coordinate.G8, oppositeTeam) &&
+                                isNotAttacked(Coordinate.G8, oppositeTeam) &&
                                 this.board.getSquare(Coordinate.H8).occupied() &&
-                                !this.board.getSquare(Coordinate.H8).getPiece().hasMoved()) {
-                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.G8});
+                                this.board.getSquare(Coordinate.H8).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.G8});
                         }
 
                         /* White queenside castles */
                         if (!this.board.getSquare(Coordinate.D8).occupied() &&
-                                !isAttacked(Coordinate.D8, oppositeTeam) &&
+                                isNotAttacked(Coordinate.D8, oppositeTeam) &&
                                 !this.board.getSquare(Coordinate.C8).occupied() &&
-                                !isAttacked(Coordinate.C8, oppositeTeam) &&
+                                isNotAttacked(Coordinate.C8, oppositeTeam) &&
                                 !this.board.getSquare(Coordinate.B8).occupied() &&
                                 this.board.getSquare(Coordinate.A8).occupied() &&
-                                !this.board.getSquare(Coordinate.A8).getPiece().hasMoved()) {
-                            legalMoves.add(new Coordinate[] {coordinate, Coordinate.C8});
+                                this.board.getSquare(Coordinate.A8).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.C8});
                         }
                     }
 
                 }
-                break;
             }
-            case PAWN: {
+            case PAWN -> {
                 int direction = piece.getColor() == TeamColor.WHITE ? 1 : -1;
 
                 /*
@@ -195,7 +194,7 @@ public class Game {
                         /*
                          * Two steps
                          */
-                        if (!piece.hasMoved() && validIndices(startIndices[0], startIndices[1] + direction * 2)) {
+                        if (piece.hasNotMoved() && validIndices(startIndices[0], startIndices[1] + direction * 2)) {
                             Coordinate twoStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction * 2);
                             Square twoStep = this.board.getSquare(twoStepCoordinate);
                             if (!twoStep.occupied()) {
@@ -208,7 +207,7 @@ public class Game {
                 /*
                  * Capturing moves
                  */
-                for (int side : new int[]{-1,1}) {
+                for (int side : new int[]{-1, 1}) {
                     int newX = startIndices[0] + side;
                     int newY = startIndices[1] + direction;
                     if (validIndices(newX, newY)) {
@@ -216,17 +215,16 @@ public class Game {
                         Square target = this.board.getSquare(newCoordinate);
 
                         threatens.add(newCoordinate);
-                        boolean legalEnPassant = this.enPassantCoordinate != null && newCoordinate.equals(this.enPassantCoordinate);
+                        boolean legalEnPassant = newCoordinate.equals(this.enPassantCoordinate);
                         boolean legalNormalCapture = target.occupied() && target.getPiece().getColor() != piece.getColor();
                         if (legalNormalCapture || legalEnPassant) {
                             legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
                         }
                     }
                 }
-                break;
             }
-            case ROOK: {
-                int[]  directions = new int[]{-1, 1};
+            case ROOK -> {
+                int[] directions = new int[]{-1, 1};
 
                 /*
                  * Vertical moves
@@ -277,9 +275,8 @@ public class Game {
                         newX = startIndices[0] + direction * multiplier;
                     }
                 }
-                break;
             }
-            case QUEEN: {
+            case QUEEN -> {
                 int[] directions = new int[]{-1, 0, 1};
 
                 for (int i : directions) {
@@ -287,7 +284,7 @@ public class Game {
                         if (i == 0 && j == 0 || !validIndices(startIndices[0] + i, startIndices[1] + j)) {
                             continue;
                         }
-                        int multpilier = 1;
+                        int multiplier = 1;
                         int newX = startIndices[0] + i;
                         int newY = startIndices[1] + j;
                         while (validIndices(newX, newY)) {
@@ -304,17 +301,16 @@ public class Game {
                             if (square.occupied()) {
                                 break;
                             }
-                            multpilier++;
-                            newX = startIndices[0] + i * multpilier;
-                            newY = startIndices[1] + j * multpilier;
+                            multiplier++;
+                            newX = startIndices[0] + i * multiplier;
+                            newY = startIndices[1] + j * multiplier;
                         }
 
                     }
                 }
-                break;
             }
-            case BISHOP: {
-                int[] directions = new int[]{-1,1};
+            case BISHOP -> {
+                int[] directions = new int[]{-1, 1};
 
                 for (int i : directions) {
                     for (int j : directions) {
@@ -343,14 +339,13 @@ public class Game {
                         }
                     }
                 }
-                break;
             }
-            case KNIGHT: {
+            case KNIGHT -> {
                 int[] oneStep = new int[]{-1, 1};
                 int[] twoStep = new int[]{-2, 2};
 
                 for (int i : oneStep) {
-                    for (int j: twoStep) {
+                    for (int j : twoStep) {
                         int newX = startIndices[0] + i;
                         int newY = startIndices[1] + j;
                         if (validIndices(newX, newY)) {
@@ -377,10 +372,7 @@ public class Game {
 
                     }
                 }
-                break;
             }
-
-
         }
         if (piece.getColor() == TeamColor.WHITE) {
             this.whiteThreatens.addAll(threatens);
@@ -524,25 +516,12 @@ public class Game {
         /* Check if move was castling */
         if (piece.getType().equals(PieceType.KING) &&
                 Math.abs(start.toIndices()[0] - end.toIndices()[0]) == 2) {
-            switch(end) {
-                case G1: { /* White kingside castles */
-                    makeMove(Coordinate.H1, Coordinate.F1);
-                    break;
-                }
-                case C1: { /* White queenside castles */
-                    makeMove(Coordinate.A1, Coordinate.D1);
-                    break;
-                }
-                case G8: { /* Black kingside castles */
-                    makeMove(Coordinate.H8, Coordinate.F8);
-                    break;
-                }
-                case A8: { /* Black queenside castles */
-                    makeMove(Coordinate.A8, Coordinate.D8);
-                    break;
-                }
-                default: {
-                    break;
+            switch (end) {
+                case G1 -> /* White kingside castles */ makeMove(Coordinate.H1, Coordinate.F1);
+                case C1 -> /* White queenside castles */ makeMove(Coordinate.A1, Coordinate.D1);
+                case G8 -> /* Black kingside castles */ makeMove(Coordinate.H8, Coordinate.F8);
+                case A8 -> /* Black queenside castles */ makeMove(Coordinate.A8, Coordinate.D8);
+                default -> {
                 }
             }
         }

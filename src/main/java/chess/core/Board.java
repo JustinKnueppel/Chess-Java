@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 public class Board {
     public static final int GRID_SIZE = 8;
-    private Square[][] board;
+    private final Square[][] board;
 
     public Board() {
         this.board = createBoard();

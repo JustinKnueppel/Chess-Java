@@ -30,7 +30,6 @@ public class View extends Application {
     private Controller controller;
     private GridPane pieces;
     private StackPane root;
-    private Stage stage;
 
     /**
      * Create square of a given color.
@@ -121,14 +120,13 @@ public class View extends Application {
         return root;
     }
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Parent root = createContent();
         Scene scene = new Scene(root);
 
         this.root = (StackPane) root;
         this.controller = new Controller(this);
 
-        this.stage = primaryStage;
         primaryStage.setTitle("Chess");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -161,7 +159,7 @@ public class View extends Application {
         Node result = null;
 
         for (Node node: this.pieces.getChildren()) {
-            if (this.pieces.getColumnIndex(node) == x && this.pieces.getRowIndex(node) == y) {
+            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
                 result = node;
                 break;
             }
@@ -176,23 +174,12 @@ public class View extends Application {
         picturePath.append("-");
 
         switch (pieceType) {
-            case KING:
-                picturePath.append("King");
-                break;
-            case QUEEN:
-                picturePath.append("Queen");
-                break;
-            case ROOK:
-                picturePath.append("Rook");
-                break;
-            case PAWN:
-                picturePath.append("Pawn");
-                break;
-            case BISHOP:
-                picturePath.append("Bishop");
-                break;
-            case KNIGHT:
-                picturePath.append("Knight");
+            case KING -> picturePath.append("King");
+            case QUEEN -> picturePath.append("Queen");
+            case ROOK -> picturePath.append("Rook");
+            case PAWN -> picturePath.append("Pawn");
+            case BISHOP -> picturePath.append("Bishop");
+            case KNIGHT -> picturePath.append("Knight");
         }
 
         picturePath.append(".png");
@@ -203,15 +190,13 @@ public class View extends Application {
     private Image getPieceImage(Piece piece) {
         String imagePath = getImagePath(piece.getColor(), piece.getType());
 
-        Image pieceImage = new Image(imagePath);
-        return pieceImage;
+        return new Image(imagePath);
     }
 
     private LocatedImage getLocatedPieceImage(TeamColor teamColor, PieceType pieceType) {
         String imagePath = getImagePath(teamColor, pieceType);
 
-        LocatedImage pieceImage = new LocatedImage(imagePath);
-        return pieceImage;
+        return new LocatedImage(imagePath);
     }
 
     private PieceType filepathToPieceType(String filepath) {
@@ -242,19 +227,19 @@ public class View extends Application {
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
 
-    private EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
-            new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
+            new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     orgSceneX = mouseEvent.getSceneX();
                     orgSceneY = mouseEvent.getSceneY();
-                    orgTranslateX = ((ImageView)(mouseEvent.getSource())).getTranslateX();
-                    orgTranslateY = ((ImageView)(mouseEvent.getSource())).getTranslateY();
+                    orgTranslateX = ((ImageView) (mouseEvent.getSource())).getTranslateX();
+                    orgTranslateY = ((ImageView) (mouseEvent.getSource())).getTranslateY();
                 }
             };
 
-    private EventHandler<MouseEvent> imageViewOnMouseDraggedEventHandler =
-            new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> imageViewOnMouseDraggedEventHandler =
+            new EventHandler<>() {
 
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -263,36 +248,33 @@ public class View extends Application {
                     double newTranslateX = orgTranslateX + offsetX;
                     double newTranslateY = orgTranslateY + offsetY;
 
-                    ((ImageView)(mouseEvent.getSource())).setTranslateX(newTranslateX);
-                    ((ImageView)(mouseEvent.getSource())).setTranslateY(newTranslateY);
+                    ((ImageView) (mouseEvent.getSource())).setTranslateX(newTranslateX);
+                    ((ImageView) (mouseEvent.getSource())).setTranslateY(newTranslateY);
                 }
             };
 
-    private EventHandler<MouseEvent> imageViewOnMouseReleasedEventHandler =
-            new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> imageViewOnMouseReleasedEventHandler =
+            new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double newX = mouseEvent.getSceneX();
                     double newY = mouseEvent.getSceneY();
 
                     /* Reset ImageView location */
-                    ((ImageView)(mouseEvent.getSource())).setTranslateX(orgTranslateX);
-                    ((ImageView)(mouseEvent.getSource())).setTranslateY(orgTranslateY);
+                    ((ImageView) (mouseEvent.getSource())).setTranslateX(orgTranslateX);
+                    ((ImageView) (mouseEvent.getSource())).setTranslateY(orgTranslateY);
 
                     processMove(orgSceneX, orgSceneY, newX, newY);
                 }
             };
 
-    private EventHandler<MouseEvent> promotionPieceOnMousePressedEventHandler =
-            new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    ImageView imageView = (ImageView) mouseEvent.getSource();
-                    LocatedImage image = (LocatedImage) imageView.getImage();
-                    String imageFilepath = image.getURL();
-                    PieceType pieceType = filepathToPieceType(imageFilepath);
-                    processPromotion(pieceType);
-                }
+    private final EventHandler<MouseEvent> promotionPieceOnMousePressedEventHandler =
+            mouseEvent -> {
+                ImageView imageView = (ImageView) mouseEvent.getSource();
+                LocatedImage image = (LocatedImage) imageView.getImage();
+                String imageFilepath = image.getURL();
+                PieceType pieceType = filepathToPieceType(imageFilepath);
+                processPromotion(pieceType);
             };
 
     /*
@@ -303,10 +285,9 @@ public class View extends Application {
 
     public void clearBoard() {
         for (Node node: this.pieces.getChildren()) {
-            if (!(node instanceof ImageView)) {
+            if (!(node instanceof ImageView imageView)) {
                 continue;
             }
-            ImageView imageView = (ImageView) node;
             imageView.setImage(null);
         }
     }
@@ -319,12 +300,11 @@ public class View extends Application {
          */
 
         Node square = getSquare(x, y);
-        if (!(square instanceof ImageView)) {
+        if (!(square instanceof ImageView imageView)) {
             System.out.println("Image chess.view.View not found");
             return;
         }
 
-        ImageView imageView = (ImageView)square;
         imageView.setImage(pieceImage);
     }
 
