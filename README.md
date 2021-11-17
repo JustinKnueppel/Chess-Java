@@ -1,42 +1,53 @@
 # Chess
 
-This repository recreates the historic game of [chess](https://en.wikipedia.org/wiki/Chess) using Java with the JavaFX GUI library.
+This repository recreates the game of [chess](https://en.wikipedia.org/wiki/Chess) using Java with the JavaFX GUI library.
 
 ## Structure
 
 ```
 .
-├── Chess
-│   ├── Chess.iml
-│   ├── Images
-│   │   ├── BlackBishop.png
-│   │   ├── BlackKing.png
-│   │   ├── BlackKnight.png
-│   │   ├── BlackPawn.png
-│   │   ├── BlackQueen.png
-│   │   ├── BlackRook.png
-│   │   ├── WhiteBishop.png
-│   │   ├── WhiteKing.png
-│   │   ├── WhiteKnight.png
-│   │   ├── WhitePawn.png
-│   │   ├── WhiteQueen.png
-│   │   └── WhiteRook.png
-│   └── src
-│       ├── chess.core.Board.java
-│       ├── chess.view.Controller.java
-│       ├── chess.core.Coordinate.java
-│       ├── chess.core.Game.java
-│       ├── chess.core.Piece.java
-│       ├── chess.core.PieceType.java
-│       ├── chess.core.Square.java
-│       ├── chess.core.TeamColor.java
-│       └── chess.view.View.java
-├── out
-└── README.md
-
+├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+├── README.md
+└── src
+    └── main
+        ├── java
+        │   ├── chess
+        │   │   ├── core
+        │   │   │   ├── Board.java
+        │   │   │   ├── Coordinate.java
+        │   │   │   ├── Game.java
+        │   │   │   ├── Piece.java
+        │   │   │   ├── PieceType.java
+        │   │   │   ├── Square.java
+        │   │   │   └── TeamColor.java
+        │   │   └── view
+        │   │       ├── Controller.java
+        │   │       ├── LocatedImage.java
+        │   │       └── View.java
+        │   └── module-info.java
+        └── resources
+            └── images
+                ├── Black-Bishop.png
+                ├── Black-King.png
+                ├── Black-Knight.png
+                ├── Black-Pawn.png
+                ├── Black-Queen.png
+                ├── Black-Rook.png
+                ├── White-Bishop.png
+                ├── White-King.png
+                ├── White-Knight.png
+                ├── White-Pawn.png
+                ├── White-Queen.png
+                └── White-Rook.png
 ```
 
-This game is created using the Model-chess.view.View-chess.view.Controller (MVC) design. The entry point to run is the chess.view.View class which will load the GUI.
+This game is created using the Model-View-Controller (MVC) architecture. The entry point to run is the chess.view.View class which will load the GUI.
 
 ## TODO
 
@@ -45,3 +56,4 @@ This game is created using the Model-chess.view.View-chess.view.Controller (MVC)
 - Undo button
 - Export/load PGN
 - Export/load FEN
+
