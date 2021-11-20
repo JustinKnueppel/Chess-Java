@@ -7,9 +7,9 @@ public class Controller {
     private final Game model;
     private int moveCounter;
 
-    public Controller(View view) {
+    public Controller(Game model, View view) {
         this.view = view;
-        this.model = new Game();
+        this.model = model;
         this.moveCounter = 0;
         updateBoard();
     }

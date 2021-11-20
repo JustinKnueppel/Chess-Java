@@ -4,7 +4,6 @@ import chess.core.Board;
 import chess.core.Piece;
 import chess.core.PieceType;
 import chess.core.TeamColor;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,16 +19,16 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
-public class View extends Application {
+public class View {
 
     public static final int TILE_SIZE = 100;
     private static final String DARK_SQUARE_COLOR = "#769656";
     private static final String LIGHT_SQUARE_COLOR = "#eeeed2";
+    private final Scene scene;
     private Controller controller;
     private GridPane pieces;
-    private StackPane root;
+    private final StackPane root;
 
     /**
      * Create square of a given color.
@@ -119,19 +118,21 @@ public class View extends Application {
         root.getChildren().add(mainContent);
         return root;
     }
-    @Override
-    public void start(Stage primaryStage) {
+
+    public View() {
         Parent root = createContent();
-        Scene scene = new Scene(root);
+        this.scene = new Scene(root);
 
         this.root = (StackPane) root;
-        this.controller = new Controller(this);
-
-        primaryStage.setTitle("Chess");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public Scene getScene() {
+        return this.scene;
+    }
 
     /**
      * Process potential move on mouse released.
