@@ -23,22 +23,6 @@ public class Board {
     }
 
     /**
-     * Get the square in this.board corresponding to the given coordinate.
-     * @param coordinate
-     *      chess.core.Coordinate of the target square
-     * @return a 2-tuple with the file and rank indices of the target square
-     */
-    private int[] convertCoordinate(Coordinate coordinate) {
-        final String fileOrder = "ABCDEFGH";
-        final String rankOrder = "12345678";
-
-        int file = fileOrder.indexOf(coordinate.toString().charAt(0));
-        int rank = rankOrder.indexOf(coordinate.toString().charAt(1));
-
-        return new int[]{file, rank};
-    }
-
-    /**
      * Get deep copy of this.
      * @return
      *      Copy of @this
@@ -46,7 +30,7 @@ public class Board {
     public Board copy() {
         Board copy = new Board();
 
-        for (Coordinate coordinate : Coordinate.values()) {
+        for (Coordinate coordinate : Coordinate.all()) {
             Square oldSquare = this.getSquare(coordinate);
             if (oldSquare.occupied()) {
                 copy.getSquare(coordinate).setPiece(oldSquare.getPiece().copy());
@@ -59,11 +43,10 @@ public class Board {
     /**
      * Retrieve the square at the given coordinate.
      * @param coordinate
-     *      chess.core.Coordinate of the target square
+     *      chess.core.Coordinate2 of the target square
      * @return the target square
      */
     public Square getSquare(Coordinate coordinate) {
-        int[] indices = convertCoordinate(coordinate);
-        return this.board[indices[0]][indices[1]];
+        return this.board[coordinate.getFile().toIndex()][coordinate.getRank().toIndex()];
     }
 }

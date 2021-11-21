@@ -3,13 +3,38 @@ package chess.core;
 import java.util.*;
 
 public class Game {
+    private class Move {
+        private final Coordinate from;
+        private final Coordinate to;
+        Move(Coordinate from, Coordinate to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        public Coordinate getFrom() {
+            return from;
+        }
+
+        public Coordinate getTo() {
+            return to;
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            if (!(object instanceof Move move)) {
+                return false;
+            }
+            return this.from.equals(move.getFrom()) &&
+                    this.to.equals(move.getTo());
+        }
+    }
     private final Board board;
     private Coordinate enPassantCoordinate;
     private boolean pawnPromoted;
     private final Set<Coordinate> whiteThreatens;
     private final Set<Coordinate> blackThreatens;
-    private final ArrayList<Coordinate[]> whiteLegalMoves;
-    private final ArrayList<Coordinate[]> blackLegalMoves;
+    private final ArrayList<Move> whiteLegalMoves;
+    private final ArrayList<Move> blackLegalMoves;
 
     public Game() {
         this.board = new Board();
@@ -37,31 +62,30 @@ public class Game {
      *      The coordinates of @team's king
      */
     private Coordinate getKingCoordinate(TeamColor team) {
-        for (Coordinate coordinate : Coordinate.values()) {
+        for (Coordinate coordinate : Coordinate.all()) {
             Square square = board.getSquare(coordinate);
             if (square.occupied() && square.getPiece().getType().equals(PieceType.KING) && square.getPiece().getColor().equals(team)) {
                 return coordinate;
             }
         }
+
         return null;
     }
 
     private void setPieces() {
         final PieceType[] backRow = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
 
-        for (int file = 0; file < Board.GRID_SIZE; file++) {
-            for (int rank : new int[]{0, 7}) {
-                TeamColor team = rank == 0 ? TeamColor.WHITE : TeamColor.BLACK;
-                Coordinate coordinate = Coordinate.fromIndices(file, rank);
-                this.board.getSquare(coordinate).setPiece(new Piece(backRow[file], team));
+        for (Coordinate.File file : Coordinate.File.values()) {
+            // Place pieces
+            for (Coordinate.Rank rank : new Coordinate.Rank[]{Coordinate.Rank.ONE, Coordinate.Rank.EIGHT}) {
+                TeamColor team = rank == Coordinate.Rank.ONE ? TeamColor.WHITE : TeamColor.BLACK;
+                this.board.getSquare(new Coordinate(file, rank)).setPiece(new Piece(backRow[file.toIndex()], team));
             }
-        }
 
-        for (int file = 0; file < Board.GRID_SIZE; file++) {
-            for (int rank : new int[]{1, 6}) {
-                TeamColor team = rank == 1 ? TeamColor.WHITE : TeamColor.BLACK;
-                Coordinate coordinate = Coordinate.fromIndices(file, rank);
-                this.board.getSquare(coordinate).setPiece(new Piece(PieceType.PAWN, team));
+            // Place pawns
+            for (Coordinate.Rank rank : new Coordinate.Rank[]{Coordinate.Rank.TWO, Coordinate.Rank.SEVEN}) {
+                TeamColor team = rank == Coordinate.Rank.TWO ? TeamColor.WHITE : TeamColor.BLACK;
+                this.board.getSquare(new Coordinate(file, rank)).setPiece(new Piece(PieceType.PAWN, team));
             }
         }
     }
@@ -95,15 +119,15 @@ public class Game {
         return threatens.contains(kingCoordinate);
     }
 
-    private boolean validIndices(int x, int y) {
+    public boolean validIndices(int x, int y) {
         return x >= 0 && x < Board.GRID_SIZE && y >= 0 && y < Board.GRID_SIZE;
     }
 
     void updateThreatsMoves(Coordinate coordinate) {
         Set<Coordinate> threatens = new HashSet<>();
-        ArrayList<Coordinate[]> legalMoves = new ArrayList<>();
+        ArrayList<Move> legalMoves = new ArrayList<>();
 
-        int[] startIndices = coordinate.toIndices();
+        int[] startIndices = new int[]{coordinate.getFile().toIndex(), coordinate.getRank().toIndex()};
 
         Piece piece = this.board.getSquare(coordinate).getPiece();
 
@@ -118,12 +142,12 @@ public class Game {
                         }
                         int newX = startIndices[0] + i;
                         int newY = startIndices[1] + j;
-                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                         Square square = this.board.getSquare(newCoordinate);
 
                         threatens.add(newCoordinate);
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Move(coordinate, newCoordinate));
                         }
                     }
                 }
@@ -135,45 +159,45 @@ public class Game {
 
                     if (team.equals(TeamColor.WHITE)) {
                         /* White kingside castles */
-                        if (!this.board.getSquare(Coordinate.F1).occupied() &&
-                                isNotAttacked(Coordinate.F1, oppositeTeam) &&
-                                !this.board.getSquare(Coordinate.G1).occupied() &&
-                                isNotAttacked(Coordinate.G1, oppositeTeam) &&
-                                this.board.getSquare(Coordinate.H1).occupied() &&
-                                this.board.getSquare(Coordinate.H1).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.G1});
+                        if (!this.board.getSquare(new Coordinate(Coordinate.File.F, Coordinate.Rank.ONE)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.F, Coordinate.Rank.ONE), oppositeTeam) &&
+                                !this.board.getSquare(new Coordinate(Coordinate.File.G, Coordinate.Rank.ONE)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.G, Coordinate.Rank.ONE), oppositeTeam) &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.H, Coordinate.Rank.ONE)).occupied() &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.H, Coordinate.Rank.ONE)).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Move(coordinate, new Coordinate(Coordinate.File.G, Coordinate.Rank.ONE)));
                         }
 
                         /* White queenside castles */
-                        if (!this.board.getSquare(Coordinate.D1).occupied() &&
-                                isNotAttacked(Coordinate.D1, oppositeTeam) &&
-                                !this.board.getSquare(Coordinate.C1).occupied() &&
-                                isNotAttacked(Coordinate.C1, oppositeTeam) &&
-                                !this.board.getSquare(Coordinate.B1).occupied() &&
-                                this.board.getSquare(Coordinate.A1).occupied() &&
-                                this.board.getSquare(Coordinate.A1).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.C1});
+                        if (!this.board.getSquare(new Coordinate(Coordinate.File.D, Coordinate.Rank.ONE)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.D, Coordinate.Rank.ONE), oppositeTeam) &&
+                                !this.board.getSquare(new Coordinate(Coordinate.File.C, Coordinate.Rank.ONE)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.C, Coordinate.Rank.ONE), oppositeTeam) &&
+                                !this.board.getSquare(new Coordinate(Coordinate.File.B, Coordinate.Rank.ONE)).occupied() &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.A, Coordinate.Rank.ONE)).occupied() &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.A, Coordinate.Rank.ONE)).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Move(coordinate, new Coordinate(Coordinate.File.C, Coordinate.Rank.ONE)));
                         }
                     } else {
                         /* Black kingside castles */
-                        if (!this.board.getSquare(Coordinate.F8).occupied() &&
-                                isNotAttacked(Coordinate.F8, oppositeTeam) &&
-                                !this.board.getSquare(Coordinate.G8).occupied() &&
-                                isNotAttacked(Coordinate.G8, oppositeTeam) &&
-                                this.board.getSquare(Coordinate.H8).occupied() &&
-                                this.board.getSquare(Coordinate.H8).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.G8});
+                        if (!this.board.getSquare(new Coordinate(Coordinate.File.F, Coordinate.Rank.EIGHT)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.F, Coordinate.Rank.EIGHT), oppositeTeam) &&
+                                !this.board.getSquare(new Coordinate(Coordinate.File.G, Coordinate.Rank.EIGHT)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.G, Coordinate.Rank.EIGHT), oppositeTeam) &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.H, Coordinate.Rank.EIGHT)).occupied() &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.H, Coordinate.Rank.EIGHT)).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Move(coordinate, new Coordinate(Coordinate.File.G, Coordinate.Rank.EIGHT)));
                         }
 
                         /* White queenside castles */
-                        if (!this.board.getSquare(Coordinate.D8).occupied() &&
-                                isNotAttacked(Coordinate.D8, oppositeTeam) &&
-                                !this.board.getSquare(Coordinate.C8).occupied() &&
-                                isNotAttacked(Coordinate.C8, oppositeTeam) &&
-                                !this.board.getSquare(Coordinate.B8).occupied() &&
-                                this.board.getSquare(Coordinate.A8).occupied() &&
-                                this.board.getSquare(Coordinate.A8).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.C8});
+                        if (!this.board.getSquare(new Coordinate(Coordinate.File.D, Coordinate.Rank.EIGHT)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.D, Coordinate.Rank.EIGHT), oppositeTeam) &&
+                                !this.board.getSquare(new Coordinate(Coordinate.File.C, Coordinate.Rank.EIGHT)).occupied() &&
+                                isNotAttacked(new Coordinate(Coordinate.File.C, Coordinate.Rank.EIGHT), oppositeTeam) &&
+                                !this.board.getSquare(new Coordinate(Coordinate.File.B, Coordinate.Rank.EIGHT)).occupied() &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.A, Coordinate.Rank.EIGHT)).occupied() &&
+                                this.board.getSquare(new Coordinate(Coordinate.File.A, Coordinate.Rank.EIGHT)).getPiece().hasNotMoved()) {
+                            legalMoves.add(new Move(coordinate, new Coordinate(Coordinate.File.C, Coordinate.Rank.EIGHT)));
                         }
                     }
 
@@ -186,19 +210,19 @@ public class Game {
                  * Forward moves
                  */
                 if (validIndices(startIndices[0], startIndices[1] + direction)) {
-                    Coordinate oneStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction);
+                    Coordinate oneStepCoordinate = new Coordinate(Coordinate.File.from(startIndices[0]), Coordinate.Rank.from(startIndices[1] + direction));
                     Square oneStep = this.board.getSquare(oneStepCoordinate);
                     if (!oneStep.occupied()) {
-                        legalMoves.add(new Coordinate[]{coordinate, oneStepCoordinate});
+                        legalMoves.add(new Move(coordinate, oneStepCoordinate));
 
                         /*
                          * Two steps
                          */
                         if (piece.hasNotMoved() && validIndices(startIndices[0], startIndices[1] + direction * 2)) {
-                            Coordinate twoStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction * 2);
+                            Coordinate twoStepCoordinate = new Coordinate(Coordinate.File.from(startIndices[0]), Coordinate.Rank.from(startIndices[1] + direction * 2));
                             Square twoStep = this.board.getSquare(twoStepCoordinate);
                             if (!twoStep.occupied()) {
-                                legalMoves.add(new Coordinate[]{coordinate, twoStepCoordinate});
+                                legalMoves.add(new Move(coordinate, twoStepCoordinate));
                             }
                         }
                     }
@@ -211,14 +235,14 @@ public class Game {
                     int newX = startIndices[0] + side;
                     int newY = startIndices[1] + direction;
                     if (validIndices(newX, newY)) {
-                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                         Square target = this.board.getSquare(newCoordinate);
 
                         threatens.add(newCoordinate);
                         boolean legalEnPassant = newCoordinate.equals(this.enPassantCoordinate);
                         boolean legalNormalCapture = target.occupied() && target.getPiece().getColor() != piece.getColor();
                         if (legalNormalCapture || legalEnPassant) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Move(coordinate, newCoordinate));
                         }
                     }
                 }
@@ -235,12 +259,12 @@ public class Game {
                     int newY = startIndices[1] + direction * multiplier;
 
                     while (validIndices(newX, newY)) {
-                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                         Square square = this.board.getSquare(newCoordinate);
                         threatens.add(newCoordinate);
 
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Move(coordinate, newCoordinate));
                         }
 
                         if (square.occupied()) {
@@ -260,12 +284,12 @@ public class Game {
                     newX = startIndices[0] + direction * multiplier;
 
                     while (validIndices(newX, newY)) {
-                        Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                        Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                         Square square = this.board.getSquare(newCoordinate);
                         threatens.add(newCoordinate);
 
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Move(coordinate, newCoordinate));
                         }
 
                         if (square.occupied()) {
@@ -288,12 +312,12 @@ public class Game {
                         int newX = startIndices[0] + i;
                         int newY = startIndices[1] + j;
                         while (validIndices(newX, newY)) {
-                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                             Square square = this.board.getSquare(newCoordinate);
 
                             threatens.add(newCoordinate);
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Move(coordinate, newCoordinate));
                             }
                             /*
                              * Stop when you hit a piece
@@ -319,13 +343,13 @@ public class Game {
                         int newY = startIndices[1] + j * multiplier;
 
                         while (validIndices(newX, newY)) {
-                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                             Square square = this.board.getSquare(newCoordinate);
 
                             threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Move(coordinate, newCoordinate));
                             }
 
                             if (square.occupied()) {
@@ -349,24 +373,24 @@ public class Game {
                         int newX = startIndices[0] + i;
                         int newY = startIndices[1] + j;
                         if (validIndices(newX, newY)) {
-                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                             Square square = this.board.getSquare(newCoordinate);
                             threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Move(coordinate, newCoordinate));
                             }
                         }
 
                         newX = startIndices[0] + j;
                         newY = startIndices[1] + i;
                         if (validIndices(newX, newY)) {
-                            Coordinate newCoordinate = Coordinate.fromIndices(newX, newY);
+                            Coordinate newCoordinate = new Coordinate(Coordinate.File.from(newX), Coordinate.Rank.from(newY));
                             Square square = this.board.getSquare(newCoordinate);
                             threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Move(coordinate, newCoordinate));
                             }
                         }
 
@@ -393,7 +417,7 @@ public class Game {
         blackLegalMoves.clear();
 
         Square square;
-        for (Coordinate coordinate : Coordinate.values()) {
+        for (Coordinate coordinate : Coordinate.all()) {
             square = board.getSquare(coordinate);
             if (square.occupied()) {
                 updateThreatsMoves(coordinate);
@@ -409,15 +433,15 @@ public class Game {
      *      true iff @team has any legal moves
      */
     private boolean anyLegalMoves(TeamColor team) {
-        ArrayList<Coordinate[]> legalMoves = team.equals(TeamColor.WHITE) ? whiteLegalMoves : blackLegalMoves;
+        ArrayList<Move> legalMoves = team.equals(TeamColor.WHITE) ? whiteLegalMoves : blackLegalMoves;
 
-        ArrayList<Coordinate[]> illegalMoves = new ArrayList<>();
-        for (Coordinate[] move : legalMoves) {
+        ArrayList<Move> illegalMoves = new ArrayList<>();
+        for (Move move : legalMoves) {
             /* Create copy of the model */
             Game copy = new Game(this.board.copy());
 
             /* Test move on copy */
-            copy.makeMove(move[0], move[1]);
+            copy.makeMove(move.getFrom(), move.getTo());
 
             copy.updateMoves();
 
@@ -431,10 +455,10 @@ public class Game {
     }
 
     private Coordinate findPromotingPawn() {
-        int[] backRanks = new int[] {0, 7};
-        for (int backRank : backRanks) {
-            for (int file = 0; file < Board.GRID_SIZE; file++) {
-                Coordinate coordinate = Coordinate.fromIndices(file, backRank);
+        Coordinate.Rank[] backRanks = new Coordinate.Rank[]{Coordinate.Rank.ONE, Coordinate.Rank.EIGHT};
+        for (Coordinate.Rank backRank : backRanks) {
+            for (Coordinate.File file : Coordinate.File.values()) {
+                Coordinate coordinate = new Coordinate(file, backRank);
                 Square target = this.board.getSquare(coordinate);
                 if (target.occupied() && target.getPiece().getType().equals(PieceType.PAWN)) {
                     return coordinate;
@@ -468,9 +492,9 @@ public class Game {
 
         TeamColor team = this.board.getSquare(start).getPiece().getColor();
 
-        ArrayList<Coordinate[]> legalMoves = team.equals(TeamColor.WHITE) ? this.whiteLegalMoves : this.blackLegalMoves;
+        ArrayList<Move> legalMoves = team.equals(TeamColor.WHITE) ? this.whiteLegalMoves : this.blackLegalMoves;
 
-        boolean legalByPieceLogic = legalMoves.stream().anyMatch(a -> Arrays.equals(a, new Coordinate[] {start, end}));
+        boolean legalByPieceLogic = legalMoves.stream().anyMatch(a -> a.equals(new Move(start, end)));
         System.out.printf("King is in check? %s\n", inCheck(team));
         /* Return early if not legal by piece logic */
         if (!legalByPieceLogic) {
@@ -493,7 +517,7 @@ public class Game {
 
         }
 
-        return legalMoves.stream().anyMatch(a -> Arrays.equals(a, new Coordinate[] {start, end}));
+        return legalMoves.stream().anyMatch(a -> a.equals(new Move(start, end)));
     }
 
     /**
@@ -515,35 +539,34 @@ public class Game {
 
         /* Check if move was castling */
         if (piece.getType().equals(PieceType.KING) &&
-                Math.abs(start.toIndices()[0] - end.toIndices()[0]) == 2) {
-            switch (end) {
-                case G1 -> /* White kingside castles */ makeMove(Coordinate.H1, Coordinate.F1);
-                case C1 -> /* White queenside castles */ makeMove(Coordinate.A1, Coordinate.D1);
-                case G8 -> /* Black kingside castles */ makeMove(Coordinate.H8, Coordinate.F8);
-                case A8 -> /* Black queenside castles */ makeMove(Coordinate.A8, Coordinate.D8);
-                default -> {
-                }
+                Math.abs(start.getFile().toIndex() - end.getFile().toIndex()) == 2) {
+            if (end.equals(new Coordinate(Coordinate.File.G, Coordinate.Rank.ONE))) {
+                /* White kingside castles */
+                makeMove(new Coordinate(Coordinate.File.H, Coordinate.Rank.ONE), new Coordinate(Coordinate.File.F, Coordinate.Rank.ONE));
+            } else if (end.equals(new Coordinate(Coordinate.File.C, Coordinate.Rank.ONE))) {
+                /* White queenside castles */
+                makeMove(new Coordinate(Coordinate.File.A, Coordinate.Rank.ONE), new Coordinate(Coordinate.File.D, Coordinate.Rank.ONE));
+            } else if (end.equals(new Coordinate(Coordinate.File.G, Coordinate.Rank.EIGHT))) {
+                /* Black kingside castles */
+                makeMove(new Coordinate(Coordinate.File.H, Coordinate.Rank.EIGHT), new Coordinate(Coordinate.File.F, Coordinate.Rank.EIGHT));
+            } else if (end.equals(new Coordinate(Coordinate.File.C, Coordinate.Rank.EIGHT))) {
+                /* Black queenside castles */
+                makeMove(new Coordinate(Coordinate.File.A, Coordinate.Rank.EIGHT), new Coordinate(Coordinate.File.D, Coordinate.Rank.EIGHT));
             }
         }
 
         /* Check if pawn promoted */
-        int endRank = end.toIndices()[1];
-        this.pawnPromoted = piece.getType().equals(PieceType.PAWN) && (endRank == 0 || endRank == 7);
+        Coordinate.Rank endRank = end.getRank();
+        this.pawnPromoted = piece.getType().equals(PieceType.PAWN) && (endRank == Coordinate.Rank.ONE || endRank == Coordinate.Rank.EIGHT);
 
         /* Check if move was en passant */
         if(piece.getType().equals(PieceType.PAWN) && end.equals(this.enPassantCoordinate)) {
             /* Remove opponent pawn */
-            int x = end.toIndices()[0];
-            int y = start.toIndices()[1];
-
-            this.board.getSquare(Coordinate.fromIndices(x, y)).removePiece();
+            this.board.getSquare(new Coordinate(end.getFile(), start.getRank())).removePiece();
         }
         /* Set en passant square */
-        if (piece.getType().equals(PieceType.PAWN) && Math.abs(end.toIndices()[1] - start.toIndices()[1]) == 2) {
-            int x = start.toIndices()[0];
-            int y = (start.toIndices()[1] + end.toIndices()[1])/2;
-            this.enPassantCoordinate = Coordinate.fromIndices(x, y);
-
+        if (piece.getType().equals(PieceType.PAWN) && Math.abs(end.getRank().toIndex() - start.getRank().toIndex()) == 2) {
+            this.enPassantCoordinate = new Coordinate(start.getFile(), Coordinate.Rank.from((start.getRank().toIndex() + end.getRank().toIndex())/2));
         } else {
             this.enPassantCoordinate = null;
         }
