@@ -98,11 +98,11 @@ public class Game {
         return x >= 0 && x < Board.GRID_SIZE && y >= 0 && y < Board.GRID_SIZE;
     }
 
-    void updateThreatsMoves(Coordinate coordinate) {
+    void updateThreatsMoves(Coordinate2 coordinate) {
         Set<Coordinate> threatens = new HashSet<>();
         ArrayList<Coordinate[]> legalMoves = new ArrayList<>();
 
-        int[] startIndices = coordinate.toIndices();
+        int[] startIndices = new int[]{coordinate.getFile().toIndex(), coordinate.getRank().toIndex()};
 
         Piece piece = this.board.getSquare(coordinate).getPiece();
 
@@ -122,7 +122,7 @@ public class Game {
 
                         threatens.add(newCoordinate);
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                         }
                     }
                 }
@@ -140,7 +140,7 @@ public class Game {
                                 isNotAttacked(Coordinate.G1, oppositeTeam) &&
                                 this.board.getSquare(Coordinate.H1).occupied() &&
                                 this.board.getSquare(Coordinate.H1).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.G1});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), Coordinate.G1});
                         }
 
                         /* White queenside castles */
@@ -151,7 +151,7 @@ public class Game {
                                 !this.board.getSquare(Coordinate.B1).occupied() &&
                                 this.board.getSquare(Coordinate.A1).occupied() &&
                                 this.board.getSquare(Coordinate.A1).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.C1});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), Coordinate.C1});
                         }
                     } else {
                         /* Black kingside castles */
@@ -161,7 +161,7 @@ public class Game {
                                 isNotAttacked(Coordinate.G8, oppositeTeam) &&
                                 this.board.getSquare(Coordinate.H8).occupied() &&
                                 this.board.getSquare(Coordinate.H8).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.G8});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), Coordinate.G8});
                         }
 
                         /* White queenside castles */
@@ -172,7 +172,7 @@ public class Game {
                                 !this.board.getSquare(Coordinate.B8).occupied() &&
                                 this.board.getSquare(Coordinate.A8).occupied() &&
                                 this.board.getSquare(Coordinate.A8).getPiece().hasNotMoved()) {
-                            legalMoves.add(new Coordinate[]{coordinate, Coordinate.C8});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), Coordinate.C8});
                         }
                     }
 
@@ -188,7 +188,7 @@ public class Game {
                     Coordinate oneStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction);
                     Square oneStep = this.board.getSquare(oneStepCoordinate);
                     if (!oneStep.occupied()) {
-                        legalMoves.add(new Coordinate[]{coordinate, oneStepCoordinate});
+                        legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), oneStepCoordinate});
 
                         /*
                          * Two steps
@@ -197,7 +197,7 @@ public class Game {
                             Coordinate twoStepCoordinate = Coordinate.fromIndices(startIndices[0], startIndices[1] + direction * 2);
                             Square twoStep = this.board.getSquare(twoStepCoordinate);
                             if (!twoStep.occupied()) {
-                                legalMoves.add(new Coordinate[]{coordinate, twoStepCoordinate});
+                                legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), twoStepCoordinate});
                             }
                         }
                     }
@@ -217,7 +217,7 @@ public class Game {
                         boolean legalEnPassant = newCoordinate.equals(this.enPassantCoordinate);
                         boolean legalNormalCapture = target.occupied() && target.getPiece().getColor() != piece.getColor();
                         if (legalNormalCapture || legalEnPassant) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                         }
                     }
                 }
@@ -239,7 +239,7 @@ public class Game {
                         threatens.add(newCoordinate);
 
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                         }
 
                         if (square.occupied()) {
@@ -264,7 +264,7 @@ public class Game {
                         threatens.add(newCoordinate);
 
                         if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                            legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                            legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                         }
 
                         if (square.occupied()) {
@@ -292,7 +292,7 @@ public class Game {
 
                             threatens.add(newCoordinate);
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                             }
                             /*
                              * Stop when you hit a piece
@@ -324,7 +324,7 @@ public class Game {
                             threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                             }
 
                             if (square.occupied()) {
@@ -353,7 +353,7 @@ public class Game {
                             threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                             }
                         }
 
@@ -365,7 +365,7 @@ public class Game {
                             threatens.add(newCoordinate);
 
                             if (!square.occupied() || square.getPiece().getColor() != piece.getColor()) {
-                                legalMoves.add(new Coordinate[]{coordinate, newCoordinate});
+                                legalMoves.add(new Coordinate[]{coordinate.toCoordinate(), newCoordinate});
                             }
                         }
 
@@ -392,7 +392,7 @@ public class Game {
         blackLegalMoves.clear();
 
         Square square;
-        for (Coordinate coordinate : Coordinate.values()) {
+        for (Coordinate2 coordinate : Coordinate2.all()) {
             square = board.getSquare(coordinate);
             if (square.occupied()) {
                 updateThreatsMoves(coordinate);
