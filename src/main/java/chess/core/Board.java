@@ -46,7 +46,7 @@ public class Board {
     public Board copy() {
         Board copy = new Board();
 
-        for (Coordinate coordinate : Coordinate.values()) {
+        for (Coordinate2 coordinate : Coordinate2.all()) {
             Square oldSquare = this.getSquare(coordinate);
             if (oldSquare.occupied()) {
                 copy.getSquare(coordinate).setPiece(oldSquare.getPiece().copy());

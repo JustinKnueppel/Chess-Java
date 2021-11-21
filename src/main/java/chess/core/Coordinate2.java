@@ -23,6 +23,7 @@ public class Coordinate2 {
                 case "F" -> File.F;
                 case "G" -> File.G;
                 case "H" -> File.H;
+                default -> File.H;
             };
         }
 
@@ -66,6 +67,7 @@ public class Coordinate2 {
                 case "6" -> Rank.SIX;
                 case "7" -> Rank.SEVEN;
                 case "8" -> Rank.EIGHT;
+                default -> Rank.EIGHT;
             };
         }
 
@@ -147,13 +149,13 @@ public class Coordinate2 {
      * Retrieve a collection of all coordinates.
      * @return an exhaustive list of all coordinates
      */
-    public static Iterator<Coordinate2> all() {
+    public static Iterable<Coordinate2> all() {
         List<Coordinate2> coordinates = new ArrayList<>();
         for (File file : File.values()) {
             for (Rank rank : Rank.values()) {
                 coordinates.add(new Coordinate2(file, rank));
             }
         }
-        return (Iterator<Coordinate2>) coordinates;
+        return coordinates;
     }
 }
