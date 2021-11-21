@@ -49,19 +49,17 @@ public class Game {
     private void setPieces() {
         final PieceType[] backRow = new PieceType[]{PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK};
 
-        for (int file = 0; file < Board.GRID_SIZE; file++) {
-            for (int rank : new int[]{0, 7}) {
-                TeamColor team = rank == 0 ? TeamColor.WHITE : TeamColor.BLACK;
-                Coordinate coordinate = Coordinate.fromIndices(file, rank);
-                this.board.getSquare(coordinate).setPiece(new Piece(backRow[file], team));
+        for (Coordinate2.File file : Coordinate2.File.values()) {
+            // Place pieces
+            for (Coordinate2.Rank rank : new Coordinate2.Rank[]{Coordinate2.Rank.ONE, Coordinate2.Rank.EIGHT}) {
+                TeamColor team = rank == Coordinate2.Rank.ONE ? TeamColor.WHITE : TeamColor.BLACK;
+                this.board.getSquare(new Coordinate2(file, rank)).setPiece(new Piece(backRow[file.toIndex()], team));
             }
-        }
 
-        for (int file = 0; file < Board.GRID_SIZE; file++) {
-            for (int rank : new int[]{1, 6}) {
-                TeamColor team = rank == 1 ? TeamColor.WHITE : TeamColor.BLACK;
-                Coordinate coordinate = Coordinate.fromIndices(file, rank);
-                this.board.getSquare(coordinate).setPiece(new Piece(PieceType.PAWN, team));
+            // Place pawns
+            for (Coordinate2.Rank rank : new Coordinate2.Rank[]{Coordinate2.Rank.TWO, Coordinate2.Rank.SEVEN}) {
+                TeamColor team = rank == Coordinate2.Rank.TWO ? TeamColor.WHITE : TeamColor.BLACK;
+                this.board.getSquare(new Coordinate2(file, rank)).setPiece(new Piece(PieceType.PAWN, team));
             }
         }
     }
