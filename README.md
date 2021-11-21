@@ -6,6 +6,7 @@ This repository recreates the game of [chess](https://en.wikipedia.org/wiki/Ches
 
 ```
 .
+├── README.md
 ├── build.gradle
 ├── gradle
 │   └── wrapper
@@ -13,7 +14,6 @@ This repository recreates the game of [chess](https://en.wikipedia.org/wiki/Ches
 │       └── gradle-wrapper.properties
 ├── gradlew
 ├── gradlew.bat
-├── README.md
 └── src
     └── main
         ├── java
@@ -26,8 +26,11 @@ This repository recreates the game of [chess](https://en.wikipedia.org/wiki/Ches
         │   │   │   ├── PieceType.java
         │   │   │   ├── Square.java
         │   │   │   └── TeamColor.java
+        │   │   ├── game
+        │   │   │   └── Main.java
         │   │   └── view
         │   │       ├── Controller.java
+        │   │       ├── JavafxView.java
         │   │       ├── LocatedImage.java
         │   │       └── View.java
         │   └── module-info.java
@@ -47,7 +50,7 @@ This repository recreates the game of [chess](https://en.wikipedia.org/wiki/Ches
                 └── White-Rook.png
 ```
 
-This game is created using the Model-View-Controller (MVC) architecture. The entry point to run is the chess.view.View class which will load the GUI.
+This game is created using the Model-View-Controller (MVC) architecture. The entry point to run is the chess.game.Main class which will load the GUI.
 
 ## TODO
 
