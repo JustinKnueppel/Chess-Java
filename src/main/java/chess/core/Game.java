@@ -36,13 +36,14 @@ public class Game {
      * @return
      *      The coordinates of @team's king
      */
-    private Coordinate getKingCoordinate(TeamColor team) {
-        for (Coordinate coordinate : Coordinate.values()) {
+    private Coordinate2 getKingCoordinate(TeamColor team) {
+        for (Coordinate2 coordinate : Coordinate2.all()) {
             Square square = board.getSquare(coordinate);
             if (square.occupied() && square.getPiece().getType().equals(PieceType.KING) && square.getPiece().getColor().equals(team)) {
                 return coordinate;
             }
         }
+
         return null;
     }
 
@@ -88,7 +89,7 @@ public class Game {
      */
     private boolean inCheck(TeamColor team) {
         Set<Coordinate> threatens = team.equals(TeamColor.WHITE) ? this.blackThreatens : this.whiteThreatens;
-        Coordinate kingCoordinate = this.getKingCoordinate(team);
+        Coordinate kingCoordinate = this.getKingCoordinate(team).toCoordinate();
 
         return threatens.contains(kingCoordinate);
     }
