@@ -1,7 +1,5 @@
 package chess.core;
 
-import java.util.EnumSet;
-
 public class Board {
     public static final int GRID_SIZE = 8;
     private final Square[][] board;
@@ -48,7 +46,7 @@ public class Board {
     public Board copy() {
         Board copy = new Board();
 
-        for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {
+        for (Coordinate coordinate : Coordinate.values()) {
             Square oldSquare = this.getSquare(coordinate);
             if (oldSquare.occupied()) {
                 copy.getSquare(coordinate).setPiece(oldSquare.getPiece().copy());

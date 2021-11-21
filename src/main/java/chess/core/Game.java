@@ -37,7 +37,7 @@ public class Game {
      *      The coordinates of @team's king
      */
     private Coordinate getKingCoordinate(TeamColor team) {
-        for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {
+        for (Coordinate coordinate : Coordinate.values()) {
             Square square = board.getSquare(coordinate);
             if (square.occupied() && square.getPiece().getType().equals(PieceType.KING) && square.getPiece().getColor().equals(team)) {
                 return coordinate;
@@ -393,7 +393,7 @@ public class Game {
         blackLegalMoves.clear();
 
         Square square;
-        for (Coordinate coordinate : EnumSet.allOf(Coordinate.class)) {
+        for (Coordinate coordinate : Coordinate.values()) {
             square = board.getSquare(coordinate);
             if (square.occupied()) {
                 updateThreatsMoves(coordinate);
