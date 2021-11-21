@@ -66,4 +66,14 @@ public class Board {
         int[] indices = convertCoordinate(coordinate);
         return this.board[indices[0]][indices[1]];
     }
+
+    /**
+     * Retrieve the square at the given coordinate.
+     * @param coordinate
+     *      chess.core.Coordinate2 of the target square
+     * @return the target square
+     */
+    public Square getSquare(Coordinate2 coordinate) {
+        return this.board[coordinate.getFile().toIndex()][coordinate.getRank().toIndex()];
+    }
 }

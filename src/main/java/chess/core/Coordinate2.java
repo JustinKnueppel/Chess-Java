@@ -130,6 +130,14 @@ public class Coordinate2 {
         return Coordinate.fromIndices(file.toIndex(), rank.toIndex());
     }
 
+    public File getFile() {
+        return this.file;
+    }
+
+    public Rank getRank() {
+        return this.rank;
+    }
+
     @Override
     public String toString() {
         return this.file.toString() + this.rank.toString();
