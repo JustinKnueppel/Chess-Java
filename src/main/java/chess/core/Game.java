@@ -94,7 +94,7 @@ public class Game {
         return threatens.contains(kingCoordinate);
     }
 
-    private boolean validIndices(int x, int y) {
+    public boolean validIndices(int x, int y) {
         return x >= 0 && x < Board.GRID_SIZE && y >= 0 && y < Board.GRID_SIZE;
     }
 

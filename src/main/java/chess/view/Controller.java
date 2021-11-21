@@ -49,6 +49,11 @@ public class Controller {
         System.out.printf("Start x: %d, start y: %d%n", startX, startY);
         System.out.printf("End x: %d, end y: %d%n", endX, endY);
 
+        if (!this.model.validIndices(endX, endY)) {
+            this.updateBoard();
+            return;
+        }
+
         /* Convert to coordinates */
         Coordinate start = Coordinate.fromIndices(startX, startY);
         Coordinate end = Coordinate.fromIndices(endX, endY);
