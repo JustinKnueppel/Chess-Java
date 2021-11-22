@@ -149,19 +149,9 @@ public class JavafxView implements View{
 
     private String getImagePath(TeamColor teamColor, PieceType pieceType) {
         StringBuilder picturePath = new StringBuilder("/images/");
-        picturePath.append(teamColor.equals(TeamColor.WHITE) ? "White" : "Black");
-
+        picturePath.append(teamColor.toString());
         picturePath.append("-");
-
-        switch (pieceType) {
-            case KING -> picturePath.append("King");
-            case QUEEN -> picturePath.append("Queen");
-            case ROOK -> picturePath.append("Rook");
-            case PAWN -> picturePath.append("Pawn");
-            case BISHOP -> picturePath.append("Bishop");
-            case KNIGHT -> picturePath.append("Knight");
-        }
-
+        picturePath.append(pieceType.toString());
         picturePath.append(".png");
 
         return picturePath.toString();
