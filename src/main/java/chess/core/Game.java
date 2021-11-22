@@ -411,9 +411,8 @@ public class Game {
         whiteLegalMoves.clear();
         blackLegalMoves.clear();
 
-        Square square;
         for (Coordinate coordinate : Coordinate.all()) {
-            square = board.getSquare(coordinate);
+            Square square = board.getSquare(coordinate);
             if (square.occupied()) {
                 updateThreatsMoves(coordinate);
             }
