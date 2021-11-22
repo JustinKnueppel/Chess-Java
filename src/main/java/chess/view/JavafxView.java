@@ -70,9 +70,6 @@ public class JavafxView implements View{
 
         for (int i = 0; i < Board.GRID_SIZE; i++) {
             piecesGrid.getColumnConstraints().add(new ColumnConstraints(TILE_SIZE));
-        }
-
-        for (int i = 0; i < Board.GRID_SIZE; i++) {
             piecesGrid.getRowConstraints().add(new RowConstraints(TILE_SIZE));
         }
 
