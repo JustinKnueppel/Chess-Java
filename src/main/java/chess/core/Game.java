@@ -3,14 +3,7 @@ package chess.core;
 import java.util.*;
 
 public class Game {
-    private class Move {
-        private final Coordinate from;
-        private final Coordinate to;
-        Move(Coordinate from, Coordinate to) {
-            this.from = from;
-            this.to = to;
-        }
-
+    private record Move(Coordinate from, Coordinate to) {
         public Coordinate getFrom() {
             return from;
         }
