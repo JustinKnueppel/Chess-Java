@@ -3,6 +3,8 @@ package chess.core;
 import java.util.*;
 
 public class Game {
+    private Coordinate promotionSquare;
+
     private record Move(Coordinate from, Coordinate to) {
         public Coordinate getFrom() {
             return from;
@@ -447,20 +449,6 @@ public class Game {
         return legalMoves.size() == illegalMoves.size();
     }
 
-    private Coordinate findPromotingPawn() {
-        Coordinate.Rank[] backRanks = new Coordinate.Rank[]{Coordinate.Rank.ONE, Coordinate.Rank.EIGHT};
-        for (Coordinate.Rank backRank : backRanks) {
-            for (Coordinate.File file : Coordinate.File.values()) {
-                Coordinate coordinate = new Coordinate(file, backRank);
-                Square target = this.board.getSquare(coordinate);
-                if (target.occupied() && target.getPiece().getType().equals(PieceType.PAWN)) {
-                    return coordinate;
-                }
-            }
-        }
-        return null;
-    }
-
     /*
      * ==================
      * = Public methods =
@@ -549,6 +537,7 @@ public class Game {
         /* Check if pawn promoted */
         Coordinate.Rank endRank = end.getRank();
         this.pawnPromoted = piece.getType().equals(PieceType.PAWN) && (endRank == Coordinate.Rank.ONE || endRank == Coordinate.Rank.EIGHT);
+        this.promotionSquare = this.pawnPromoted ? end : null;
 
         /* Check if move was en passant */
         if(piece.getType().equals(PieceType.PAWN) && end.equals(this.enPassantCoordinate)) {
@@ -568,10 +557,8 @@ public class Game {
     }
 
     public void promotePawn(PieceType pieceType) {
-        Coordinate promotingPawn = findPromotingPawn();
-
-        Piece piece = new Piece(pieceType, getBoard().getSquare(promotingPawn).getPiece().getColor());
-        getBoard().getSquare(promotingPawn).setPiece(piece);
+        Piece piece = new Piece(pieceType, getBoard().getSquare(promotionSquare).getPiece().getColor());
+        getBoard().getSquare(promotionSquare).setPiece(piece);
     }
 
     /**
