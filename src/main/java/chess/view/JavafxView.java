@@ -148,13 +148,7 @@ public class JavafxView implements View{
     }
 
     private String getImagePath(TeamColor teamColor, PieceType pieceType) {
-        StringBuilder picturePath = new StringBuilder("/images/");
-        picturePath.append(teamColor.toString());
-        picturePath.append("-");
-        picturePath.append(pieceType.toString());
-        picturePath.append(".png");
-
-        return picturePath.toString();
+        return String.format("/images/%s-%s.png", teamColor.toString(), pieceType.toString());
     }
 
     private Image getPieceImage(Piece piece) {
