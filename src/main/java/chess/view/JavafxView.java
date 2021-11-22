@@ -151,13 +151,7 @@ public class JavafxView implements View{
         return String.format("/images/%s-%s.png", teamColor.toString(), pieceType.toString());
     }
 
-    private Image getPieceImage(Piece piece) {
-        String imagePath = getImagePath(piece.getColor(), piece.getType());
-
-        return new Image(imagePath);
-    }
-
-    private PieceImage getLocatedPieceImage(TeamColor teamColor, PieceType pieceType) {
+    private PieceImage getPieceImage(TeamColor teamColor, PieceType pieceType) {
         String imagePath = getImagePath(teamColor, pieceType);
 
         return new PieceImage(imagePath, pieceType);
@@ -241,7 +235,7 @@ public class JavafxView implements View{
     }
 
     public void placePiece(int x, int y, Piece piece) {
-        Image pieceImage = getPieceImage(piece);
+        Image pieceImage = getPieceImage(piece.getColor(), piece.getType());
 
         /*
          * Place piece
@@ -263,7 +257,7 @@ public class JavafxView implements View{
 
         PieceImage[] pieceImages = new PieceImage[promotionPieces.length];
         for (int i = 0; i < promotionPieces.length; i++) {
-            pieceImages[i] = getLocatedPieceImage(teamColor, promotionPieces[i]);
+            pieceImages[i] = getPieceImage(teamColor, promotionPieces[i]);
         }
 
         FlowPane flowPane = new FlowPane();
