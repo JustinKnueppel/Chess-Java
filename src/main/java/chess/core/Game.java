@@ -512,12 +512,10 @@ public class Game {
         /* If move leaves the team in check, it is not legal */
         if(copy.inCheck(team)) {
             System.out.printf("%s to %s leaves king in check\n", start, end);
-
             return false;
-
         }
 
-        return legalMoves.stream().anyMatch(a -> a.equals(new Move(start, end)));
+        return true;
     }
 
     /**
