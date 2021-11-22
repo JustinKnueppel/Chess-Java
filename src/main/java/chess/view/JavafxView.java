@@ -157,29 +157,10 @@ public class JavafxView implements View{
         return new Image(imagePath);
     }
 
-    private LocatedImage getLocatedPieceImage(TeamColor teamColor, PieceType pieceType) {
+    private PieceImage getLocatedPieceImage(TeamColor teamColor, PieceType pieceType) {
         String imagePath = getImagePath(teamColor, pieceType);
 
-        return new LocatedImage(imagePath);
-    }
-
-    private PieceType filepathToPieceType(String filepath) {
-        String filepathLower = filepath.toLowerCase();
-        if (filepathLower.contains("queen")) {
-            return PieceType.QUEEN;
-        } else if (filepathLower.contains("knight")) {
-            return PieceType.KNIGHT;
-        } else if (filepathLower.contains("rook")) {
-            return PieceType.ROOK;
-        } else if (filepathLower.contains("bishop")) {
-            return PieceType.BISHOP;
-        } else if (filepathLower.contains("pawn")) {
-            return PieceType.PAWN;
-        } else if (filepathLower.contains("king")) {
-            return PieceType.KING;
-        } else {
-            return null;
-        }
+        return new PieceImage(imagePath, pieceType);
     }
 
     /*
@@ -225,10 +206,8 @@ public class JavafxView implements View{
     private final EventHandler<MouseEvent> promotionPieceOnMousePressedEventHandler =
             mouseEvent -> {
                 ImageView imageView = (ImageView) mouseEvent.getSource();
-                LocatedImage image = (LocatedImage) imageView.getImage();
-                String imageFilepath = image.getURL();
-                PieceType pieceType = filepathToPieceType(imageFilepath);
-                processPromotion(pieceType);
+                PieceImage image = (PieceImage) imageView.getImage();
+                processPromotion(image.getPieceType());
             };
 
     /*
@@ -282,7 +261,7 @@ public class JavafxView implements View{
         PieceType[] promotionPieces = new PieceType[] {PieceType.QUEEN, PieceType.KNIGHT, PieceType.ROOK, PieceType.BISHOP};
 
 
-        LocatedImage[] pieceImages = new LocatedImage[promotionPieces.length];
+        PieceImage[] pieceImages = new PieceImage[promotionPieces.length];
         for (int i = 0; i < promotionPieces.length; i++) {
             pieceImages[i] = getLocatedPieceImage(teamColor, promotionPieces[i]);
         }
