@@ -139,15 +139,12 @@ public class JavafxView implements View{
     }
 
     private Node getSquare(int x, int y) {
-        Node result = null;
-
         for (Node node: this.pieces.getChildren()) {
             if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                result = node;
-                break;
+                return node;
             }
         }
-        return result;
+        return null;
     }
 
     private String getImagePath(TeamColor teamColor, PieceType pieceType) {
