@@ -192,44 +192,34 @@ public class JavafxView implements View{
     private double orgTranslateX, orgTranslateY;
 
     private final EventHandler<MouseEvent> imageViewOnMousePressedEventHandler =
-            new EventHandler<>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    orgSceneX = mouseEvent.getSceneX();
-                    orgSceneY = mouseEvent.getSceneY();
-                    orgTranslateX = ((ImageView) (mouseEvent.getSource())).getTranslateX();
-                    orgTranslateY = ((ImageView) (mouseEvent.getSource())).getTranslateY();
-                }
+            mouseEvent -> {
+                orgSceneX = mouseEvent.getSceneX();
+                orgSceneY = mouseEvent.getSceneY();
+                orgTranslateX = ((ImageView) (mouseEvent.getSource())).getTranslateX();
+                orgTranslateY = ((ImageView) (mouseEvent.getSource())).getTranslateY();
             };
 
     private final EventHandler<MouseEvent> imageViewOnMouseDraggedEventHandler =
-            new EventHandler<>() {
+            mouseEvent -> {
+                double offsetX = mouseEvent.getSceneX() - orgSceneX;
+                double offsetY = mouseEvent.getSceneY() - orgSceneY;
+                double newTranslateX = orgTranslateX + offsetX;
+                double newTranslateY = orgTranslateY + offsetY;
 
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    double offsetX = mouseEvent.getSceneX() - orgSceneX;
-                    double offsetY = mouseEvent.getSceneY() - orgSceneY;
-                    double newTranslateX = orgTranslateX + offsetX;
-                    double newTranslateY = orgTranslateY + offsetY;
-
-                    ((ImageView) (mouseEvent.getSource())).setTranslateX(newTranslateX);
-                    ((ImageView) (mouseEvent.getSource())).setTranslateY(newTranslateY);
-                }
+                ((ImageView) (mouseEvent.getSource())).setTranslateX(newTranslateX);
+                ((ImageView) (mouseEvent.getSource())).setTranslateY(newTranslateY);
             };
 
     private final EventHandler<MouseEvent> imageViewOnMouseReleasedEventHandler =
-            new EventHandler<>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    double newX = mouseEvent.getSceneX();
-                    double newY = mouseEvent.getSceneY();
+            mouseEvent -> {
+                double newX = mouseEvent.getSceneX();
+                double newY = mouseEvent.getSceneY();
 
-                    /* Reset ImageView location */
-                    ((ImageView) (mouseEvent.getSource())).setTranslateX(orgTranslateX);
-                    ((ImageView) (mouseEvent.getSource())).setTranslateY(orgTranslateY);
+                /* Reset ImageView location */
+                ((ImageView) (mouseEvent.getSource())).setTranslateX(orgTranslateX);
+                ((ImageView) (mouseEvent.getSource())).setTranslateY(orgTranslateY);
 
-                    processMove(orgSceneX, orgSceneY, newX, newY);
-                }
+                processMove(orgSceneX, orgSceneY, newX, newY);
             };
 
     private final EventHandler<MouseEvent> promotionPieceOnMousePressedEventHandler =
